@@ -16,7 +16,8 @@ try{
  }
 }catch{}
 function orderedModules(){const known=new Map(modules.map(m=>[m.id,m]));return [...appOrder.filter(id=>known.has(id)).map(id=>known.get(id)),...modules.filter(m=>!appOrder.includes(m.id))]}
-function visibleModules(){return orderedModules().filter(m=>!hiddenApps.has(m.id))}
+function allowedApp(id){const access=window.PortalAccess;return !access?.configured||access.permissions?.includes('app.'+id+'.read')}
+function visibleModules(){return orderedModules().filter(m=>!hiddenApps.has(m.id)&&allowedApp(m.id))}
 function preferenceRecord(overrides={}){return {version:1,hiddenApps:[...hiddenApps],favorites:[...favoriteApps],appOrder:[...appOrder],showFavorites,...overrides}}
 function menuLink(m,favorite=false){
  const a=node('a');a.href='#'+m.id;a.dataset[favorite?'favorite':'application']=m.id;a.setAttribute('aria-label',m.name);
@@ -52,7 +53,7 @@ function updateOrderButtons(){
 }
 function openSettings(){
  const options=$('#application-options');options.querySelectorAll('.application-option').forEach(n=>n.remove());
- for(const m of orderedModules()){
+ for(const m of orderedModules().filter(m=>allowedApp(m.id))){
   const row=node('div',undefined,'application-option');row.dataset.applicationId=m.id;
   const label=node('label',undefined,'application-option-main'),checkbox=node('input');checkbox.type='checkbox';checkbox.name='visible-app';checkbox.value=m.id;checkbox.checked=!hiddenApps.has(m.id);
   const text=node('span',undefined,'application-option-text');text.append(node('strong',m.name),node('small',m.category));label.append(appIcon(m,'settings-app-icon '+m.color),text,checkbox);row.append(label);
@@ -74,8 +75,8 @@ $('#open-settings').addEventListener('click',openSettings);
 for(const id of ['close-settings','cancel-settings'])$('#'+id).addEventListener('click',()=>settingsDialog.close());
 settingsDialog.addEventListener('close',()=>$('#open-settings').focus());
 $('#portal-settings-form').addEventListener('submit',event=>{
- event.preventDefault();const next=new Set([...$('#application-options').querySelectorAll('input:not(:checked)')].map(input=>input.value));
- const order=[...$('#application-options').querySelectorAll('.application-option')].map(row=>row.dataset.applicationId),favoritesVisible=$('#show-favorites').checked;
+ event.preventDefault();const next=new Set([...hiddenApps].filter(id=>!allowedApp(id)));for(const input of $('#application-options').querySelectorAll('input:not(:checked)'))next.add(input.value);
+ const order=[...$('#application-options').querySelectorAll('.application-option')].map(row=>row.dataset.applicationId);for(const m of orderedModules())if(!order.includes(m.id))order.push(m.id);const favoritesVisible=$('#show-favorites').checked;
  try{PortalStorage.setItem(preferencesKey,JSON.stringify(preferenceRecord({hiddenApps:[...next],appOrder:order,showFavorites:favoritesVisible})))}catch{
   $('#settings-error').textContent='설정을 저장하지 못했습니다. 브라우저 저장 공간 또는 저장소 접근 권한을 확인해 주세요.';$('#settings-error').hidden=false;return;
  }
@@ -133,7 +134,19 @@ function render(){
  if(!recent.length){const empty=node('div',undefined,'empty');empty.append(node('span','▤','empty-icon'),node('strong','작업의 첫 페이지를 열어보세요'),node('p','앱을 열면 문서, 프로젝트, 대시보드의 최근 항목이 여기에 표시됩니다.'));activity.append(empty)}
  for(const item of recent){const row=node('a',undefined,'activity-row');row.href='#'+item.module.id;row.append(appIcon(item.module,'mini-icon '+item.module.color),node('b',item.name),node('span',item.module.name,'activity-module'),node('time',date(item.date)));activity.append(row)}
 }
-function route(){const id=location.hash.slice(1)||'home',m=visibleModules().find(m=>m.id===id);const home=!m;if(home&&id!=='home')history.replaceState(null,'',location.pathname+location.search+'#home');$('#home').hidden=!home;$('#app-view').hidden=home;
+function syncAccess(){
+ $('#sidebar-system').hidden=!window.PortalAccess?.isAdmin;
+ if(!window.__portalAuthenticated)return;
+ for(const [id,frame]of frames)if(!allowedApp(id)){frame.remove();frames.delete(id)}
+ renderNavigation();route();
+}
+window.addEventListener('portal:access-changed',syncAccess);
+function route(){
+ const adminRoute=location.hash==='#system-management';
+ $('#system-admin-view').hidden=true;$('#system-admin-link').classList.toggle('active',adminRoute&&!!window.PortalAccess?.isAdmin);
+ if(adminRoute&&window.PortalAccess?.isAdmin){$('#home').hidden=true;$('#app-view').hidden=true;$('#system-admin-view').hidden=false;$('#breadcrumb').textContent='워크스페이스 / 시스템관리';document.querySelectorAll('#nav a').forEach(a=>{a.classList.remove('active');a.removeAttribute('aria-current')});window.PortalAdminView?.open();return}
+ if(adminRoute){history.replaceState(null,'',location.pathname+location.search+'#home');$('#settings-status').textContent='관리자 권한이 필요합니다.'}
+const id=location.hash.slice(1)||'home',m=visibleModules().find(m=>m.id===id);const home=!m;if(home&&id!=='home')history.replaceState(null,'',location.pathname+location.search+'#home');$('#home').hidden=!home;$('#app-view').hidden=home;
  document.querySelectorAll('nav a').forEach(a=>{const active=a.hash==='#'+(home?'home':id);a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
  $('#breadcrumb').textContent='워크스페이스 / '+(m?.name||'홈');
  if(home){render();return}
@@ -152,4 +165,4 @@ $('#search').addEventListener('input',render);
 $('#refresh').onclick=()=>{for(const f of frames.values())f.contentWindow.postMessage({type:'3hs:refresh'},location.origin);render();$('#refresh').textContent='✓ 마지막 수신 요약 표시';setTimeout(()=>$('#refresh').textContent='↻ 요약 새로고침',1800)};
 addEventListener('hashchange',route);
 $('#today').textContent=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
-fetch('/portal01/modules.json?v=42a004edbbeb').then(r=>{if(!r.ok)throw Error();return r.json()}).then(data=>{modules=data;for(const m of modules){const f=document.createElement('iframe');f.src='/portal01/apps/'+m.id+'/?v='+appPageVersions[m.id];f.title=m.name;f.hidden=true;frames.set(m.id,f);$('#frames').append(f);}renderNavigation();render();route()}).catch(()=>{$('#cards').textContent='메뉴를 불러오지 못했습니다. 서버 연결을 확인하고 새로고침하세요.'});
+fetch('/portal01/modules.json?v=42a004edbbeb').then(r=>{if(!r.ok)throw Error();return r.json()}).then(data=>{modules=data;for(const m of modules.filter(m=>allowedApp(m.id))){const f=document.createElement('iframe');f.src='/portal01/apps/'+m.id+'/?v='+appPageVersions[m.id];f.title=m.name;f.hidden=true;frames.set(m.id,f);$('#frames').append(f);}$('#sidebar-system').hidden=!window.PortalAccess?.isAdmin;renderNavigation();render();route()}).catch(()=>{$('#cards').textContent='메뉴를 불러오지 못했습니다. 서버 연결을 확인하고 새로고침하세요.'});

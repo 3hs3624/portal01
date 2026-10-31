@@ -52,5 +52,16 @@ revoke all on function public.portal_workspace_get(text) from public,anon;
 revoke all on function public.portal_workspace_save(text,jsonb,uuid) from public,anon;
 grant execute on function public.portal_workspace_get(text) to authenticated;
 grant execute on function public.portal_workspace_save(text,jsonb,uuid) to authenticated;
+-- Enforce portal status and application permissions on existing cloud workspace data.
+do $$begin
+ if to_regclass('public.portal_workspaces') is not null and to_regprocedure('public.portal_can_access(text,text)') is not null then
+  execute 'drop policy if exists portal_workspace_select on public.portal_workspaces';
+  execute 'create policy portal_workspace_select on public.portal_workspaces for select to authenticated using ((select auth.uid())=user_id and public.portal_can_access(app_id,''read''))';
+  execute 'drop policy if exists portal_workspace_insert on public.portal_workspaces';
+  execute 'create policy portal_workspace_insert on public.portal_workspaces for insert to authenticated with check ((select auth.uid())=user_id and public.portal_can_access(app_id,''write''))';
+  execute 'drop policy if exists portal_workspace_update on public.portal_workspaces';
+  execute 'create policy portal_workspace_update on public.portal_workspaces for update to authenticated using ((select auth.uid())=user_id and public.portal_can_access(app_id,''write'')) with check ((select auth.uid())=user_id and public.portal_can_access(app_id,''write''))';
+ end if;
+end $$;
 notify pgrst,'reload schema';
 commit;
