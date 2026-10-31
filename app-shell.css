@@ -26,3 +26,11 @@
 @media(max-width:450px){.portal-cloud-actions{grid-template-columns:1fr}}
 
 .portal-cloud-setup{display:block;margin-top:15px;font-size:10px;color:var(--accent,#7561d5);text-decoration:underline}
+
+.portal-storage-field{display:grid;gap:6px;margin:14px 0;font:inherit}
+.portal-storage-field select,.portal-storage-field input{box-sizing:border-box;width:100%;min-width:0;padding:10px 12px;border:1px solid var(--line,#dedee9);border-radius:7px;background:var(--surface,#fff);color:inherit;font:inherit}
+.portal-cloud-dialog button:focus-visible,.portal-storage-field select:focus-visible,.portal-storage-field input:focus-visible{outline:2px solid var(--accent,#7561d5);outline-offset:2px}
+.portal-cloud-actions:has(button:not([hidden])){margin-top:12px}
+.portal-storage-entry{margin-bottom:18px}.portal-storage-entry p{font-size:12px;opacity:.7}
+
+.portal-cloud-actions button{word-break:keep-all}

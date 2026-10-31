@@ -39,7 +39,16 @@
    paint();
   }
   theme.onclick=()=>{selected=current()==='dark'?'light':'dark';localStorage.setItem(key,selected);apply(selected,true)};
-  const cloud=document.createElement('button');cloud.type='button';cloud.className='portal-app-action';cloud.id='portal-cloud-open';cloud.title='Supabase 저장소';cloud.setAttribute('aria-label','Supabase 저장소');cloud.append(icon('cloud'));const cloudLabel=document.createElement('span');cloudLabel.textContent='클라우드';cloud.append(cloudLabel);cloud.onclick=()=>window.PortalCloudUI.open();tools.append(cloud);
+  const cloud=document.createElement('button');cloud.type='button';cloud.className='portal-app-action';cloud.id='portal-cloud-open';cloud.title='저장소';cloud.setAttribute('aria-label','저장소');cloud.append(icon('cloud'));const cloudLabel=document.createElement('span');cloudLabel.textContent='저장소';cloud.append(cloudLabel);cloud.onclick=()=>window.PortalCloudUI.open();tools.append(cloud);
+  if(id==='markdown'){
+   const legacy=document.querySelector('#openStorage');if(legacy)legacy.hidden=true;
+   document.addEventListener('click',event=>{if(event.target.closest('#storageShortcut')){event.preventDefault();event.stopImmediatePropagation();window.PortalCloudUI.open()}},true);
+  }
+  if(id==='insight'||id==='projects'){
+   const settings=document.querySelector(id==='insight'?'#settings':'#tab-store');if(settings){const card=document.createElement('div');card.className='card portal-storage-entry';const title=document.createElement('h2');title.textContent='저장소';const text=document.createElement('p');text.textContent='브라우저 · Supabase · 로컬 폴더 · OneDrive · Google Drive';const open=document.createElement('button');open.textContent='저장소 관리';open.onclick=()=>window.PortalCloudUI.open();card.append(title,text,open);settings.prepend(card)}
+   const oldList=document.querySelector('.storage-list');if(oldList)oldList.hidden=true;
+   const oldTitle=document.querySelector('.storage-overview h2');if(oldTitle)oldTitle.textContent='브라우저 자동 저장 설정';
+  }
   tools.append(theme);
   for(const [kind,label,target]of [['external','별도 창에서 열기','_blank'],['home','홈으로 돌아가기','_parent']]){
    const a=document.createElement('a');a.className='portal-app-action portal-app-'+kind;a.href=base.href+(kind==='home'?'#home':'#'+id);a.target=target;a.title=label;a.setAttribute('aria-label',label);if(target==='_blank')a.rel='noopener';a.append(icon(kind));const span=document.createElement('span');span.textContent=kind==='home'?'홈':'별도 창';a.append(span);tools.append(a);

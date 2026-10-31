@@ -135,3 +135,11 @@ body.sidebar-collapsed .side-bottom>.settings-button{display:grid}
 @media(min-width:801px){body.sidebar-collapsed .application-menu-row{margin-bottom:10px}body.sidebar-collapsed .application-menu-row>a{margin-bottom:0}body.sidebar-collapsed .favorite-toggle{position:absolute;right:-3px;top:-3px;width:18px;height:18px;padding:2px;opacity:0}body.sidebar-collapsed .favorite-toggle svg{width:14px;height:14px}body.sidebar-collapsed .application-menu-row:hover .favorite-toggle,body.sidebar-collapsed .application-menu-row:focus-within .favorite-toggle{opacity:1}body.sidebar-collapsed .favorites-empty{display:none}body.sidebar-collapsed #favorites-section:not([hidden]){padding-bottom:8px;border-bottom:1px solid #eeedf5;margin-bottom:12px}}
 @media(max-width:800px){#application-links,#favorites-list,#favorites-section:not([hidden]){display:flex;gap:4px;align-items:center;flex:none}.application-menu-row{flex:none;margin:0}.application-menu-row>a{padding:9px 4px}.favorite-toggle{width:22px}#favorites-section:not([hidden])::before{content:'★';color:#c89839;font-size:13px;padding-right:3px}.favorites-empty{display:none}#sidebar nav{overflow-x:auto;overflow-y:hidden}#sidebar nav:has(a:hover),#sidebar nav:has(a:focus-visible){overflow-x:auto;overflow-y:hidden}.settings-content{padding-left:16px;padding-right:16px}.application-option-main{gap:8px}.settings-app-icon{width:27px;height:29px}.application-order-controls{gap:2px}}
 @media(min-width:801px){body.sidebar-collapsed #sidebar nav{overflow:visible}}
+
+/* Compact application cards without changing typography or icon sizes. */
+#cards .card{padding-top:18px}
+#cards .card h3{margin-top:12px}
+#cards .description{min-height:22px}
+#cards .stats{margin-top:10px;padding-top:12px;min-height:56px}
+#cards .open-app{padding-top:10px;padding-bottom:10px}
+@media(max-width:800px){#cards .card{padding-top:16px}#cards .description{min-height:0}}
