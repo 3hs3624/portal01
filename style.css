@@ -109,3 +109,29 @@ body.sidebar-collapsed .side-bottom{flex-direction:column;gap:9px}
 body.sidebar-collapsed .side-bottom>.settings-button{display:grid}
 @media(max-width:800px){aside{position:relative;padding-right:52px}aside>.side-bottom{display:block;position:absolute;right:14px;top:14px;border:0;padding:0;margin:0}aside>.side-bottom>.avatar,aside>.side-bottom>div,aside>.side-bottom>.online{display:none}.settings-heading,.settings-content{padding-left:20px;padding-right:20px}.settings-footer{padding-left:20px;padding-right:20px}}
 @media(min-width:801px){aside{padding-top:5px}body.sidebar-collapsed aside{padding-top:5px}}
+/* Ordered application menus and optional per-user favorites. */
+.application-menu-row{display:flex;position:relative;align-items:center;gap:1px;margin-bottom:6px;border-radius:8px}
+.application-menu-row>a{flex:1;min-width:0;margin-bottom:0;padding-right:1px}
+.application-menu-row .nav-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.application-menu-row:has(>a.active){background:#eeedfc}
+.favorite-toggle{display:grid;place-items:center;flex:none;width:25px;height:29px;border:0;padding:4px;border-radius:6px;background:transparent;color:#b6b2c7;cursor:pointer}
+.favorite-toggle svg{width:16px;height:16px}
+.favorite-toggle:hover{background:#e9e5fa;color:#8a74cc}
+.favorite-toggle[aria-pressed="true"]{color:#c89839}
+.favorite-toggle[aria-pressed="true"] svg{fill:#e8c366}
+.favorites-empty{font-size:10px;line-height:1.6;color:#a1a0b4;padding:0 9px;margin:0 0 10px}
+#sidebar nav{min-height:0;overflow-y:auto;overflow-x:clip;flex:1;padding-bottom:14px}
+#sidebar nav:has(a:hover),#sidebar nav:has(a:focus-visible){overflow:visible}
+.application-option{padding:12px;gap:9px;cursor:default}
+.application-option-main{display:flex;align-items:center;gap:11px;flex:1;min-width:0;cursor:pointer}
+.application-order-controls{display:flex;gap:3px;flex:none}
+.application-order-controls button{border:1px solid #e3e0ee;border-radius:5px;width:25px;height:28px;padding:0;color:#897ba9;background:white;cursor:pointer}
+.application-order-controls button:hover:enabled{background:#eeebfa;color:#6e59bd}
+.application-order-controls button:disabled{opacity:.3;cursor:default}
+.settings-sidebar-section{border-top:1px solid #ecebf3;margin-top:23px;padding-top:20px}
+.favorites-visibility{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:14px;cursor:pointer;font-size:12px}
+.favorites-visibility small{display:block;font-size:10px;color:#9594a7;margin-top:6px;line-height:1.6}
+.favorites-visibility input{width:17px;height:17px;accent-color:#7561d5;flex:none}
+@media(min-width:801px){body.sidebar-collapsed .application-menu-row{margin-bottom:10px}body.sidebar-collapsed .application-menu-row>a{margin-bottom:0}body.sidebar-collapsed .favorite-toggle{position:absolute;right:-3px;top:-3px;width:18px;height:18px;padding:2px;opacity:0}body.sidebar-collapsed .favorite-toggle svg{width:14px;height:14px}body.sidebar-collapsed .application-menu-row:hover .favorite-toggle,body.sidebar-collapsed .application-menu-row:focus-within .favorite-toggle{opacity:1}body.sidebar-collapsed .favorites-empty{display:none}body.sidebar-collapsed #favorites-section:not([hidden]){padding-bottom:8px;border-bottom:1px solid #eeedf5;margin-bottom:12px}}
+@media(max-width:800px){#application-links,#favorites-list,#favorites-section:not([hidden]){display:flex;gap:4px;align-items:center;flex:none}.application-menu-row{flex:none;margin:0}.application-menu-row>a{padding:9px 4px}.favorite-toggle{width:22px}#favorites-section:not([hidden])::before{content:'★';color:#c89839;font-size:13px;padding-right:3px}.favorites-empty{display:none}#sidebar nav{overflow-x:auto;overflow-y:hidden}#sidebar nav:has(a:hover),#sidebar nav:has(a:focus-visible){overflow-x:auto;overflow-y:hidden}.settings-content{padding-left:16px;padding-right:16px}.application-option-main{gap:8px}.settings-app-icon{width:27px;height:29px}.application-order-controls{gap:2px}}
+@media(min-width:801px){body.sidebar-collapsed #sidebar nav{overflow:visible}}

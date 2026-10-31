@@ -5,23 +5,69 @@ let modules=[],summaries={};
 try{summaries=JSON.parse(PortalStorage.getItem('3hs-summaries-v1')||'{}')||{}}catch{}
 const frames=new Map();
 const preferencesKey='3hs-portal-preferences-v1';
-let hiddenApps=new Set();
-try{const saved=JSON.parse(PortalStorage.getItem(preferencesKey)||'null');if(saved?.version===1&&Array.isArray(saved.hiddenApps))hiddenApps=new Set(saved.hiddenApps.filter(id=>typeof id==='string'))}catch{}
-function visibleModules(){return modules.filter(m=>!hiddenApps.has(m.id))}
-function renderNavigation(){
- $('#nav').querySelectorAll('a[data-application]').forEach(n=>n.remove());
- for(const m of visibleModules()){
-  const a=node('a');a.href='#'+m.id;a.dataset.application=m.id;a.setAttribute('aria-label',m.name);
-  const icon=appIcon(m,'nav-icon');icon.setAttribute('aria-hidden','true');a.append(icon,node('span',m.name,'nav-text'));$('#nav').append(a);
+let hiddenApps=new Set(),favoriteApps=new Set(),appOrder=[],showFavorites=true;
+try{
+ const saved=JSON.parse(PortalStorage.getItem(preferencesKey)||'null');
+ if(saved?.version===1){
+  if(Array.isArray(saved.hiddenApps))hiddenApps=new Set(saved.hiddenApps.filter(id=>typeof id==='string'));
+  if(Array.isArray(saved.favorites))favoriteApps=new Set(saved.favorites.filter(id=>typeof id==='string'));
+  if(Array.isArray(saved.appOrder))appOrder=[...new Set(saved.appOrder.filter(id=>typeof id==='string'))];
+  if(typeof saved.showFavorites==='boolean')showFavorites=saved.showFavorites;
  }
+}catch{}
+function orderedModules(){const known=new Map(modules.map(m=>[m.id,m]));return [...appOrder.filter(id=>known.has(id)).map(id=>known.get(id)),...modules.filter(m=>!appOrder.includes(m.id))]}
+function visibleModules(){return orderedModules().filter(m=>!hiddenApps.has(m.id))}
+function preferenceRecord(overrides={}){return {version:1,hiddenApps:[...hiddenApps],favorites:[...favoriteApps],appOrder:[...appOrder],showFavorites,...overrides}}
+function menuLink(m,favorite=false){
+ const a=node('a');a.href='#'+m.id;a.dataset[favorite?'favorite':'application']=m.id;a.setAttribute('aria-label',m.name);
+ const icon=appIcon(m,'nav-icon');icon.setAttribute('aria-hidden','true');a.append(icon,node('span',m.name,'nav-text'));return a;
+}
+function starIcon(){
+ const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+ for(const [k,v]of Object.entries({viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'1.7','stroke-linejoin':'round','aria-hidden':'true',focusable:'false'}))svg.setAttribute(k,v);
+ const path=document.createElementNS(svg.namespaceURI,'path');path.setAttribute('d','m12 3 2.8 5.7 6.3.9-4.55 4.45 1.07 6.28L12 17.36l-5.62 2.97 1.07-6.28L2.9 9.6l6.3-.9z');svg.append(path);return svg;
+}
+function toggleFavorite(id){
+ const next=new Set(favoriteApps);if(next.has(id))next.delete(id);else next.add(id);
+ try{PortalStorage.setItem(preferencesKey,JSON.stringify(preferenceRecord({favorites:[...next]})))}catch{
+  $('#settings-status').textContent='즐겨찾기를 저장하지 못했습니다. 브라우저 저장소를 확인해 주세요.';return;
+ }
+ favoriteApps=next;renderNavigation();route();
+ const button=[...$('#application-links').querySelectorAll('button')].find(b=>b.dataset.favoriteToggle===id);button?.focus();
+ $('#settings-status').textContent='즐겨찾기를 '+(favoriteApps.has(id)?'추가했습니다.':'해제했습니다.');
+}
+function renderNavigation(){
+ const list=$('#application-links'),favorites=$('#favorites-list');list.replaceChildren();favorites.replaceChildren();
+ for(const m of visibleModules()){
+  const row=node('div',undefined,'application-menu-row'),button=node('button',undefined,'favorite-toggle');button.type='button';button.dataset.favoriteToggle=m.id;
+  button.setAttribute('aria-label',m.name+' 즐겨찾기 '+(favoriteApps.has(m.id)?'해제':'추가'));button.title=button.getAttribute('aria-label');button.setAttribute('aria-pressed',String(favoriteApps.has(m.id)));button.append(starIcon());button.addEventListener('click',()=>toggleFavorite(m.id));row.append(menuLink(m),button);list.append(row);
+  if(favoriteApps.has(m.id))favorites.append(menuLink(m,true));
+ }
+ $('#favorites-section').hidden=!showFavorites;$('#favorites-empty').hidden=!!favorites.children.length;
 }
 const settingsDialog=$('#portal-settings');
+function updateOrderButtons(){
+ const rows=[...$('#application-options').querySelectorAll('.application-option')];
+ rows.forEach((row,index)=>{row.querySelector('[data-move="up"]').disabled=index===0;row.querySelector('[data-move="down"]').disabled=index===rows.length-1});
+}
 function openSettings(){
- const options=$('#application-options');options.querySelectorAll('label').forEach(n=>n.remove());
- for(const m of modules){
-  const row=node('label',undefined,'application-option'),checkbox=node('input');checkbox.type='checkbox';checkbox.name='visible-app';checkbox.value=m.id;checkbox.checked=!hiddenApps.has(m.id);
-  const text=node('span',undefined,'application-option-text');text.append(node('strong',m.name),node('small',m.category));row.append(appIcon(m,'settings-app-icon '+m.color),text,checkbox);options.append(row);
+ const options=$('#application-options');options.querySelectorAll('.application-option').forEach(n=>n.remove());
+ for(const m of orderedModules()){
+  const row=node('div',undefined,'application-option');row.dataset.applicationId=m.id;
+  const label=node('label',undefined,'application-option-main'),checkbox=node('input');checkbox.type='checkbox';checkbox.name='visible-app';checkbox.value=m.id;checkbox.checked=!hiddenApps.has(m.id);
+  const text=node('span',undefined,'application-option-text');text.append(node('strong',m.name),node('small',m.category));label.append(appIcon(m,'settings-app-icon '+m.color),text,checkbox);row.append(label);
+  const controls=node('div',undefined,'application-order-controls');
+  for(const [direction,symbol,description]of [['up','↑','위로 이동'],['down','↓','아래로 이동']]){
+   const button=node('button',symbol);button.type='button';button.dataset.move=direction;button.setAttribute('aria-label',m.name+' '+description);button.title=description;
+   button.addEventListener('click',()=>{
+    if(direction==='up'&&row.previousElementSibling?.classList.contains('application-option'))options.insertBefore(row,row.previousElementSibling);
+    if(direction==='down'&&row.nextElementSibling)options.insertBefore(row.nextElementSibling,row);
+    updateOrderButtons();const focusTarget=button.disabled?controls.querySelector(direction==='up'?'[data-move="down"]':'[data-move="up"]'):button;focusTarget?.focus();
+   });controls.append(button);
+  }
+  row.append(controls);options.append(row);
  }
+ updateOrderButtons();$('#show-favorites').checked=showFavorites;
  $('#settings-error').hidden=true;settingsDialog.showModal();
 }
 $('#open-settings').addEventListener('click',openSettings);
@@ -29,10 +75,11 @@ for(const id of ['close-settings','cancel-settings'])$('#'+id).addEventListener(
 settingsDialog.addEventListener('close',()=>$('#open-settings').focus());
 $('#portal-settings-form').addEventListener('submit',event=>{
  event.preventDefault();const next=new Set([...$('#application-options').querySelectorAll('input:not(:checked)')].map(input=>input.value));
- try{PortalStorage.setItem(preferencesKey,JSON.stringify({version:1,hiddenApps:[...next]}))}catch{
+ const order=[...$('#application-options').querySelectorAll('.application-option')].map(row=>row.dataset.applicationId),favoritesVisible=$('#show-favorites').checked;
+ try{PortalStorage.setItem(preferencesKey,JSON.stringify(preferenceRecord({hiddenApps:[...next],appOrder:order,showFavorites:favoritesVisible})))}catch{
   $('#settings-error').textContent='설정을 저장하지 못했습니다. 브라우저 저장 공간 또는 저장소 접근 권한을 확인해 주세요.';$('#settings-error').hidden=false;return;
  }
- hiddenApps=next;renderNavigation();render();
+ hiddenApps=next;appOrder=order;showFavorites=favoritesVisible;renderNavigation();render();
  const active=location.hash.slice(1);if(hiddenApps.has(active))location.hash='#home';else route();
  settingsDialog.close();$('#settings-status').textContent='애플리케이션 표시 설정을 저장했습니다.';
 });
