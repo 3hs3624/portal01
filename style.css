@@ -70,3 +70,42 @@ body.sidebar-collapsed #sidebar-toggle-hint{left:calc(100% + 10px);right:auto;to
  body.sidebar-collapsed nav{margin-top:23px}
 }
 @media(max-width:800px){.sidebar-heading{display:none}}
+/* Portal settings: a small extensible dialog, with per-user app visibility. */
+.settings-button{display:grid;place-items:center;flex:none;width:27px;height:27px;padding:4px;border:0;border-radius:7px;background:transparent;color:#8c8a9f;cursor:pointer}
+.settings-button svg{width:18px;height:18px}
+.settings-button:hover{background:#eeedfc;color:#6858cd}
+.side-bottom{gap:7px}
+.side-bottom>.avatar{width:28px;height:28px;flex:none}
+.side-bottom>div{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px}
+.side-bottom small{overflow:hidden;text-overflow:ellipsis;font-size:8px}
+.side-bottom>.online{flex:none;margin-left:0}
+.portal-settings{width:min(520px,calc(100vw - 32px));max-height:calc(100dvh - 40px);overflow:auto;padding:0;border:1px solid #e4e3ed;border-radius:16px;background:#fff;color:#25293d;box-shadow:0 24px 100px #19153240}
+.portal-settings::backdrop{background:#20233565;backdrop-filter:blur(3px)}
+.settings-heading{display:flex;justify-content:space-between;align-items:center;padding:26px 28px 22px;border-bottom:1px solid #ececf4}
+.settings-eyebrow{font-size:9px;letter-spacing:1.5px;color:#9186bc}
+.settings-heading h2{font-size:22px;margin-top:9px}
+.settings-close{border:0;background:transparent;color:#9994ad;font-size:25px;padding:0;width:32px;height:32px;border-radius:7px;cursor:pointer}
+.settings-close:hover{background:#f2f0fa}
+.settings-content{padding:22px 28px}
+.settings-content h3{margin:0;font-size:15px}
+.settings-content>p{font-size:11px;margin:9px 0 18px;color:#8b90a4}
+#application-options{border:0;padding:0;margin:0;min-width:0;display:grid;gap:10px}
+.application-option{display:flex;align-items:center;gap:13px;border:1px solid #e7e6f0;border-radius:10px;padding:14px;cursor:pointer}
+.application-option:has(input:checked){background:#faf9ff;border-color:#dad5f0}
+.settings-app-icon{width:33px;height:33px;display:grid;place-items:center;color:#8575c9;background:#eeebfa;border-radius:8px;flex:none}
+.settings-app-icon svg{width:20px;height:20px}
+.application-option-text{display:grid;gap:5px;flex:1;min-width:0}
+.application-option-text strong{font-size:12px;font-weight:600}
+.application-option-text small{font-size:10px;color:#969bad}
+.application-option input{width:17px;height:17px;accent-color:#7561d5;flex:none;cursor:pointer}
+.settings-content>.settings-scope{font-size:10px;margin:17px 0 0}
+#settings-error{color:#b84251}
+.settings-footer{display:flex;justify-content:flex-end;gap:9px;padding:17px 28px;border-top:1px solid #ececf4;background:#fcfcfe}
+.settings-footer button{padding:9px 21px;border-radius:7px;font-size:12px;cursor:pointer}
+.settings-cancel{border:1px solid #e1e1ec;background:#fff;color:#82869b}
+.settings-save{border:1px solid #7561d5;background:#7561d5;color:#fff}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+body.sidebar-collapsed .side-bottom{flex-direction:column;gap:9px}
+body.sidebar-collapsed .side-bottom>.settings-button{display:grid}
+@media(max-width:800px){aside{position:relative;padding-right:52px}aside>.side-bottom{display:block;position:absolute;right:14px;top:14px;border:0;padding:0;margin:0}aside>.side-bottom>.avatar,aside>.side-bottom>div,aside>.side-bottom>.online{display:none}.settings-heading,.settings-content{padding-left:20px;padding-right:20px}.settings-footer{padding-left:20px;padding-right:20px}}
+@media(min-width:801px){aside{padding-top:5px}body.sidebar-collapsed aside{padding-top:5px}}

@@ -7,3 +7,5 @@
 .theme-seg[hidden],#theme[hidden]{display:none!important}
 @media(max-width:1000px){.portal-app-tools .portal-app-action span,.portal-app-save-note{display:none!important}.portal-app-tools .portal-app-action{padding:5px;min-width:28px}.portal-app-tools{gap:2px}}
 @media(max-width:600px){body:has(#portal-app-tools) header,body:has(#portal-app-tools) .topbar>.wrap{flex-wrap:wrap;height:auto;min-height:60px;gap:6px;padding-top:8px;padding-bottom:8px}body:has(#portal-app-tools) .top-actions,body:has(#portal-app-tools) .header-right{flex-wrap:wrap;gap:5px}body:has(#portal-app-tools) .edition{display:none}}
+
+.brand-icon:has(svg){padding:0;letter-spacing:normal}.brand-icon>svg{width:22px;height:22px}

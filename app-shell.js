@@ -7,13 +7,15 @@
  function icon(kind){
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   for(const [k,v]of Object.entries({viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'1.7','stroke-linecap':'round','stroke-linejoin':'round','aria-hidden':'true',focusable:'false'}))svg.setAttribute(k,v);
-  const paths={moon:['M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13z'],sun:['M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'],external:['M14 3h7v7M21 3l-9 9M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5'],home:['m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9']};
+  const paths={document:['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z','M14 2v6h6','M8 13h8M8 17h5'],moon:['M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13z'],sun:['M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'],external:['M14 3h7v7M21 3l-9 9M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5'],home:['m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9']};
   for(const d of paths[kind]){const p=document.createElementNS(svg.namespaceURI,'path');p.setAttribute('d',d);svg.append(p)}
   if(kind==='sun'){const c=document.createElementNS(svg.namespaceURI,'circle');for(const [k,v]of Object.entries({cx:'12',cy:'12',r:'4'}))c.setAttribute(k,v);svg.append(c)}return svg;
  }
  function init(){
   const host=id==='markdown'?document.querySelector('.top-actions'):id==='insight'?document.querySelector('header .header-right'):document.querySelector('.topbar>.wrap');
   if(!host||document.querySelector('#portal-app-tools'))return;
+  if(id==='markdown'){const brand=document.querySelector('.brand-icon');if(brand)brand.replaceChildren(icon('document'));const name=document.querySelector('.brand strong');if(name)name.textContent='Write Studio';document.title=document.title.replace('MD Editor','Write Studio');}
+
   const tools=document.createElement('div');tools.id='portal-app-tools';tools.className='portal-app-tools';tools.setAttribute('role','group');tools.setAttribute('aria-label','앱 화면 도구');
   const native=document.querySelector('#theme');if(native)native.hidden=true;
   document.querySelectorAll('.theme-seg').forEach(n=>n.hidden=true);
