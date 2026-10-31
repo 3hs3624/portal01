@@ -1,0 +1,5 @@
+[
+ {"id":"markdown","name":"MD Editor","category":"문서 · 지식 관리","description":"생각을 기록하고, 문서를 연결하세요.","icon":"M↓","color":"purple","metric":"문서","tag":"DOCUMENTS"},
+ {"id":"projects","name":"Project Management","category":"프로젝트 · 일정 관리","description":"프로젝트의 시작부터 완료까지 한눈에.","icon":"▦","color":"blue","metric":"프로젝트","tag":"PROJECTS"},
+ {"id":"insight","name":"Insight BI","category":"데이터 · 인사이트","description":"흩어진 데이터에서 다음 결정을 찾으세요.","icon":"◴","color":"orange","metric":"대시보드","tag":"ANALYTICS"}
+]
