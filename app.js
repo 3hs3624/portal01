@@ -8,8 +8,8 @@ const sidebarToggle=$('#sidebar-toggle');
 function setSidebarCollapsed(collapsed){
  document.body.classList.toggle('sidebar-collapsed',collapsed);
  sidebarToggle.setAttribute('aria-expanded',String(!collapsed));
- const label=collapsed?'메뉴 펼치기':'메뉴 접기';
- sidebarToggle.setAttribute('aria-label',label);sidebarToggle.title=label;sidebarToggle.textContent=collapsed?'›':'‹';
+ const label=collapsed?'사이드바 표시':'사이드바 숨기기';
+ sidebarToggle.setAttribute('aria-label',label);
  try{PortalStorage.setItem('3hs-sidebar-collapsed',String(collapsed))}catch{}
  requestAnimationFrame(()=>{for(const frame of frames.values()){try{frame.contentWindow.dispatchEvent(new Event('resize'))}catch{}}});
 }

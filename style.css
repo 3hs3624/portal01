@@ -34,3 +34,19 @@ nav .nav-text{font-size:12px}
 .main>header .secondary{padding:7px 11px}
 #frames iframe{height:calc(100dvh - 116px)}
 @media(max-width:800px){.main>header{height:48px;padding:0 16px}.main>header>div{gap:9px}#frames iframe{height:calc(100dvh - 220px)}}
+.sidebar-heading{position:relative}
+.sidebar-toggle{width:34px;height:34px;border-color:transparent;border-radius:9px;background:#f2f1f7;color:#7b768d;font-size:initial}
+.sidebar-toggle svg{width:21px;height:21px;display:block}
+.sidebar-toggle:hover,.sidebar-toggle:focus-visible{background:#e9e6f5;color:#6355ce}
+#sidebar-toggle-hint{position:absolute;top:calc(100% + 8px);right:0;z-index:50;width:max-content;padding:8px 12px;background:#32323a;color:#fff;border-radius:9px;font-size:12px;font-weight:600;box-shadow:0 4px 12px #20202a24;opacity:0;visibility:hidden;pointer-events:none}
+.sidebar-toggle:hover+#sidebar-toggle-hint,.sidebar-toggle:focus-visible+#sidebar-toggle-hint{opacity:1;visibility:visible}
+body.sidebar-collapsed #sidebar-toggle-hint{left:calc(100% + 10px);right:auto;top:auto;bottom:0}
+@media(max-width:800px){#sidebar-toggle-hint{display:none}}
+/* Keep both portal bars compact while the embedded app fills the freed space. */
+.main>header{height:44px;padding:0 20px}
+.main>header .header-avatar{width:24px;height:24px;font-size:9px}
+.main>header .secondary{padding:5px 9px;font-size:10px}
+.app-toolbar{height:38px;padding:6px 20px;gap:18px;font-size:10px}
+.app-toolbar div span{font-size:9px;margin-left:12px}
+#frames iframe{height:calc(100dvh - 82px)}
+@media(max-width:800px){.main>header{height:44px;padding:0 12px}.app-toolbar{padding:5px 10px;gap:10px}#frames iframe{height:calc(100dvh - 194px)}}
