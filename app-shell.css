@@ -1,0 +1,9 @@
+.portal-app-tools{display:flex;align-items:center;gap:5px;flex:none;margin-left:auto;color:var(--muted,var(--ink-3,#7a8194));font:11px/1.4 'Segoe UI','Malgun Gothic',sans-serif}
+.portal-app-tools .portal-app-action{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:30px;height:30px;padding:5px 8px;margin:0;border:1px solid transparent;border-radius:7px;background:transparent;color:inherit;text-decoration:none;font:inherit;white-space:nowrap;cursor:pointer}
+.portal-app-tools .portal-app-action:hover{background:var(--soft,var(--tint,var(--sunk,#eeedf8)));border-color:var(--line,#e5e5ef);color:var(--accent,#6d5ddd)}
+.portal-app-tools .portal-app-action:focus-visible{outline:2px solid var(--accent,#6d5ddd);outline-offset:2px}
+.portal-app-tools svg{display:block;width:17px;height:17px;flex:none}
+.portal-app-tools .portal-app-save-note{font-size:13px;cursor:help;opacity:.65;margin-left:2px}
+.theme-seg[hidden],#theme[hidden]{display:none!important}
+@media(max-width:1000px){.portal-app-tools .portal-app-action span,.portal-app-save-note{display:none!important}.portal-app-tools .portal-app-action{padding:5px;min-width:28px}.portal-app-tools{gap:2px}}
+@media(max-width:600px){body:has(#portal-app-tools) header,body:has(#portal-app-tools) .topbar>.wrap{flex-wrap:wrap;height:auto;min-height:60px;gap:6px;padding-top:8px;padding-bottom:8px}body:has(#portal-app-tools) .top-actions,body:has(#portal-app-tools) .header-right{flex-wrap:wrap;gap:5px}body:has(#portal-app-tools) .edition{display:none}}

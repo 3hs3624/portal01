@@ -58,7 +58,6 @@ function route(){const id=location.hash.slice(1)||'home',m=modules.find(m=>m.id=
  if(home){render();return}
  if(!frames.has(id)){const f=document.createElement('iframe');f.src='/portal01/apps/'+id+'/';f.title=m.name;frames.set(id,f);$('#frames').append(f)}
  for(const [key,f] of frames)f.hidden=key!==id;
- $('#app-title').textContent=m.name;$('#standalone').href='/portal01/apps/'+id+'/';
 }
 addEventListener('message',event=>{
  if(event.origin!==location.origin)return;
