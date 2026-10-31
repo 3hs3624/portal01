@@ -7,7 +7,7 @@
  function icon(kind){
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   for(const [k,v]of Object.entries({viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'1.7','stroke-linecap':'round','stroke-linejoin':'round','aria-hidden':'true',focusable:'false'}))svg.setAttribute(k,v);
-  const paths={document:['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z','M14 2v6h6','M8 13h8M8 17h5'],moon:['M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13z'],sun:['M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'],external:['M14 3h7v7M21 3l-9 9M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5'],home:['m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9']};
+  const paths={cloud:['M7 18H6a4 4 0 0 1-.8-7.9 7 7 0 0 1 13.6 0A4 4 0 0 1 18 18h-1','M12 11v10M8.5 14.5 12 11l3.5 3.5'],document:['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z','M14 2v6h6','M8 13h8M8 17h5'],moon:['M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13z'],sun:['M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'],external:['M14 3h7v7M21 3l-9 9M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5'],home:['m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9']};
   for(const d of paths[kind]){const p=document.createElementNS(svg.namespaceURI,'path');p.setAttribute('d',d);svg.append(p)}
   if(kind==='sun'){const c=document.createElementNS(svg.namespaceURI,'circle');for(const [k,v]of Object.entries({cx:'12',cy:'12',r:'4'}))c.setAttribute(k,v);svg.append(c)}return svg;
  }
@@ -39,6 +39,7 @@
    paint();
   }
   theme.onclick=()=>{selected=current()==='dark'?'light':'dark';localStorage.setItem(key,selected);apply(selected,true)};
+  const cloud=document.createElement('button');cloud.type='button';cloud.className='portal-app-action';cloud.id='portal-cloud-open';cloud.title='Supabase 저장소';cloud.setAttribute('aria-label','Supabase 저장소');cloud.append(icon('cloud'));const cloudLabel=document.createElement('span');cloudLabel.textContent='클라우드';cloud.append(cloudLabel);cloud.onclick=()=>window.PortalCloudUI.open();tools.append(cloud);
   tools.append(theme);
   for(const [kind,label,target]of [['external','별도 창에서 열기','_blank'],['home','홈으로 돌아가기','_parent']]){
    const a=document.createElement('a');a.className='portal-app-action portal-app-'+kind;a.href=base.href+(kind==='home'?'#home':'#'+id);a.target=target;a.title=label;a.setAttribute('aria-label',label);if(target==='_blank')a.rel='noopener';a.append(icon(kind));const span=document.createElement('span');span.textContent=kind==='home'?'홈':'별도 창';a.append(span);tools.append(a);

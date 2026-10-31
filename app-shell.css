@@ -9,3 +9,20 @@
 @media(max-width:600px){body:has(#portal-app-tools) header,body:has(#portal-app-tools) .topbar>.wrap{flex-wrap:wrap;height:auto;min-height:60px;gap:6px;padding-top:8px;padding-bottom:8px}body:has(#portal-app-tools) .top-actions,body:has(#portal-app-tools) .header-right{flex-wrap:wrap;gap:5px}body:has(#portal-app-tools) .edition{display:none}}
 
 .brand-icon:has(svg){padding:0;letter-spacing:normal}.brand-icon>svg{width:22px;height:22px}
+.portal-app-tools .cloud-pending{color:#b58d3e}
+.portal-cloud-dialog{width:min(510px,calc(100vw - 28px));max-height:calc(100dvh - 32px);overflow:auto;border:1px solid var(--line,#dedee9);border-radius:14px;padding:24px;background:var(--surface,#fff);color:var(--text,var(--ink,#282d3d));box-shadow:0 20px 80px #10142540;font:12px/1.7 'Segoe UI','Malgun Gothic',sans-serif}
+.portal-cloud-dialog::backdrop{background:#20253570}
+.portal-cloud-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.portal-cloud-heading h2{margin:0;font-size:19px}
+.portal-cloud-dialog .portal-cloud-close{border:0;background:transparent;font-size:24px;color:inherit;padding:0;width:30px;height:30px;cursor:pointer}
+.portal-cloud-dialog p{font:inherit;margin:14px 0}
+.portal-cloud-status{padding:13px;border-radius:8px;background:var(--soft,var(--sunk,#f2f0fa));white-space:pre-wrap;overflow-wrap:anywhere}
+.portal-cloud-note{font-size:10px!important;opacity:.7}
+.portal-cloud-status.cloud-error{color:#c44d60}
+.portal-cloud-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:20px}
+.portal-cloud-actions button{border:1px solid var(--line,#dedee9);border-radius:7px;background:var(--surface,#fff);color:inherit;padding:10px;font:inherit;cursor:pointer}
+.portal-cloud-actions button:first-child{background:var(--accent,#7561d5);color:#fff}
+.portal-cloud-actions button:disabled{opacity:.45;cursor:wait}
+@media(max-width:450px){.portal-cloud-actions{grid-template-columns:1fr}}
+
+.portal-cloud-setup{display:block;margin-top:15px;font-size:10px;color:var(--accent,#7561d5);text-decoration:underline}

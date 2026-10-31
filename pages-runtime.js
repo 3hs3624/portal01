@@ -18,7 +18,7 @@
   if(action==='changes')return {changed:result.revision!==payload.revision,...result};
   if(action==='save'){
    if(!payload.workspace||new Blob([JSON.stringify(payload.workspace)]).size>50*1024*1024)throw Error('작업공간 크기 제한을 확인해 주세요.');
-   return transact('readwrite',(store,out)=>{store.get('workspace').onsuccess=e=>{const old=e.target.result;if((old?.revision??null)!==(payload.revision??null)){store.transaction.abort();return}const next={workspace:payload.workspace,revision:crypto.randomUUID(),savedAt:new Date().toISOString()};store.put(next,'workspace');out({hasWorkspace:true,revision:next.revision,savedAt:next.savedAt})}});
+   return transact('readwrite',(store,out)=>{store.get('workspace').onsuccess=e=>{const old=e.target.result;if((old?.revision??null)!==(payload.revision??null)){store.transaction.abort();return}const next={workspace:payload.workspace,revision:crypto.randomUUID(),savedAt:new Date().toISOString()};store.put(next,'workspace');out({hasWorkspace:true,revision:next.revision,savedAt:next.savedAt});window.dispatchEvent(new Event('portal:local-workspace-saved'))}});
   }
   throw Error('지원하지 않는 작업입니다.');
  }};

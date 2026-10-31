@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko">
-<head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; form-action 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; frame-src 'self' blob:; worker-src 'self' blob:; connect-src 'self' https://tqomsmhicrjsidhuxkcb.supabase.co; script-src 'self' 'sha256-pio8h7FjdYrGZGFuqJS7hH/2oqpFdz/gDIGCL+S6pTo=' 'sha256-oIXeghZXPUJScSppcoqPmtWeDhF8huaE56w/GVyoUWU='"><meta name="referrer" content="no-referrer"><link rel="stylesheet" href="/portal01/app-shell.css?v=fb7325417b96"><script src="/portal01/pages-guard.js?v=b12b1e6962d2"></script>
+<head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; form-action 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; frame-src 'self' blob:; worker-src 'self' blob:; connect-src 'self' https://tqomsmhicrjsidhuxkcb.supabase.co; script-src 'self' 'sha256-mUb/Lql+wqr1nGIKmzO6l3e+gV7Stn1+ot56W4IaOmQ=' 'sha256-oIXeghZXPUJScSppcoqPmtWeDhF8huaE56w/GVyoUWU='"><meta name="referrer" content="no-referrer"><link rel="stylesheet" href="/portal01/app-shell.css?v=01d16cf957b0"><script src="/portal01/pages-guard.js?v=b12b1e6962d2"></script><script src="/portal01/cloud-files.js?v=7dad2c111363"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>프로젝트 관리 · WBS 일정관리</title>
@@ -350,7 +350,9 @@ const live=()=>stores.filter(s=>!s.disconnected); // 연결 해제한 저장소�
 const curStore=()=>stores.find(s=>s.id===curSid&&!s.disconnected)||null;
 const storeOf=id=>stores.find(s=>s.id===id)||null;
 const ready=()=>{const s=curStore();return !!(s&&stState[s.id]==='ok')};
-async function checkStore(s){ // 'ok' | 'perm' | 'missing' | 'off'
+async function checkStore(s){
+  if(s.cloud&&!s.disconnected){await PortalCloudFiles.ready;return stState[s.id]='ok';}
+ // 'ok' | 'perm' | 'missing' | 'off'
   if(s.disconnected) return stState[s.id]='off';
   try{ if(await s.handle.queryPermission(RW)!=='granted') return stState[s.id]='perm';
     await s.handle.values().next(); return stState[s.id]='ok' }
@@ -372,6 +374,8 @@ async function readJSON(d,n){let fh;try{fh=await d.getFileHandle(n)}catch(e){if(
 async function writeFile(d,n,data){const fh=await d.getFileHandle(n,{create:true});const w=await fh.createWritable();try{await w.write(data);await w.close()}catch(e){try{await w.abort()}catch(_){}throw e}}
 const writeJSON=(d,n,o,pretty)=>writeFile(d,n,pretty?JSON.stringify(o,null,1):JSON.stringify(o));
 async function rootOf(s){
+  if(s.cloud){await PortalCloudFiles.ready;return PortalCloudFiles.root();}
+
   if(roots[s.id]) return roots[s.id];
   const h=s.handle; const r=(h.name==='WBS-PM'||await fileExists(h,'storage.json'))?h:await h.getDirectoryHandle('WBS-PM',{create:true});
   if(!await fileExists(r,'storage.json')) await writeJSON(r,'storage.json',{format:'wbs-pm-storage',version:1,name:s.name,createdAt:new Date().toISOString()},true);
@@ -919,9 +923,26 @@ async function init(){
   await load();
   if(!stores.length&&legacy.length) setTab('list');
 }
+TYPES.supabase=['Supabase 작업 사본','☁'];
+const portalCloudStoreId='PORTAL_SUPABASE_WORKING';
+async function portalActivateCloudStore(){
+ await PortalCloudFiles.ready;
+ let store=stores.find(s=>s.id===portalCloudStoreId);
+ if(!store){store={id:portalCloudStoreId,name:'Supabase 작업 사본',type:'supabase',cloud:true,handle:{name:'Supabase 작업 사본'},connectedAt:new Date().toISOString()};stores.push(store)}
+ delete store.disconnected;store.cloud=true;store.type='supabase';store.lastUsedAt=new Date().toISOString();await DB.putStore(store);
+ curSid=store.id;lsSet('pm.storage',curSid);stState[store.id]='ok';delete roots[store.id];await load();
+}
+window.PortalWorkspaceAdapter={
+ isEmpty:()=>!curStore()||!ready(),
+ validate:workspace=>PortalCloudFiles.validate(workspace),
+ async capture(){const store=curStore();if(!store||!ready())throw Error('프로젝트 저장소가 없습니다. 폴더를 연결하거나 클라우드 작업 사본을 먼저 사용하세요.');return PortalCloudFiles.capture(await rootOf(store))},
+ async restore(workspace){PortalCloudFiles.validate(workspace);if(Object.values(wins).some(w=>w&&!w.closed))throw Error('열린 프로젝트 창의 변경을 저장하고 창을 닫은 뒤 불러오세요.');await PortalCloudFiles.replace(workspace);await portalActivateCloudStore()},
+ prepare:portalActivateCloudStore
+};
+
 window.portalProjectSummary=()=>({items:projects.map(p=>({name:p.name,date:p.updatedAt||p.savedAt})),metrics:[['프로젝트',projects.length],['진행 중',projects.filter(p=>(p.pstatus||'진행 중')==='진행 중').length],['완료',projects.filter(p=>p.pstatus==='완료').length]]});
 init();
 })();
 </script>
-<script src="/portal01/app-shell.js?v=861b6b8a6a30" defer></script><script src="/portal01/bridge.js?v=741de422b9d3"></script></body>
+<script src="/portal01/cloud-ui.js?v=daab248dbc13" defer></script><script src="/portal01/app-shell.js?v=28eb0d47c6b5" defer></script><script src="/portal01/bridge.js?v=741de422b9d3"></script></body>
 </html>
