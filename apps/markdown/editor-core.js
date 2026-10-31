@@ -3,7 +3,7 @@
  'use strict';
  const MAX_DOC=5*1024*1024,MAX_WORKSPACE=50*1024*1024;
  function validate(w){
-  if(!w||w.format!=='md-editor-workspace'||w.version!==1||!Array.isArray(w.documents)||w.documents.length<1||w.documents.length>500)throw Error('MD Editor 작업공간 형식 또는 문서 수(1~500개)를 확인하세요.');
+  if(!w||w.format!=='md-editor-workspace'||w.version!==1||!Array.isArray(w.documents)||w.documents.length<1||w.documents.length>500)throw Error('Write Studio 작업공간 형식 또는 문서 수(1~500개)를 확인하세요.');
   const ids=new Set();
   for(const d of w.documents){
    if(!d||typeof d.id!=='string'||!d.id||ids.has(d.id)||typeof d.title!=='string'||!d.title.trim()||d.title.length>200||typeof d.content!=='string'||new TextEncoder().encode(d.content).length>MAX_DOC||typeof d.createdAt!=='string'||typeof d.updatedAt!=='string')throw Error('문서 형식 오류 · 문서 한 개는 UTF-8 기준 5MB까지 지원합니다.');

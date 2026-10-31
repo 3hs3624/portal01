@@ -5,7 +5,7 @@ const APP={documents:[],folders:[],selectedFolderId:'',activeId:'',theme:'light'
 const DRAFT_KEY='md-editor-draft-v1';
 const STARTER=`# 생각을 문서로, 문서를 연결로
 
-좋은 글은 작은 메모에서 시작됩니다. **MD Editor**에서 생각을 정리하고, 나만의 저장소에 안전하게 이어서 보관하세요.
+좋은 글은 작은 메모에서 시작됩니다. **Write Studio**에서 생각을 정리하고, 나만의 저장소에 안전하게 이어서 보관하세요.
 
 > 이 문서에서 바로 작성하고, / 메뉴로 블록을 추가하세요. Markdown·분할 보기로 원본도 확인할 수 있습니다.
 > 저장소를 연결하면 다음 실행에서도 이어 쓸 수 있습니다.
@@ -154,7 +154,7 @@ async function init(){
  try{APP.db=await openDraftDB()}catch(e){toast('브라우저 임시 보관을 제한된 localStorage로 사용합니다. 저장소 연결을 권장합니다.');}
  let w;try{w=APP.db?await readDraft():JSON.parse(localStorage.getItem(DRAFT_KEY)||'null');if(w)EditorCore.validate(w);}catch(e){toast('임시 보관본을 읽지 못했습니다. 백업 JSON으로 복원할 수 있습니다.',true);w=null;}
  if(w){APP.documents=w.documents;APP.folders=w.folders||[];APP.activeId=w.activeId;APP.theme=w.theme==='dark'?'dark':'light';APP.recovery=w.recovery;}
- else{const d=newRecord('MD Editor 시작하기',STARTER);APP.documents=[d];APP.activeId=d.id;}
+ else{const d=newRecord('Write Studio 시작하기',STARTER);APP.documents=[d];APP.activeId=d.id;}
  document.body.dataset.theme=APP.theme;selectDocument(APP.activeId);
  const view=localStorage.getItem('md-editor-view-v2');setView(['edit','split','preview'].includes(view)?view:'preview');
  const size=localStorage.getItem('md-editor-font');if(['13','15','17','19'].includes(size))$('#fontSize').value=size;setFont();

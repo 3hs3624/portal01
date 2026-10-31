@@ -4,7 +4,7 @@ const PROVIDERS={local:'로컬 폴더',google:'Google Drive',onedrive:'MS OneDri
 function activeStorage(){return ST.settings?.profiles.find(p=>p.id===ST.settings.activeId)}
 async function storageAPI(action,payload={}){
  for(let attempt=0;attempt<2;attempt++){
-  if(!ST.token){const s=await fetch('/api/session',{cache:'no-store'});if(!s.ok)throw Error('MD Editor 서버에 연결할 수 없습니다.');const session=await s.json();if(session.app!=='md-editor')throw Error('다른 프로그램이 같은 포트를 사용 중입니다.');ST.token=session.token;}
+  if(!ST.token){const s=await fetch('/api/session',{cache:'no-store'});if(!s.ok)throw Error('Write Studio 서버에 연결할 수 없습니다.');const session=await s.json();if(session.app!=='md-editor')throw Error('다른 프로그램이 같은 포트를 사용 중입니다.');ST.token=session.token;}
   const r=await fetch('/api/storage/'+action,{method:'POST',headers:{'Content-Type':'application/json','X-MD-Token':ST.token},body:JSON.stringify(payload)});
   if(r.status===403&&attempt===0){ST.token='';continue}
   const data=await r.json();if(!r.ok){const error=Error(data.error||'저장소 요청 실패');error.external=data.external;throw error;}return data;
