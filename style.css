@@ -55,3 +55,18 @@ body.sidebar-collapsed #sidebar-toggle-hint{left:calc(100% + 10px);right:auto;to
 #frames{height:100%;min-height:0}
 #frames iframe{height:100%}
 @media(max-width:800px){#app-view{height:calc(100dvh - 156px)}}
+/* A compact navigation rail with the panel control aligned to its right edge. */
+.sidebar-heading{justify-content:flex-end;min-height:34px}
+@media(min-width:801px){
+ aside{width:200px;padding:22px 14px}
+ .main{margin-left:200px}
+ .workspace{font-size:8px;letter-spacing:1.5px;margin:12px 0 25px 8px}
+ nav a{gap:9px;padding:11px 9px}
+ nav .nav-text{font-size:11px}
+ .nav-label{margin:25px 9px 12px}
+ body.sidebar-collapsed aside{width:64px;padding:20px 10px}
+ body.sidebar-collapsed .main{margin-left:64px}
+ body.sidebar-collapsed .sidebar-heading{flex-direction:row;justify-content:flex-end;gap:0}
+ body.sidebar-collapsed nav{margin-top:23px}
+}
+@media(max-width:800px){.sidebar-heading{display:none}}
