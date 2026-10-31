@@ -119,11 +119,11 @@ function render(){
  for(const m of visible){
   if(!`${m.name} ${m.category}`.toLowerCase().includes(query))continue;
   const s=summaries[m.id],card=node('article',undefined,'card '+m.color);
-  const top=node('div',undefined,'card-top');top.append(appIcon(m,'app-icon'),node('span',m.tag,'tag'));card.append(top,node('h3',m.name),node('p',m.description,'description'));
+  const top=node('div',undefined,'card-top');top.append(appIcon(m,'app-icon'),node('span',m.tag,'tag'));const heading=node('div',undefined,'application-heading'),link=node('a',undefined,'application-open');link.href='#'+m.id;link.title=m.name+' 열기';link.setAttribute('aria-label',m.name+' 열기');const icon=document.createElementNS('http://www.w3.org/2000/svg','svg');for(const [key,value]of Object.entries({viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'1.7','stroke-linecap':'round','stroke-linejoin':'round','aria-hidden':'true',focusable:'false'}))icon.setAttribute(key,value);const path=document.createElementNS(icon.namespaceURI,'path');path.setAttribute('d','M5 12h14m-6-6 6 6-6 6');icon.append(path);link.append(icon);heading.append(node('h3',m.name),link);card.append(top,heading,node('p',m.description,'description'));
   const stats=node('div',undefined,'stats');
   for(const [label,value] of s?.metrics||[[m.metric,'—']]){const stat=node('div');stat.append(node('strong',String(value)),node('small',label));stats.append(stat)}card.append(stats);
   card.append(node('div',s?'최근 확인 '+date(s.updatedAt):'메뉴를 열면 실제 요약이 연결됩니다.','sync-status'));
-  const link=node('a','앱 열기 →','open-app');link.href='#'+m.id;card.append(link);cards.append(card);
+  cards.append(card);
  }
  $('#no-results').hidden=!!cards.children.length;$('#no-results').textContent=visible.length?'검색 결과가 없습니다.':'표시할 앱이 없습니다. 설정에서 Application을 선택해 주세요.';
  $('#app-count').textContent=visible.length;$('#count-badge').textContent=visible.length;

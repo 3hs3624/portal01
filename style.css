@@ -143,3 +143,11 @@ body.sidebar-collapsed .side-bottom>.settings-button{display:grid}
 #cards .stats{margin-top:10px;padding-top:12px;min-height:56px}
 #cards .open-app{padding-top:10px;padding-bottom:10px}
 @media(max-width:800px){#cards .card{padding-top:16px}#cards .description{min-height:0}}
+
+.application-heading{display:flex;align-items:center;gap:9px;margin:12px 0 6px;min-width:0}
+#cards .application-heading h3{margin:0;min-width:0;overflow-wrap:anywhere}
+.application-open{display:inline-flex;align-items:center;justify-content:center;flex:none;width:28px;height:28px;border:1px solid #e8e5f3;border-radius:8px;color:#8b7ac8;background:#f7f5fd;transition:background .15s,color .15s}
+.application-open svg{width:17px;height:17px}
+.application-open:hover{color:#6355ce;background:#eeedfc}
+.application-open:focus-visible{outline:2px solid #7561d5;outline-offset:3px}
+#cards .sync-status{padding-bottom:17px}
