@@ -206,6 +206,25 @@ def run_browser_suite(base_url, chromium):
         assert 'onclick' not in js('richTopBlocks().find(b=>b.node.type.name==="studioEmbed").node.attrs.html')
         assert '<script>' not in js('previewMarkdown()')
         print('PASS embedded HTML strips executable content')
+        for source in ['', '# Heading', '```text\nCode\n```', '<aside data-studio-kind="studioCallout"><p>Callout</p></aside>']:
+            reset(source)
+            js('RICH.editor.chain().setTextSelection(1).focus().run();updateBlockControls()')
+            delta=js('(()=>{const c=RICH.editor.view.coordsAtPos(RICH.editor.state.selection.from),r=blockControls.getBoundingClientRect();return Math.abs((c.top+c.bottom)/2-(r.top+r.bottom)/2);})()')
+            assert delta<=1, (source,delta)
+        print('PASS gutter and caret vertical centers')
+        for source in ['```text\nCode\n```', '<aside data-studio-kind="studioCallout"><p>Callout</p></aside>']:
+            reset(source)
+            last=f.locator('.block-editor-content').locator(':scope > *').last.bounding_box()
+            page.mouse.click(last['x']+40,last['y']+last['height']+35)
+            assert js('richTopBlocks().at(-1).node.type.name')=='paragraph'
+            assert js('richTopBlocks().length')==2
+            assert f.locator('#blockControls').is_visible()
+            last=f.locator('.block-editor-content').locator(':scope > *').last.bounding_box()
+            page.mouse.click(last['x']+40,last['y']+last['height']+35)
+            assert js('richTopBlocks().length')==2
+            page.keyboard.type('Outside block')
+            assert js('richTopBlocks().at(-1).node.textContent')=='Outside block'
+        print('PASS click below code/callout creates one editable paragraph')
         reset()
         js('navigator.clipboard.writeText=async text=>window.__copiedBlock=text;activateBlock(richTopBlocks()[0].id);copyBlockLink()')
         copied = js('window.__copiedBlock')

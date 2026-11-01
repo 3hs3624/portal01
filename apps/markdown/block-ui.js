@@ -295,6 +295,8 @@ blockControls.hidden = true;
 blockControls.setAttribute("aria-label", "블록 도구");
 const addBlock = el("button", "block-add", "+");
 addBlock.type = "button";
+addBlock.innerHTML =
+  '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3v14M3 10h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
 addBlock.dataset.tooltip = "아래에 블록 추가";
 addBlock.setAttribute("aria-label", "블록 추가");
 const dragBlock = el("button", "block-handle");
@@ -422,7 +424,33 @@ function updateBlockControls(block) {
     return;
   }
   blockControls.style.left = Math.max(bounds.left + 2, r.left - 57) + "px";
-  blockControls.style.top = Math.max(visibleTop + 2, r.top + 2) + "px";
+  // Align both gutter buttons to the text line, including container padding.
+  let anchor = b.pos + 1;
+  if (!b.node.isTextblock) {
+    let found = false;
+    b.node.descendants((node, offset) => {
+      if (found) return false;
+      if (node.isTextblock) {
+        anchor = b.pos + offset + 2;
+        found = true;
+        return false;
+      }
+    });
+  }
+  const selection = RICH.editor.state.selection;
+  if (
+    RICH.editor.isFocused &&
+    selection.from > b.pos &&
+    selection.from < b.pos + b.node.nodeSize &&
+    selection.$from.parent.isTextblock
+  )
+    anchor = selection.from;
+  let center = r.top + Math.min(r.height, 28) / 2;
+  if (!b.node.isAtom) {
+    const caret = RICH.editor.view.coordsAtPos(anchor);
+    center = (caret.top + caret.bottom) / 2;
+  }
+  blockControls.style.top = Math.max(visibleTop + 2, center - 14) + "px";
   blockControls.hidden = false;
 }
 function activateBlock(id) {
@@ -1690,6 +1718,53 @@ document.addEventListener(
       if (!inMenu) activateBlock(b.id);
       action();
     }
+  },
+  true,
+);
+
+// A click below the final block starts a paragraph outside containers/code.
+$("#preview").addEventListener(
+  "pointerdown",
+  (event) => {
+    if (
+      event.button !== 0 ||
+      !RICH.editor?.isEditable ||
+      APP.view === "edit" ||
+      BLOCK_UI.dragging
+    )
+      return;
+    const root = engineRoot();
+    if (event.target !== $("#preview") && event.target !== root) return;
+    const last = richTopBlocks().at(-1);
+    if (!last) return;
+    const dom = RICH.editor.view.nodeDOM(last.pos),
+      rect = dom?.getBoundingClientRect();
+    if (!rect || event.clientY <= rect.bottom + 4) return;
+    event.preventDefault();
+    event.stopPropagation();
+    closeBlockMenus();
+    if (last.node.type.name === "paragraph" && !last.node.content.size) {
+      RICH.editor
+        .chain()
+        .setTextSelection(last.pos + 1)
+        .focus()
+        .run();
+    } else {
+      historyBoundary();
+      HISTORY.area = "preview";
+      const end = RICH.editor.state.doc.content.size;
+      RICH.editor
+        .chain()
+        .insertContentAt(end, {
+          type: "paragraph",
+          attrs: { blockId: crypto.randomUUID() },
+        })
+        .setTextSelection(end + 1)
+        .focus()
+        .run();
+      historyBoundary();
+    }
+    updateBlockControls();
   },
   true,
 );
