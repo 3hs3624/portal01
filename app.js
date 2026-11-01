@@ -1,4 +1,4 @@
-const appPageVersions={"markdown":"c60b84b9b32e","insight":"35216169e4f7","projects":"f9b2f78ec4c8"};
+const appPageVersions={"markdown":"d7cdcd3aa11d","insight":"411b8c314006","projects":"2be3f601d615"};
 'use strict';
 const $=s=>document.querySelector(s);
 let modules=[],summaries={};

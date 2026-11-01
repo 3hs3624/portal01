@@ -45,7 +45,7 @@
    document.addEventListener('click',event=>{if(event.target.closest('#storageShortcut')){event.preventDefault();event.stopImmediatePropagation();window.PortalCloudUI.open()}},true);
   }
   if(id==='insight'||id==='projects'){
-   const settings=document.querySelector(id==='insight'?'#settings':'#tab-store');if(settings){const card=document.createElement('div');card.className='card portal-storage-entry';const title=document.createElement('h2');title.textContent='저장소';const text=document.createElement('p');text.textContent='브라우저 · Supabase · 로컬 폴더 · OneDrive · Google Drive';const open=document.createElement('button');open.textContent='저장소 관리';open.onclick=()=>window.PortalCloudUI.open();card.append(title,text,open);settings.prepend(card)}
+   const settings=document.querySelector(id==='insight'?'#settings':'#tab-store');if(settings){const card=document.createElement('div');card.className='card portal-storage-entry';const title=document.createElement('h2');title.textContent='저장소';const text=document.createElement('p');text.textContent='브라우저 · Supabase · 로컬 폴더 · OneDrive · Google Drive';const content=document.createElement('div');content.className='portal-storage-entry-content';content.append(title,text);const open=document.createElement('button');open.type='button';open.className='portal-storage-select';open.textContent='저장소 선택';open.onclick=()=>window.PortalCloudUI.open();card.append(content,open);settings.prepend(card)}
    const oldList=document.querySelector('.storage-list');if(oldList)oldList.hidden=true;
    const oldTitle=document.querySelector('.storage-overview h2');if(oldTitle)oldTitle.textContent='브라우저 자동 저장 설정';
   }

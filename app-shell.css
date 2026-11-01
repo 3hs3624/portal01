@@ -34,3 +34,13 @@
 .portal-storage-entry{margin-bottom:18px}.portal-storage-entry p{font-size:12px;opacity:.7}
 
 .portal-cloud-actions button{word-break:keep-all}
+
+/* Storage settings entry: clear content/action alignment in BI and Project Management. */
+.portal-storage-entry.card{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:24px 26px;margin-bottom:20px}
+.portal-storage-entry-content{flex:1;min-width:0}
+.portal-storage-entry.card h2{margin:0 0 8px;font-size:18px;line-height:1.4}
+.portal-storage-entry.card p{margin:0;line-height:1.7;font-size:12px;color:var(--muted,var(--ink-3,#8b94a6));opacity:1;overflow-wrap:anywhere}
+.portal-storage-entry .portal-storage-select{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:40px;margin:0;padding:10px 18px;border:1px solid var(--line,#dedee9);border-radius:8px;background:var(--surface,#fff);color:var(--text,var(--ink,#282d3d));font:inherit;font-size:12px;white-space:nowrap;cursor:pointer}
+.portal-storage-entry .portal-storage-select:hover{background:var(--soft,var(--sunk,#f2f0fa));border-color:var(--accent,#7561d5)}
+.portal-storage-entry .portal-storage-select:focus-visible{outline:2px solid var(--accent,#7561d5);outline-offset:3px}
+@media(max-width:600px){.portal-storage-entry.card{align-items:stretch;flex-direction:column;gap:16px;padding:20px}.portal-storage-entry .portal-storage-select{align-self:flex-start}}
