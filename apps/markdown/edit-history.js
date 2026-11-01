@@ -21,7 +21,7 @@ function historySnapshot(){
 function trimEditHistory(){
  const active=historyRecord();if(!active)return;
  while(active.entries.length>60){active.entries.shift();active.index--;}
- const size=()=>[...HISTORY.records.values()].reduce((n,r)=>n+r.entries.reduce((m,e)=>m+e.content.length*2,0),0);
+ const size=()=>[...HISTORY.records.values()].reduce((n,r)=>n+r.entries.reduce((m,e)=>m+e.content.length*2+(e.relatedDocuments||[]).reduce((n,d)=>n+(d.before.content.length+d.after.content.length)*2,0),0),0);
  for(const [id,r]of [...HISTORY.records].sort((a,b)=>a[1].used-b[1].used)){if(size()<=32*1024*1024)break;if(id!==APP.activeId)HISTORY.records.delete(id);}
  while(size()>32*1024*1024&&active.entries.length>2){if(active.index>1){active.entries.shift();active.index--;}else active.entries.pop();}
 }
@@ -52,9 +52,12 @@ function restorePreviewSelection(start,end){
 function runEditHistory(direction){
  const r=historyRecord();if(!r)return;
  syncEditHistory();if($('#'+(direction==='undo'?'undoEdit':'redoEdit')).disabled)return;
+ const operation=r.entries[direction==='undo'?r.index:r.index+1],related=operation?.relatedDocuments||[];
+ for(const change of related){const doc=APP.documents.find(d=>d.id===change.id),expected=direction==='undo'?change.after:change.before;if(!doc||doc.content!==expected.content){toast('대상 문서가 이후에 변경되어 이동을 되돌릴 수 없습니다.',true);return;}}
  r.index+=direction==='undo'?-1:1;const snapshot=r.entries[r.index];
  HISTORY.restoring=true;historyBoundary();
  try{
+  for(const change of related){const doc=APP.documents.find(d=>d.id===change.id);Object.assign(doc,direction==='undo'?change.before:change.after);}
   clearTimeout(APP.previewTimer);APP.previewTimer=0;currentDoc().content=snapshot.content;$('#editor').value=snapshot.content;changed();renderEditor();
   const area=APP.view==='preview'?'preview':APP.view==='edit'?'source':HISTORY.area;
   if(area==='preview'){if(RICH.editor){RICH.editor.commands.focus();const s=snapshot.engineSelection;const from=s?.anchor??s?.from??1,to=s?.head??s?.to??from;RICH.editor.commands.setTextSelection({from:Math.max(1,Math.min(from,RICH.editor.state.doc.content.size-1)),to:Math.max(1,Math.min(to,RICH.editor.state.doc.content.size-1))});}else{$('#preview').focus();restorePreviewSelection(snapshot.start,snapshot.end);}}

@@ -1,4 +1,4 @@
-const appPageVersions={"markdown":"d7cdcd3aa11d","insight":"411b8c314006","projects":"2be3f601d615"};
+const appPageVersions={"markdown":"7ec82818fc6c","insight":"411b8c314006","projects":"2be3f601d615"};
 'use strict';
 const $=s=>document.querySelector(s);
 let modules=[],summaries={};
@@ -141,6 +141,14 @@ function syncAccess(){
  renderNavigation();route();
 }
 window.addEventListener('portal:access-changed',syncAccess);
+function appFrameSource(id){
+ const source=new URL('/portal01/apps/'+id+'/',location.origin);source.searchParams.set('v',appPageVersions[id]);
+ if(id==='markdown'){
+  const params=new URLSearchParams(location.search),doc=params.get('studioDoc'),block=params.get('studioBlock');
+  if(doc&&block&&/^[A-Za-z0-9_-]{1,128}$/.test(doc)&&/^[A-Za-z0-9_-]{1,128}$/.test(block))source.hash='block='+encodeURIComponent(doc)+'&id='+encodeURIComponent(block);
+ }
+ return source.href;
+}
 function route(){
  const adminRoute=location.hash==='#system-management';
  $('#system-admin-view').hidden=true;$('#system-admin-link').classList.toggle('active',adminRoute&&!!window.PortalAccess?.isAdmin);
@@ -150,7 +158,7 @@ const id=location.hash.slice(1)||'home',m=visibleModules().find(m=>m.id===id);co
  document.querySelectorAll('nav a').forEach(a=>{const active=a.hash==='#'+(home?'home':id);a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
  $('#breadcrumb').textContent='워크스페이스 / '+(m?.name||'홈');
  if(home){render();return}
- if(!frames.has(id)){const f=document.createElement('iframe');f.src='/portal01/apps/'+id+'/?v='+appPageVersions[id];f.title=m.name;frames.set(id,f);$('#frames').append(f)}
+ if(!frames.has(id)){const f=document.createElement('iframe');f.src=appFrameSource(id);f.title=m.name;frames.set(id,f);$('#frames').append(f)}
  for(const [key,f] of frames)f.hidden=key!==id;
 }
 addEventListener('message',event=>{
@@ -165,4 +173,4 @@ $('#search').addEventListener('input',render);
 $('#refresh').onclick=()=>{for(const f of frames.values())f.contentWindow.postMessage({type:'3hs:refresh'},location.origin);render();$('#refresh').textContent='✓ 마지막 수신 요약 표시';setTimeout(()=>$('#refresh').textContent='↻ 요약 새로고침',1800)};
 addEventListener('hashchange',route);
 $('#today').textContent=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
-fetch('/portal01/modules.json?v=42a004edbbeb').then(r=>{if(!r.ok)throw Error();return r.json()}).then(data=>{modules=data;for(const m of modules.filter(m=>allowedApp(m.id))){const f=document.createElement('iframe');f.src='/portal01/apps/'+m.id+'/?v='+appPageVersions[m.id];f.title=m.name;f.hidden=true;frames.set(m.id,f);$('#frames').append(f);}$('#sidebar-system').hidden=!window.PortalAccess?.isAdmin;renderNavigation();render();route()}).catch(()=>{$('#cards').textContent='메뉴를 불러오지 못했습니다. 서버 연결을 확인하고 새로고침하세요.'});
+fetch('/portal01/modules.json?v=42a004edbbeb').then(r=>{if(!r.ok)throw Error();return r.json()}).then(data=>{modules=data;for(const m of modules.filter(m=>allowedApp(m.id))){const f=document.createElement('iframe');f.src=appFrameSource(m.id);f.title=m.name;f.hidden=true;frames.set(m.id,f);$('#frames').append(f);}$('#sidebar-system').hidden=!window.PortalAccess?.isAdmin;renderNavigation();render();route()}).catch(()=>{$('#cards').textContent='메뉴를 불러오지 못했습니다. 서버 연결을 확인하고 새로고침하세요.'});

@@ -159,7 +159,7 @@ async function init(){
  const view=localStorage.getItem('md-editor-view-v2');setView(['edit','split','preview'].includes(view)?view:'preview');
  const size=localStorage.getItem('md-editor-font');if(['13','15','17','19'].includes(size))$('#fontSize').value=size;setFont();
  try{await initStorage()}catch(e){onError(e)}
- APP.loading=false;$('#editor').disabled=$('#docTitle').disabled=false;renderStorage();renderDocList();if(typeof renderKnowledge==='function')renderKnowledge();
+ APP.loading=false;$('#editor').disabled=$('#docTitle').disabled=false;renderStorage();renderDocList();if(typeof renderKnowledge==='function')renderKnowledge();if(typeof restoreBlockLink==='function')restoreBlockLink();
  await saveDraft().catch(()=>{});
  if('BroadcastChannel' in window){APP.channel=new BroadcastChannel('md-editor-draft');APP.channel.onmessage=()=>{APP.externalDraft=true;clearTimeout(APP.draftTimer);clearTimeout(ST.timer);ST.blocked=true;$('#localStatus').textContent='다른 탭 변경 감지';toast('다른 탭에서 작업공간을 저장했습니다. 현재 내용을 파일로 내보낸 뒤 새로고침해 주세요.',true);};}
 }
