@@ -31,7 +31,7 @@ function renderDataCatalog(){
  if(!entries.length){const row=el('tr'),cell=el('td','','연결된 데이터가 없습니다. 우측 상단 데이터 연결 버튼에서 데이터를 불러오세요.');cell.colSpan=6;row.append(cell);body.append(row)}
 }
 function openDataDetail(id,sheet){
- const win=window.open('/data-detail.html?v=workspace-storage-20261028-4','_blank','popup,width=1320,height=860');if(!win)return notify('팝업이 차단되었습니다. 이 사이트의 팝업을 허용해 주세요.');
+ const win=window.open(new URL('data-detail.html',location.href).href,'_blank','popup,width=1320,height=860');if(!win)return notify('팝업이 차단되었습니다. 이 사이트의 팝업을 허용해 주세요.');
  for(const [w]of dataDetailWindows)if(w.closed)dataDetailWindows.delete(w);
  dataDetailWindows.set(win,{id,sheet});
 }
