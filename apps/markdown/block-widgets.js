@@ -36,7 +36,7 @@ const EXTRA_BLOCKS = [
   ["sync", "동기화 블록", "⇄", "고급 블록"],
   ["toggle2", "토글 제목2", "▸H₂", "고급 블록"],
   ...[2, 3, 4, 5].map((n) => ["columns" + n, n + "개의 열", "▥", "고급 블록"]),
-  ["mermaid", "코드 - Mermaid", "⑂", "고급 블록"],
+  ["mermaid", "코드 - Mermaid", "⑂", "추천"],
   ["ai", "AI 블록", "✧", "고급 블록"],
   ["mention", "사용자 멘션하기", "@", "인라인"],
   ["pageMention", "페이지나 데이터 소스 멘션", "▤", "인라인"],
@@ -108,7 +108,12 @@ const STUDIO_GROUP_ORDER = [
   "배경 색상",
 ];
 SLASH.sort(
-  (a, b) => STUDIO_GROUP_ORDER.indexOf(a[3]) - STUDIO_GROUP_ORDER.indexOf(b[3]),
+  (a, b) =>
+    STUDIO_GROUP_ORDER.indexOf(a[3]) - STUDIO_GROUP_ORDER.indexOf(b[3]) ||
+    (a[3] === "추천"
+      ? ["note", "embed", "mermaid", "toggle3"].indexOf(a[0]) -
+        ["note", "embed", "mermaid", "toggle3"].indexOf(b[0])
+      : 0),
 );
 const DB_VIEWS = {
   table: "표",

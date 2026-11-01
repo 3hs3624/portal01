@@ -17,6 +17,12 @@ class StudioHandler(SimpleHTTPRequestHandler):
 
     def log_message(self, format, *args):
         pass
+
+    def copyfile(self, source, outputfile):
+        try:
+            super().copyfile(source, outputfile)
+        except (BrokenPipeError, ConnectionResetError):
+            pass  # A browser refresh may cancel an in-flight static resource.
 from playwright.sync_api import sync_playwright
 
 def run_browser_suite(base_url, chromium):
@@ -30,7 +36,7 @@ def run_browser_suite(base_url, chromium):
         f = page.frame_locator('iframe')
         f.locator('.block-editor-content').wait_for()
         frame = page.frames[1]
-        frame.wait_for_function('!APP.loading')
+        frame.wait_for_function('() => !APP.loading')
 
         def js(s):
             return frame.evaluate(s)
@@ -45,6 +51,8 @@ def run_browser_suite(base_url, chromium):
         assert f.locator('#blockControls button').count() == 2
         f.locator('.block-handle').click()
         assert f.locator('#blockMenu').is_visible()
+        assert f.locator('#blockMenu .studio-menu-item').first.evaluate('(node)=>node.getBoundingClientRect().height') <= 34
+        assert f.locator('#blockMenu').evaluate('(node)=>parseFloat(getComputedStyle(node).fontSize)') == 13
         assert f.locator('#blockMenu').get_by_role('button', name='댓글', exact=False).count() == 1
         assert js('(()=>{const r=blockMenu.getBoundingClientRect();return r.bottom<=innerHeight&&r.left>=0;})()')
         f.locator('#blockMenu').get_by_role('button', name='색', exact=False).click()
@@ -76,6 +84,17 @@ def run_browser_suite(base_url, chromium):
         page.keyboard.press('Enter')
         assert f.locator('.block-editor-content h2').count() == 1
         assert '/' not in js('RICH.editor.state.doc.textContent')
+        reset()
+        js('openInsertMenu(richTopBlocks()[0],340,400)')
+        assert f.locator('#slashMenu [data-command]').evaluate_all('(nodes)=>nodes.slice(0,4).map(n=>n.dataset.command)') == ['note','embed','mermaid','toggle3']
+        footer_before=f.locator('#slashMenu .studio-menu-footer').bounding_box()
+        f.locator('#slashMenu .studio-menu-list').evaluate('(node)=>node.scrollTop=node.scrollHeight')
+        footer_after=f.locator('#slashMenu .studio-menu-footer').bounding_box()
+        assert footer_before['y']==footer_after['y']
+        assert f.locator('#slashMenu .studio-menu-footer').is_visible()
+        f.locator('#slashMenu .studio-menu-footer').click()
+        assert f.locator('#slashMenu').is_hidden()
+        print('PASS compact menu, recommended order and fixed close footer')
         print('PASS context insertion, slash keyboard')
         for cmd in ['toggle', 'toggle1', 'toggle2', 'toggle3', 'callout', 'note', 'db-table', 'db-board', 'db-gallery', 'db-list', 'db-feed', 'db-dashboard', 'db-calendar', 'db-timeline', 'db-map', 'db-form', 'chart-bar', 'chart-horizontal', 'chart-line', 'chart-donut', 'chart-number', 'columns2', 'columns3', 'columns4', 'columns5', 'tabs', 'toc', 'breadcrumb', 'button', 'ai', 'equation', 'mermaid']:
             reset()
@@ -167,10 +186,10 @@ def run_browser_suite(base_url, chromium):
         insert('image')
         f.locator('dialog[open] input[type=file]').set_input_files({'name': 'pixel.png', 'mimeType': 'image/png', 'buffer': __import__('base64').b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+j6l8AAAAASUVORK5CYII=')})
         f.locator('.studio-widget img').wait_for()
-        frame.wait_for_function('document.querySelector(".studio-widget img").naturalWidth===1')
+        frame.wait_for_function('() => document.querySelector(".studio-widget img").naturalWidth===1')
         text = js('previewMarkdown()')
         frame.evaluate('(text)=>{RICH.markdown=null;renderRichDocument(text);}', text)
-        frame.wait_for_function('document.querySelector(".studio-widget img").naturalWidth===1')
+        frame.wait_for_function('() => document.querySelector(".studio-widget img").naturalWidth===1')
         print('PASS local image attachment persists')
         reset()
         page.once('dialog', lambda d: d.accept('x^2 + y^2'))
@@ -241,7 +260,7 @@ def run_browser_suite(base_url, chromium):
         page.evaluate('document.querySelector("#workspace-shell").hidden=false;document.querySelector("#auth-loading").hidden=true;')
         page.frame_locator('#frames iframe').locator('.block-editor-content').wait_for()
         newFrame = page.frames[1]
-        newFrame.wait_for_function('!APP.loading')
+        newFrame.wait_for_function('() => !APP.loading')
         assert newFrame.evaluate('APP.activeId') == expectedDoc
         assert newFrame.evaluate('location.hash') == '#block=' + expectedDoc + '&id=' + expectedBlock
         assert newFrame.evaluate('(id)=>richTopBlocks().some(b=>b.id===id)', expectedBlock)

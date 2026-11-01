@@ -321,10 +321,10 @@ blockMenu.setAttribute("role", "dialog");
 blockMenu.setAttribute("aria-label", "블록 작업");
 document.body.append(blockMenu);
 const SLASH = [
-  ["note", "AI 노트", "▤", "추천", "수동 노트 · AI 서비스 연결 필요"],
-  ["embed", "HTML · 임베드", "‹/›", "추천", "안전한 HTML 콘텐츠"],
+  ["note", "AI 노트", "▤", "추천", ""],
+  ["embed", "HTML · 임베드", "‹/›", "추천", ""],
   ["toggle3", "토글 제목3", "▸H₃", "추천", "### >"],
-  ["toggle1", "토글 제목1", "▸H₁", "추천", "# >"],
+  ["toggle1", "토글 제목1", "▸H₁", "고급 블록", "# >"],
   ["paragraph", "텍스트", "T", "기본 블록", ""],
   ["heading1", "제목1", "H₁", "기본 블록", "#"],
   ["heading2", "제목2", "H₂", "기본 블록", "##"],
@@ -618,12 +618,15 @@ function renderInsertItems() {
   let section = "";
   slashState.items.forEach(([cmd, label, icon, group, hint], i) => {
     if (group !== section) {
+      if (section) list.append(el("hr", "studio-menu-section-divider"));
       menuHeading(list, group);
       section = group;
     }
     const b = menuButton(label, () => runSlash(cmd), icon, hint);
     b.classList.toggle("selected", i === slashState.index);
     b.dataset.command = cmd;
+    if (cmd === "embed" || cmd === "html")
+      b.append(el("span", "studio-menu-badge", "New"));
     b.title =
       {
         paragraph: "일반 텍스트를 작성합니다.",
@@ -702,9 +705,28 @@ function updateSlashMenu() {
   };
   slashMenu.replaceChildren(el("div", "studio-menu-list"));
   renderInsertItems();
-  slashMenu.append(
-    el("div", "studio-menu-footer", "↑ ↓ 선택 · Enter 추가 · Esc 닫기"),
+  const footer = menuButton(
+    "메뉴 닫기",
+    () => {
+      if (slashState?.mode === "slash")
+        BLOCK_UI.slashSuppressed =
+          APP.activeId +
+          ":" +
+          slashState.from +
+          ":" +
+          RICH.editor.state.selection.$from.parent.textBetween(
+            0,
+            RICH.editor.state.selection.$from.parentOffset,
+            "",
+            "",
+          );
+      closeBlockMenus(true);
+    },
+    "",
+    "esc",
   );
+  footer.classList.add("studio-menu-footer");
+  slashMenu.append(footer);
   const rect = RICH.editor.view.coordsAtPos(s.from);
   placeStudioMenu(slashMenu, rect.left, rect.bottom + 6);
   slashMenu.hidden = false;
