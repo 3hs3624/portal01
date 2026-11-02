@@ -44,3 +44,6 @@
 .portal-storage-entry .portal-storage-select:hover{background:var(--soft,var(--sunk,#f2f0fa));border-color:var(--accent,#7561d5)}
 .portal-storage-entry .portal-storage-select:focus-visible{outline:2px solid var(--accent,#7561d5);outline-offset:3px}
 @media(max-width:600px){.portal-storage-entry.card{align-items:stretch;flex-direction:column;gap:16px;padding:20px}.portal-storage-entry .portal-storage-select{align-self:flex-start}}
+
+/* Keep the reopen control in the application header at every viewport width. */
+body.portal-sidebar-collapsed #portal-app-sidebar{display:none!important}

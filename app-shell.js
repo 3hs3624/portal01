@@ -49,6 +49,22 @@
    const oldList=document.querySelector('.storage-list');if(oldList)oldList.hidden=true;
    const oldTitle=document.querySelector('.storage-overview h2');if(oldTitle)oldTitle.textContent='브라우저 자동 저장 설정';
   }
+  if(id==='markdown'||id==='insight'){
+   const sidebar=document.querySelector(id==='markdown'?'.workspace > .sidebar':'.shell > aside');
+   if(sidebar){
+    sidebar.id='portal-app-sidebar';
+    const toggle=document.createElement('button');toggle.type='button';toggle.id='portal-sidebar-toggle';toggle.className='portal-app-action';toggle.setAttribute('aria-controls',sidebar.id);
+    const sidebarKey='3hs-sidebar-collapsed:'+id;let collapsed=false;
+    try{collapsed=localStorage.getItem(sidebarKey)==='true'}catch{}
+    function setCollapsed(value){
+     collapsed=value;document.body.classList.toggle('portal-sidebar-collapsed',value);sidebar.hidden=value;
+     const label=value?'사이드바 펼치기':'사이드바 접기';toggle.textContent=value?'☰':'◧';toggle.title=label;toggle.setAttribute('aria-label',label);toggle.setAttribute('aria-expanded',String(!value));
+     window.dispatchEvent(new Event('resize'));
+    }
+    toggle.onclick=()=>{setCollapsed(!collapsed);try{localStorage.setItem(sidebarKey,String(collapsed))}catch{}};
+    tools.prepend(toggle);setCollapsed(collapsed);
+   }
+  }
   tools.append(theme);
   for(const [kind,label,target]of [['external','별도 창에서 열기','_blank'],['home','홈으로 돌아가기','_parent']]){
    let standalone=false;try{standalone=new URLSearchParams(parent.location.search).get('appWindow')===id}catch{}
