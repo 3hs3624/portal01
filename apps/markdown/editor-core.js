@@ -1,7 +1,7 @@
 /* Pure editing operations shared by the UI and regression tests. */
 (function(root){
  'use strict';
- const MAX_DOC=5*1024*1024,MAX_WORKSPACE=50*1024*1024;
+ const MAX_DOC=5*1024*1024,MAX_WORKSPACE=100*1024*1024;
  function validate(w){
   if(!w||w.format!=='md-editor-workspace'||w.version!==1||!Array.isArray(w.documents)||w.documents.length<1||w.documents.length>500)throw Error('Write Studio 작업공간 형식 또는 문서 수(1~500개)를 확인하세요.');
   const ids=new Set();
@@ -12,7 +12,7 @@
   if(!ids.has(w.activeId))throw Error('선택한 문서를 찾을 수 없습니다.');
   const folderModel=typeof module!=='undefined'&&module.exports?require('./folder-model.js'):root.FolderModel;
   folderModel.validate(w.folders===undefined?[]:w.folders,w.documents);
-  if(new TextEncoder().encode(JSON.stringify({...w,recovery:undefined})).length>MAX_WORKSPACE)throw Error('작업공간은 50MB까지 지원합니다.');
+  if(new TextEncoder().encode(JSON.stringify({...w,recovery:undefined})).length>MAX_WORKSPACE)throw Error('작업공간은 100MB까지 지원합니다.');
   return w;
  }
  function edit(text,start,end,command){

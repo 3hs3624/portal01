@@ -151,3 +151,9 @@ body.sidebar-collapsed .side-bottom>.settings-button{display:grid}
 .application-open:hover{color:#6355ce;background:#eeedfc}
 .application-open:focus-visible{outline:2px solid #7561d5;outline-offset:3px}
 #cards .sync-status{padding-bottom:17px}
+
+/* A detached application fills its own window; the portal remains its auth host. */
+body.app-window{margin:0;overflow:hidden}
+body.app-window #sidebar,body.app-window .main>header,body.app-window #home,body.app-window #system-admin-view{display:none!important}
+body.app-window .main{margin:0!important;width:100%;height:100dvh}
+body.app-window #app-view,body.app-window #frames,body.app-window #frames iframe{height:100dvh!important;width:100%;margin:0;padding:0;border:0}

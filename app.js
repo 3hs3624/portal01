@@ -1,9 +1,11 @@
-const appPageVersions={"markdown":"12694eb19ea5","insight":"411b8c314006","projects":"2be3f601d615"};
+const appPageVersions={"markdown":"7f2871979a82","insight":"af8be660868d","projects":"5f8e7ed97588"};
 'use strict';
 const $=s=>document.querySelector(s);
 let modules=[],summaries={};
 try{summaries=JSON.parse(PortalStorage.getItem('3hs-summaries-v1')||'{}')||{}}catch{}
 const frames=new Map();
+const requestedAppWindow=new URLSearchParams(location.search).get('appWindow');
+const appWindowId=['markdown','insight','projects'].includes(requestedAppWindow)?requestedAppWindow:null;
 const preferencesKey='3hs-portal-preferences-v1';
 let hiddenApps=new Set(),favoriteApps=new Set(),appOrder=[],showFavorites=true;
 try{
@@ -150,6 +152,7 @@ function appFrameSource(id){
  return source.href;
 }
 function route(){
+ document.body.classList.remove('app-window');
  const adminRoute=location.hash==='#system-management';
  $('#system-admin-view').hidden=true;$('#system-admin-link').classList.toggle('active',adminRoute&&!!window.PortalAccess?.isAdmin);
  if(adminRoute&&window.PortalAccess?.isAdmin){$('#home').hidden=true;$('#app-view').hidden=true;$('#system-admin-view').hidden=false;$('#breadcrumb').textContent='워크스페이스 / 시스템관리';document.querySelectorAll('#nav a').forEach(a=>{a.classList.remove('active');a.removeAttribute('aria-current')});window.PortalAdminView?.open();return}
@@ -157,6 +160,7 @@ function route(){
 const id=location.hash.slice(1)||'home',m=visibleModules().find(m=>m.id===id);const home=!m;if(home&&id!=='home')history.replaceState(null,'',location.pathname+location.search+'#home');$('#home').hidden=!home;$('#app-view').hidden=home;
  document.querySelectorAll('nav a').forEach(a=>{const active=a.hash==='#'+(home?'home':id);a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
  $('#breadcrumb').textContent='워크스페이스 / '+(m?.name||'홈');
+ if(m&&id===appWindowId){document.body.classList.add('app-window');document.title=m.name;}
  if(home){render();return}
  if(!frames.has(id)){const f=document.createElement('iframe');f.src=appFrameSource(id);f.title=m.name;frames.set(id,f);$('#frames').append(f)}
  for(const [key,f] of frames)f.hidden=key!==id;
@@ -173,4 +177,4 @@ $('#search').addEventListener('input',render);
 $('#refresh').onclick=()=>{for(const f of frames.values())f.contentWindow.postMessage({type:'3hs:refresh'},location.origin);render();$('#refresh').textContent='✓ 마지막 수신 요약 표시';setTimeout(()=>$('#refresh').textContent='↻ 요약 새로고침',1800)};
 addEventListener('hashchange',route);
 $('#today').textContent=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
-fetch('/portal01/modules.json?v=42a004edbbeb').then(r=>{if(!r.ok)throw Error();return r.json()}).then(data=>{modules=data;for(const m of modules.filter(m=>allowedApp(m.id))){const f=document.createElement('iframe');f.src=appFrameSource(m.id);f.title=m.name;f.hidden=true;frames.set(m.id,f);$('#frames').append(f);}$('#sidebar-system').hidden=!window.PortalAccess?.isAdmin;renderNavigation();render();route()}).catch(()=>{$('#cards').textContent='메뉴를 불러오지 못했습니다. 서버 연결을 확인하고 새로고침하세요.'});
+fetch('/portal01/modules.json?v=42a004edbbeb').then(r=>{if(!r.ok)throw Error();return r.json()}).then(data=>{modules=data;for(const m of modules.filter(m=>allowedApp(m.id)&&(!appWindowId||m.id===appWindowId))){const f=document.createElement('iframe');f.src=appFrameSource(m.id);f.title=m.name;f.hidden=true;frames.set(m.id,f);$('#frames').append(f);}$('#sidebar-system').hidden=!window.PortalAccess?.isAdmin;renderNavigation();render();route()}).catch(()=>{$('#cards').textContent='메뉴를 불러오지 못했습니다. 서버 연결을 확인하고 새로고침하세요.'});

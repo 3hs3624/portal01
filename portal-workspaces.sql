@@ -8,8 +8,12 @@ create table if not exists public.portal_workspaces (
   revision uuid not null default gen_random_uuid(),
   updated_at timestamptz not null default now(),
   primary key (user_id,app_id),
-  constraint portal_workspace_size check (octet_length(payload::text)<=10485760)
+  constraint portal_workspace_size check (octet_length(payload::text)<=104857600)
 );
+-- Upgrade existing tables too: CREATE TABLE IF NOT EXISTS does not alter constraints.
+alter table public.portal_workspaces drop constraint if exists portal_workspace_size;
+alter table public.portal_workspaces add constraint portal_workspace_size
+ check (octet_length(payload::text)<=104857600);
 alter table public.portal_workspaces enable row level security;
 revoke all on public.portal_workspaces from public,anon,authenticated;
 grant select,insert,update on public.portal_workspaces to authenticated;
@@ -37,7 +41,7 @@ declare r public.portal_workspaces;
 begin
  if auth.uid() is null then raise exception using errcode='42501',message='Authentication required'; end if;
  if p_app not in ('markdown','insight','projects') or p_app is null or p_workspace is null or jsonb_typeof(p_workspace)<>'object' then raise exception using errcode='22023',message='Invalid workspace'; end if;
- if octet_length(p_workspace::text)>10485760 then raise exception using errcode='22023',message='Workspace exceeds 10 MB'; end if;
+ if octet_length(p_workspace::text)>104857600 then raise exception using errcode='22023',message='Workspace exceeds 100 MB'; end if;
  if p_expected is null then
   insert into public.portal_workspaces(user_id,app_id,payload) values(auth.uid(),p_app,p_workspace)
   on conflict(user_id,app_id) do nothing returning * into r;

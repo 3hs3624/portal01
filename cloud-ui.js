@@ -34,7 +34,7 @@
   controls.disconnect.disabled=busy||provider==='browser';controls.connect.hidden=!folder();controls.authorize.hidden=!folder();controls.authorize.disabled=busy;controls.nameLabel.hidden=!folder();
   if(controls.prepare)controls.prepare.disabled=busy;
   controls.save.textContent=labels[provider]+'에 저장';controls.load.textContent=labels[provider]+'에서 불러오기';
-  controls.hint.textContent=folder()?'선택한 폴더 / 3HS-Workspace / '+({markdown:'Write-Studio',projects:'Project-Management',insight:'Insight-BI'})[app]+'에 저장합니다. OneDrive·Google Drive는 PC 동기화 앱이 업로드합니다. 포털에서는 동기화 완료를 확인할 수 없습니다. 동시에 편집하지 마세요.':provider==='browser'?'현재 계정·앱의 작업공간 스냅샷을 이 브라우저에 보관합니다. 다른 기기에는 전달되지 않습니다.':'포털 로그인 계정별 원격 저장소입니다. 앱별 최대 10MB이며 직접 저장·불러오기를 누를 때만 전송합니다.';
+  controls.hint.textContent=folder()?'선택한 폴더 / 3HS-Workspace / '+({markdown:'Write-Studio',projects:'Project-Management',insight:'Insight-BI'})[app]+'에 저장합니다. OneDrive·Google Drive는 PC 동기화 앱이 업로드합니다. 포털에서는 동기화 완료를 확인할 수 없습니다. 동시에 편집하지 마세요.':provider==='browser'?'현재 계정·앱의 작업공간 스냅샷을 이 브라우저에 보관합니다. 다른 기기에는 전달되지 않습니다.':'포털 로그인 계정별 원격 저장소입니다. 앱별 최대 100MB이며 직접 저장·불러오기를 누를 때만 전송합니다.';
   controls.setup.hidden=provider!=='supabase';
  }
  async function run(fn){if(busy)return;busy=true;update();try{await fn()}catch(e){status(e.name==='AbortError'?'폴더 선택을 취소했습니다.':e.message||'작업에 실패했습니다.',true)}finally{busy=false;update()}}
@@ -59,7 +59,7 @@
   const connections=el('div',null,'portal-cloud-actions');connections.append(controls.connect,controls.authorize);
 
   controls.status=el('p','연결을 확인해 주세요.','portal-cloud-status');controls.status.setAttribute('role','status');controls.status.setAttribute('aria-live','polite');
-  const details=el('p','Supabase·프로젝트 작업공간 최대 10MB, 다른 폴더 작업공간 최대 49MB · 불러오기 전 현재 작업을 이 브라우저에 최대 3개 복구본으로 보관합니다. 대용량 파일과 첨부파일 링크의 실제 파일은 별도 백업하세요.','portal-cloud-note');
+  const details=el('p','Supabase 앱별 작업공간 최대 100MB, 브라우저·폴더 저장소 최대 49MB · 불러오기 전 현재 작업을 이 브라우저에 최대 3개 복구본으로 보관합니다. 대용량 파일과 첨부파일 링크의 실제 파일은 별도 백업하세요.','portal-cloud-note');
   if(app==='projects')details.textContent+=' 프로젝트 대시보드의 변경은 먼저 해당 창에서 저장하세요. 열린 창의 미저장 내용은 포함되지 않으며, 불러오기 전에는 프로젝트 창을 닫아야 합니다.';
   const actions=el('div',null,'portal-cloud-actions');
   for(const [key,label]of [['save','Supabase에 저장'],['load','Supabase에서 불러오기'],['refresh','연결 다시 확인'],['recover','이전 로컬 작업 복구']]){controls[key]=el('button',label);controls[key].type='button';actions.append(controls[key])}

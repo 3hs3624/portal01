@@ -11,7 +11,7 @@
   const seen=new Set();for(const f of w.files){clean(f.path);if(seen.has(f.path)||typeof f.data!=='string'||f.data.length>15*1024*1024||(!/^[A-Za-z0-9+/]*={0,2}$/.test(f.data)||f.data.length%4!==0))throw Error('프로젝트 파일을 확인해 주세요.');seen.add(f.path)}
   for(const d of w.directories){clean(d);if(seen.has(d))throw Error('파일과 폴더 경로가 겹칩니다.')}
   for(const p of [...seen,...w.directories]){const parts=p.split('/');parts.pop();while(parts.length){if(seen.has(parts.join('/')))throw Error('파일을 폴더로 사용할 수 없습니다.');parts.pop()}}
-  if(new Blob([JSON.stringify(w)]).size>10*1024*1024)throw Error('프로젝트 클라우드 작업공간은 최대 10MB입니다.');return w;
+  if(new Blob([JSON.stringify(w)]).size>100*1024*1024)throw Error('프로젝트 클라우드 작업공간은 최대 100MB입니다.');return w;
  }
  function hydrate(w){validate(w);files.clear();dirs.clear();dirs.add('');for(const d of w.directories)dirs.add(d);for(const f of w.files)files.set(f.path,f.data);for(const p of [...dirs,...files.keys()]){const a=p.split('/');a.pop();while(a.length){dirs.add(a.join('/'));a.pop()}}}
  const ready=dbPromise.then(db=>new Promise((resolve,reject)=>{const tx=db.transaction('files');const r=tx.objectStore('files').get(key);r.onsuccess=()=>{try{if(r.result)hydrate(r.result);resolve()}catch(e){reject(e)}};r.onerror=()=>reject(r.error)}));
@@ -30,7 +30,7 @@
  async function capture(root){
   await ready;await queue;if(root.cloudPath==='')return snapshot();
   const result={format:'wbs-pm-cloud',version:1,directories:[],files:[]};let total=0;
-  async function walk(dir,path=''){for await(const [name,h]of dir.entries()){const p=join(path,name);if(h.kind==='directory'){result.directories.push(p);await walk(h,p)}else if(/\.(json|xlsx)$/i.test(name)){const f=await h.getFile();total+=f.size;if(total>7.5*1024*1024)throw Error('프로젝트와 이력이 클라우드 작업공간 제한(10MB)을 초과합니다.');result.files.push({path:p,data:await encode(f)})}if(result.files.length+result.directories.length>10000)throw Error('프로젝트 파일 수가 너무 많습니다.')}}
+  async function walk(dir,path=''){for await(const [name,h]of dir.entries()){const p=join(path,name);if(h.kind==='directory'){result.directories.push(p);await walk(h,p)}else if(/\.(json|xlsx)$/i.test(name)){const f=await h.getFile();total+=f.size;if(total>75*1024*1024)throw Error('프로젝트와 이력이 클라우드 작업공간 제한(100MB)을 초과합니다.');result.files.push({path:p,data:await encode(f)})}if(result.files.length+result.directories.length>10000)throw Error('프로젝트 파일 수가 너무 많습니다.')}}
   await walk(root);return validate(result);
  }
  window.PortalCloudFiles={ready,root:()=>directory(),validate,capture,async replace(w){await ready;await queue;hydrate(w);await persist()}};

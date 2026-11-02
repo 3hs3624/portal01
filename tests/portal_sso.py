@@ -52,11 +52,23 @@ def run(base, chromium):
         with context.expect_page() as new_page:
             app.locator('.portal-app-external').click()
         popup = new_page.value
+        popup.wait_for_url('**/portal01/?appWindow=markdown#markdown')
         popup.wait_for_load_state()
         popup.wait_for_function('() => window.__portalAuthenticated===true')
         assert popup.evaluate('window.opener===null')
         assert popup.evaluate('sessionStorage.getItem("3hs-auth-session")') is None
         assert popup.locator('#login-panel').is_hidden()
+        assert popup.locator('#sidebar').is_hidden()
+        assert popup.locator('.main > header').is_hidden()
+        assert popup.locator('#frames iframe').count() == 1
+        popup.frame_locator('#frames iframe').locator('.block-editor-content').wait_for()
+        assert popup.frame_locator('#frames iframe').locator('.portal-app-external').count() == 0
+        bounds=popup.locator('#frames iframe').bounding_box()
+        assert bounds['x']==0 and bounds['y']==0
+        assert bounds['height']==popup.evaluate('innerHeight')
+        assert bounds['width']==popup.evaluate('innerWidth')
+        assert popup.title()=='Write Studio'
+        print('PASS detached application fills the window without portal navigation/header',flush=True)
         assert len([url for url in requests if '/auth/v1/user' in url]) >= 2
         assert not any('/auth/v1/otp' in url for url in requests)
         print('PASS actual separate-window button restores login without opener or OTP', flush=True)
@@ -70,7 +82,9 @@ def run(base, chromium):
         peer = context.new_page()
         peer.goto(base + '/portal01/')
         peer.wait_for_function('() => window.__portalAuthenticated===true')
-        popup.locator('#logout').click()
+        peer.locator('#logout').click()
+        popup.locator('#login-panel').wait_for(state='visible')
+        assert not popup.evaluate('window.__portalAuthenticated===true')
         peer.locator('#login-panel').wait_for(state='visible')
         assert not peer.evaluate('window.__portalAuthenticated===true')
         assert peer.evaluate('localStorage.getItem("3hs-auth-session")') is None

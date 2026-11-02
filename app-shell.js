@@ -51,7 +51,20 @@
   }
   tools.append(theme);
   for(const [kind,label,target]of [['external','별도 창에서 열기','_blank'],['home','홈으로 돌아가기','_parent']]){
-   const a=document.createElement('a');a.className='portal-app-action portal-app-'+kind;a.href=base.href+(kind==='home'?'#home':'#'+id);a.target=target;a.title=label;a.setAttribute('aria-label',label);if(target==='_blank')a.rel='noopener';a.append(icon(kind));const span=document.createElement('span');span.textContent=kind==='home'?'홈':'별도 창';a.append(span);tools.append(a);
+   let standalone=false;try{standalone=new URLSearchParams(parent.location.search).get('appWindow')===id}catch{}
+   if(kind==='external'&&standalone)continue;
+   const a=document.createElement('a');a.className='portal-app-action portal-app-'+kind;
+   const destination=new URL(base.href);destination.hash=kind==='home'?'home':id;
+   if(kind==='external')destination.searchParams.set('appWindow',id);
+   a.href=destination.href;a.target=target;a.title=label;a.setAttribute('aria-label',label);if(target==='_blank')a.rel='noopener';
+   if(kind==='external')a.onclick=event=>{
+    if(event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+    event.preventDefault();
+    const popup=window.open('about:blank','_blank','popup=yes,width=1280,height=860,resizable=yes,scrollbars=yes');
+    if(popup){popup.opener=null;popup.location.replace(a.href);popup.focus();}
+    else{let hint=tools.querySelector('.portal-popup-hint');if(!hint){hint=document.createElement('span');hint.className='portal-popup-hint';hint.setAttribute('role','status');tools.append(hint)}hint.textContent='별도 창을 열려면 이 사이트의 팝업을 허용해 주세요.';}
+   };
+   a.append(icon(kind));const span=document.createElement('span');span.textContent=kind==='home'?'홈':'별도 창';a.append(span);tools.append(a);
   }
   const note=document.createElement('span');note.className='portal-app-save-note';note.textContent='ⓘ';note.title='변경 사항은 각 앱의 저장 기능으로 보관하세요.';note.setAttribute('aria-label',note.title);tools.append(note);host.append(tools);
   // Native workspace restoration may finish after DOMContentLoaded. Keep the
