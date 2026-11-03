@@ -7,7 +7,8 @@
  function icon(kind){
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   for(const [k,v]of Object.entries({viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'1.7','stroke-linecap':'round','stroke-linejoin':'round','aria-hidden':'true',focusable:'false'}))svg.setAttribute(k,v);
-  const paths={chart:['M4 3v18h17','M8 16v-5M13 16V6M18 16V9'],projects:['M4 5h16v15H4z','M8 3v4M16 3v4M4 10h16','M8 14h3M8 17h7'],settings:['M4 7h16M4 17h16','M9 4v6M15 14v6'],menu:['M4 6h16M4 12h16M4 18h16'],collapse:['M9 3v18M4 3h16v18H4z','m16 9-3 3 3 3'],cloud:['M7 18H6a4 4 0 0 1-.8-7.9 7 7 0 0 1 13.6 0A4 4 0 0 1 18 18h-1','M12 11v10M8.5 14.5 12 11l3.5 3.5'],document:['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z','M14 2v6h6','M8 13h8M8 17h5'],moon:['M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13z'],sun:['M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'],external:['M14 3h7v7M21 3l-9 9M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5'],home:['m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9']};
+  const paths={sidebar:['M8 4v16'],chart:['M4 3v18h17','M8 16v-5M13 16V6M18 16V9'],projects:['M4 5h16v15H4z','M8 3v4M16 3v4M4 10h16','M8 14h3M8 17h7'],settings:['M4 7h16M4 17h16','M9 4v6M15 14v6'],menu:['M4 6h16M4 12h16M4 18h16'],collapse:['M9 3v18M4 3h16v18H4z','m16 9-3 3 3 3'],cloud:['M7 18H6a4 4 0 0 1-.8-7.9 7 7 0 0 1 13.6 0A4 4 0 0 1 18 18h-1','M12 11v10M8.5 14.5 12 11l3.5 3.5'],document:['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z','M14 2v6h6','M8 13h8M8 17h5'],moon:['M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13z'],sun:['M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'],external:['M14 3h7v7M21 3l-9 9M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5'],home:['m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9']};
+  if(kind==='sidebar'){const rect=document.createElementNS(svg.namespaceURI,'rect');for(const [k,v]of Object.entries({x:'3',y:'4',width:'18',height:'16',rx:'3'}))rect.setAttribute(k,v);svg.append(rect)}
   for(const d of paths[kind]){const p=document.createElementNS(svg.namespaceURI,'path');p.setAttribute('d',d);svg.append(p)}
   if(kind==='sun'){const c=document.createElementNS(svg.namespaceURI,'circle');for(const [k,v]of Object.entries({cx:'12',cy:'12',r:'4'}))c.setAttribute(k,v);svg.append(c)}return svg;
  }
@@ -84,16 +85,19 @@
    const sidebar=document.querySelector(id==='markdown'?'.workspace > .sidebar':id==='projects'?'.portal-workspace > aside':'.shell > aside');
    if(sidebar){
     sidebar.id='portal-app-sidebar';
-    const toggle=document.createElement('button');toggle.type='button';toggle.id='portal-sidebar-toggle';toggle.className='portal-app-action';toggle.setAttribute('aria-controls',sidebar.id);
+    const toggle=document.createElement('button');toggle.type='button';toggle.id='portal-sidebar-toggle';toggle.className='portal-sidebar-control';toggle.setAttribute('aria-controls',sidebar.id);
+    const rail=document.createElement('div');rail.className='portal-sidebar-rail';
+    const reopen=document.createElement('button');reopen.type='button';reopen.id='portal-sidebar-reopen';reopen.className='portal-sidebar-control';reopen.setAttribute('aria-controls',sidebar.id);reopen.setAttribute('aria-label','사이드바 펼치기');reopen.title='사이드바 펼치기';reopen.append(icon('sidebar'));rail.append(reopen);sidebar.after(rail);
+    const heading=document.createElement('div');heading.className='portal-sidebar-heading';const caption=sidebar.querySelector('.workspace-label,.portal-workspace-label');sidebar.prepend(heading);if(caption)heading.append(caption);heading.append(toggle);
     const sidebarKey='3hs-sidebar-collapsed:'+id;let collapsed=false;
     try{collapsed=localStorage.getItem(sidebarKey)==='true'}catch{}
     function setCollapsed(value){
      collapsed=value;document.body.classList.toggle('portal-sidebar-collapsed',value);sidebar.hidden=value;
-     const label=value?'사이드바 펼치기':'사이드바 접기';toggle.replaceChildren(icon(value?'menu':'collapse'));toggle.title=label;toggle.setAttribute('aria-label',label);toggle.setAttribute('aria-expanded',String(!value));
+     const label=value?'사이드바 펼치기':'사이드바 접기',text=document.createElement('span');text.className='portal-sidebar-label';text.textContent='접기';toggle.replaceChildren(icon('sidebar'),text);rail.hidden=!value;reopen.setAttribute('aria-expanded',String(!value));toggle.title=label;toggle.setAttribute('aria-label',label);toggle.setAttribute('aria-expanded',String(!value));
      window.dispatchEvent(new Event('resize'));
     }
-    toggle.onclick=()=>{setCollapsed(!collapsed);try{localStorage.setItem(sidebarKey,String(collapsed))}catch{}};
-    tools.prepend(toggle);setCollapsed(collapsed);
+    toggle.onclick=()=>{setCollapsed(!collapsed);if(collapsed)reopen.focus();try{localStorage.setItem(sidebarKey,String(collapsed))}catch{}};
+    reopen.onclick=()=>{setCollapsed(false);try{localStorage.setItem(sidebarKey,'false')}catch{}toggle.focus()};setCollapsed(collapsed);
    }
   }
   tools.append(theme);

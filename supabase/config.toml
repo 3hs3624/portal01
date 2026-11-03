@@ -2,3 +2,6 @@
 # The handler validates the caller with Auth getUser and database permissions.
 # This also supports Supabase's current asymmetric signing keys.
 verify_jwt = false
+
+[functions.portal-user-delete]
+verify_jwt = false

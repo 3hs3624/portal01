@@ -45,5 +45,24 @@
 .portal-storage-entry .portal-storage-select:focus-visible{outline:2px solid var(--accent,#7561d5);outline-offset:3px}
 @media(max-width:600px){.portal-storage-entry.card{align-items:stretch;flex-direction:column;gap:16px;padding:20px}.portal-storage-entry .portal-storage-select{align-self:flex-start}}
 
-/* Keep the reopen control in the application header at every viewport width. */
+/* Hide only the sidebar; its adjacent rail keeps reopening reachable. */
 body.portal-sidebar-collapsed #portal-app-sidebar{display:none!important}
+
+/* One width schedule for every application, including Write Studio. */
+:root{--portal-sidebar-width:227px}
+@media(min-width:1700px){:root{--portal-sidebar-width:250px}}
+@media(max-width:1200px){:root{--portal-sidebar-width:195px}}
+@media(max-width:950px){:root{--portal-sidebar-width:175px}}
+@media(max-width:640px){:root{--portal-sidebar-width:125px}}
+body #portal-app-sidebar{box-sizing:border-box;width:var(--portal-sidebar-width);min-width:var(--portal-sidebar-width);max-width:var(--portal-sidebar-width);flex-grow:0;flex-shrink:0;flex-basis:var(--portal-sidebar-width)}
+/* Collapse lives beside the sidebar caption; a narrow rail keeps reopening reachable. */
+.portal-sidebar-heading{display:flex;align-items:center;justify-content:space-between;gap:6px;min-width:0;flex:none}
+.portal-sidebar-heading>.workspace-label,.portal-sidebar-heading>.portal-workspace-label{flex:1;min-width:0;margin:0;overflow:hidden;white-space:nowrap}
+.portal-sidebar-control{display:inline-flex;align-items:center;justify-content:center;gap:4px;flex:none;width:34px;min-width:34px;height:34px;padding:0;border:1px solid transparent;border-radius:9px;background:var(--bg,#f2f1f7);color:var(--muted,var(--ink-3,#8a91a1));cursor:pointer;font:10px/1.4 'Segoe UI','Malgun Gothic',sans-serif}
+.portal-sidebar-control svg{display:block;width:21px;height:21px;flex:none}
+.portal-sidebar-control:hover{background:var(--soft,#edecff);color:var(--accent,#6564df)}
+.portal-sidebar-control:focus-visible{outline:2px solid var(--accent,#6564df);outline-offset:2px}
+.portal-sidebar-rail{position:sticky;top:var(--portal-header-height,67px);height:calc(100dvh - var(--portal-header-height,67px));width:46px;flex:0 0 46px;align-self:flex-start;padding:28px 6px 12px;background:var(--side,var(--bg,#f4f5f8));border-right:1px solid var(--line,#e8eaf0)}
+.portal-sidebar-rail .portal-sidebar-control{width:34px;padding:0}
+#portal-sidebar-toggle .portal-sidebar-label{display:none}
+@media print{.portal-sidebar-rail,.portal-sidebar-control{display:none!important}}

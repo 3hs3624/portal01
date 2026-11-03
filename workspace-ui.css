@@ -34,7 +34,7 @@ html:root[data-portal-app^=insight][data-theme=dark],html:root[data-portal-app^=
 [data-portal-app] .header-right .status{font-size:11px;color:var(--muted)}
 [data-portal-app] .portal-workspace,[data-portal-app=insight] .shell{display:flex;min-height:calc(100dvh - var(--portal-header-height,67px))}
 [data-portal-app] #portal-app-sidebar{
- width:227px;flex:0 0 227px;position:sticky;top:var(--portal-header-height,67px);height:calc(100dvh - var(--portal-header-height,67px));overflow:auto;align-self:flex-start;
+ width:var(--portal-sidebar-width,227px);flex:0 0 var(--portal-sidebar-width,227px);position:sticky;top:var(--portal-header-height,67px);height:calc(100dvh - var(--portal-header-height,67px));overflow:auto;align-self:flex-start;
  display:flex;flex-direction:column;gap:17px;padding:28px 17px 16px;background:var(--side);border-right:1px solid var(--line);
 }
 [data-portal-app] .portal-workspace-label{display:block;font-size:10px;line-height:1.6;letter-spacing:1.6px;font-weight:600;color:var(--muted);padding:0 5px;margin:0}
@@ -81,7 +81,6 @@ html:root[data-portal-app^=insight][data-theme=dark],html:root[data-portal-app^=
 [data-portal-app=insight] footer{margin-top:24px;padding-top:12px;letter-spacing:.7px}
 [data-portal-app=project-detail] .btn,[data-portal-app=project-detail] .inp{font-family:var(--f-sans);border-radius:6px}
 @media(max-width:1200px){
- [data-portal-app] #portal-app-sidebar{width:195px;flex-basis:195px}
  [data-portal-app] .portal-workspace-edition{display:none}
  [data-portal-app] .portal-workspace>main,[data-portal-app=insight] .shell>main{padding:20px}
 }
@@ -94,7 +93,7 @@ html:root[data-portal-app^=insight][data-theme=dark],html:root[data-portal-app^=
  [data-portal-app=projects] .title-row .acts{justify-content:flex-start;flex-wrap:wrap}
 }
 @media(max-width:640px){
- [data-portal-app] #portal-app-sidebar{width:140px;flex-basis:140px;padding:20px 8px 12px;gap:13px}
+ [data-portal-app] #portal-app-sidebar{padding:20px 8px 12px;gap:13px}
  [data-portal-app] .portal-workspace-label{font-size:8px;letter-spacing:.7px}
  [data-portal-app] .portal-workspace-nav button{gap:7px;padding:9px 6px;font-size:10px}
  [data-portal-app] .portal-workspace-nav button svg{width:14px;height:14px}
@@ -118,3 +117,10 @@ html:root[data-portal-app^=insight][data-theme=dark],html:root[data-portal-app^=
 @media print{[data-portal-app] #portal-app-sidebar,[data-portal-app] .portal-workspace-header{display:none!important}}
 /* Native catalog search fields must also shrink beside the mobile sidebar. */
 [data-portal-app=insight] #dashboardListSearch,[data-portal-app=insight] #catalogSearch{min-width:0;max-width:100%;width:240px;flex:1 1 180px}
+
+/* Each application keeps its own identity while sharing layout and controls. */
+html:root[data-portal-app^=project]{--accent:#386bd8;--accent-ink:#fff;--soft:#edf3ff;--tint:#edf3ff;--accent-soft:#edf3ff}
+html:root[data-portal-app^=insight]{--accent:#178367;--accent-ink:#fff;--soft:#e9f7f1;--tint:#e9f7f1;--accent-soft:#e9f7f1}
+html:root[data-portal-app^=project][data-app-theme=dark]{--accent:#8fb4ff;--accent-ink:#13213c;--soft:#263650;--tint:#263650;--accent-soft:#263650}
+html:root[data-portal-app^=insight][data-theme=dark]{--accent:#7cd9b2;--accent-ink:#102d24;--soft:#233d34;--tint:#233d34;--accent-soft:#233d34}
+@media(prefers-color-scheme:dark){html:root[data-portal-app^=project]:not([data-app-theme=light]){--accent:#8fb4ff;--accent-ink:#13213c;--soft:#263650;--tint:#263650;--accent-soft:#263650}}

@@ -21,10 +21,10 @@ def run(base):
    expanded=f.locator('main').bounding_box()['width']
    toggle.click();assert sidebar.is_hidden();assert toggle.get_attribute('aria-expanded')=='false'
    assert f.locator('main').bounding_box()['width']>expanded
-   page.reload();toggle.wait_for();assert sidebar.is_hidden()
-   toggle.focus();page.keyboard.press('Enter');assert sidebar.is_visible()
+   page.reload();f.locator('#portal-sidebar-reopen').wait_for();assert sidebar.is_hidden()
+   f.locator('#portal-sidebar-reopen').focus();page.keyboard.press('Enter');assert sidebar.is_visible()
    page.set_viewport_size({'width':600,'height':1000})
-   toggle.click();assert sidebar.is_hidden();assert toggle.is_visible();toggle.click();assert sidebar.is_visible()
+   toggle.click();assert sidebar.is_hidden();assert f.locator('#portal-sidebar-reopen').is_visible();f.locator('#portal-sidebar-reopen').click();assert sidebar.is_visible()
    page.set_viewport_size({'width':1500,'height':1000})
    print('PASS '+app+': collapse expands content, reload persists, keyboard and mobile reopen',flush=True)
   page.route('**/portal01/admin-test',lambda r:r.fulfill(content_type='text/html',body='''<meta charset="utf-8"><div id="system-admin-view"></div><script>
@@ -46,7 +46,7 @@ window.PortalAdminAPI={read:async section=>({items:section==='users'?rows:[],tot
   page.evaluate("PortalAccess.permissions=['system.access','system.users.read'];PortalAdminView.open()")
   assert add.is_hidden();assert page.get_by_role('button',name='이용 중지',exact=True).count()==0
   assert page.get_by_role('button',name='삭제',exact=True).count()==0
-  print('PASS admin: invite form, visible server error, cancel suspension, suspend/reactivate, read-only permissions and no permanent delete',flush=True)
+  print('PASS admin: invite form, visible server error, cancel suspension, suspend/reactivate, read-only permissions hide delete controls',flush=True)
   assert not errors,errors
   browser.close()
 

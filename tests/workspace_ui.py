@@ -23,7 +23,7 @@ def run(base):
    context.route('**/portal01/ui-host',lambda r:r.fulfill(content_type='text/html',body='<meta charset=utf-8><script>window.__portalAuthenticated=true;window.PortalUserId="workspace-ui-test";</script><iframe src="/portal01/apps/'+app+'/" style="position:fixed;inset:0;width:100%;height:100%;border:0"></iframe>'))
    page.goto(base+'/portal01/ui-host');f=page.frame_locator('iframe');f.locator('#portal-app-tools').wait_for();frame=page.frames[1]
    assert f.locator('.portal-workspace-brand strong').inner_text()==('Project Management' if app=='projects' else 'Insight BI')
-   assert frame.evaluate('getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()')=='#6564df'
+   assert frame.evaluate('getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()')==('#386bd8' if app=='projects' else '#178367')
    assert f.locator('#portal-app-sidebar').bounding_box()['width']==227
    assert f.locator('.portal-workspace-header').bounding_box()['height']==67
    if app=='projects':
@@ -36,7 +36,7 @@ def run(base):
 
     popup.locator('[data-view=baseline]').wait_for(timeout=15000)
     assert popup.locator('html').get_attribute('data-portal-app')=='project-detail'
-    assert popup.evaluate('getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()')=='#aaa3ff'
+    assert popup.evaluate('getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()')=='#8fb4ff'
     popup.locator('[data-view=baseline]').click();popup.locator('#view-baseline').wait_for(state='visible')
     popup.close();f.locator('#portal-app-theme').click();f.locator('#list').get_by_text('UI regression project',exact=True).first.wait_for()
     saved=frame.evaluate('PortalWorkspaceAdapter.capture()');assert saved['files'],'Project registration must still persist files'
@@ -47,10 +47,10 @@ def run(base):
     f.locator('[data-page=dashboards]').click();f.locator('#dashboards').wait_for(state='visible')
     print('PASS insight: dashboard, data and settings navigation retain native behavior',flush=True)
    f.locator('.portal-workspace-storage button').click();f.locator('.portal-cloud-dialog').wait_for(state='visible');f.locator('.portal-cloud-close').click()
-   f.locator('#portal-app-theme').click();assert frame.evaluate('getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()')=='#aaa3ff'
+   f.locator('#portal-app-theme').click();assert frame.evaluate('getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()')==('#8fb4ff' if app=='projects' else '#7cd9b2')
 
    if app=='insight':
-    frame.evaluate("document.documentElement.dataset.portalApp='insight-detail'");assert frame.evaluate('getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()')=='#aaa3ff';frame.evaluate("document.documentElement.dataset.portalApp='insight'")
+    frame.evaluate("document.documentElement.dataset.portalApp='insight-detail'");assert frame.evaluate('getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()')==('#8fb4ff' if app=='projects' else '#7cd9b2');frame.evaluate("document.documentElement.dataset.portalApp='insight'")
    page.reload();f.locator('#portal-app-tools').wait_for();frame=page.frames[1];assert f.locator('#portal-app-theme').get_attribute('aria-pressed')=='true'
    f.locator('#portal-app-theme').click()
    for width in [1024,768,390]:
@@ -60,7 +60,7 @@ def run(base):
     if app=='insight':
      for section in ['data','settings','dashboards']:
       f.locator('[data-page='+section+']').click();assert frame.evaluate('document.documentElement.scrollWidth<=innerWidth+1'),(app,width,section)
-    toggle=f.locator('#portal-sidebar-toggle');toggle.click();assert f.locator('#portal-app-sidebar').is_hidden();assert toggle.is_visible();toggle.click();assert f.locator('#portal-app-sidebar').is_visible()
+    toggle=f.locator('#portal-sidebar-toggle');toggle.click();assert f.locator('#portal-app-sidebar').is_hidden();assert f.locator('#portal-sidebar-reopen').is_visible();f.locator('#portal-sidebar-reopen').click();assert f.locator('#portal-app-sidebar').is_visible()
    print('PASS '+app+': storage dialog, dark theme persistence, mobile/tablet layout and sidebar reopen',flush=True)
    assert not errors,errors;assert not csp,csp
    context.close()
