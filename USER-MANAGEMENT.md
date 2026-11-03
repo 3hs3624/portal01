@@ -61,3 +61,14 @@ PGLITE_MODULE=../work/sql-check/node_modules/@electric-sql/pglite/dist/index.js 
 
 브라우저 검증에는 Python Playwright와 Chromium이 필요합니다.
 SQL 검증은 메모리 내 PostgreSQL에서 실제 함수와 권한을 실행하며 운영 DB를 변경하지 않습니다.
+
+## 초대 메일이 localhost 또는 만료 오류로 이동하는 경우
+
+`Authentication → URL Configuration`의 Site URL을
+`https://3hs3624.github.io/portal01/`로 지정하고 Redirect URLs에도 같은 주소를 허용합니다.
+허용되지 않은 리디렉션은 Auth의 Site URL로 대체되므로 `localhost:3000`이 남아 있으면
+메일 링크가 사용자 PC의 localhost로 이동합니다. 오류 링크도 이 설정을 사용합니다.
+이미 발송된 메일의 링크는 수정되지 않으며, 링크는 일회용입니다.
+기존 초대 계정은 재생성하지 말고 운영 포털에서 새 이메일 인증코드를 요청해 로그인합니다.
+포털은 URL의 인증 토큰을 로그인 세션으로 가져오지 않고 제거하며,
+초대·만료 안내 후 기존 이메일 OTP 인증과 서버 권한 검증을 거칩니다.
