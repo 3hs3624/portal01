@@ -7,15 +7,46 @@
  function icon(kind){
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   for(const [k,v]of Object.entries({viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'1.7','stroke-linecap':'round','stroke-linejoin':'round','aria-hidden':'true',focusable:'false'}))svg.setAttribute(k,v);
-  const paths={cloud:['M7 18H6a4 4 0 0 1-.8-7.9 7 7 0 0 1 13.6 0A4 4 0 0 1 18 18h-1','M12 11v10M8.5 14.5 12 11l3.5 3.5'],document:['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z','M14 2v6h6','M8 13h8M8 17h5'],moon:['M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13z'],sun:['M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'],external:['M14 3h7v7M21 3l-9 9M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5'],home:['m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9']};
+  const paths={chart:['M4 3v18h17','M8 16v-5M13 16V6M18 16V9'],projects:['M4 5h16v15H4z','M8 3v4M16 3v4M4 10h16','M8 14h3M8 17h7'],settings:['M4 7h16M4 17h16','M9 4v6M15 14v6'],menu:['M4 6h16M4 12h16M4 18h16'],collapse:['M9 3v18M4 3h16v18H4z','m16 9-3 3 3 3'],cloud:['M7 18H6a4 4 0 0 1-.8-7.9 7 7 0 0 1 13.6 0A4 4 0 0 1 18 18h-1','M12 11v10M8.5 14.5 12 11l3.5 3.5'],document:['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z','M14 2v6h6','M8 13h8M8 17h5'],moon:['M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13z'],sun:['M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'],external:['M14 3h7v7M21 3l-9 9M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5'],home:['m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9']};
   for(const d of paths[kind]){const p=document.createElementNS(svg.namespaceURI,'path');p.setAttribute('d',d);svg.append(p)}
   if(kind==='sun'){const c=document.createElementNS(svg.namespaceURI,'circle');for(const [k,v]of Object.entries({cx:'12',cy:'12',r:'4'}))c.setAttribute(k,v);svg.append(c)}return svg;
+ }
+ function setupWorkspace(){
+  if(!['projects','insight'].includes(id))return;
+  const create=(tag,cls,text)=>{const node=document.createElement(tag);if(cls)node.className=cls;if(text)node.textContent=text;return node};
+  const header=document.querySelector(id==='projects'?'.topbar':'body > header');header?.classList.add('portal-workspace-header');
+  if(header)new ResizeObserver(()=>document.documentElement.style.setProperty('--portal-header-height',header.getBoundingClientRect().height+'px')).observe(header);
+  const brand=header?.querySelector('.brand');
+  if(brand){const mark=create('span','portal-brand-mark');mark.setAttribute('aria-hidden','true');mark.append(icon(id==='projects'?'projects':'chart'));brand.classList.add('portal-workspace-brand');brand.replaceChildren(mark,create('strong','',id==='projects'?'Project Management':'Insight BI'),create('span','portal-workspace-edition',id==='projects'?'PROJECT WORKSPACE':'DATA WORKSPACE'));}
+  let sidebar=document.querySelector('.shell > aside');
+  if(id==='projects'){
+   const main=document.querySelector('body > main'),tabs=main?.querySelector('.tabs');
+   if(!main||!tabs)return;
+   const shell=create('div','portal-workspace');main.before(shell);sidebar=create('aside','portal-workspace-sidebar');sidebar.setAttribute('aria-label','프로젝트 작업공간');
+   shell.append(sidebar,main);tabs.classList.add('portal-workspace-nav');tabs.setAttribute('aria-label','프로젝트 메뉴');tabs.setAttribute('aria-orientation','vertical');sidebar.append(create('div','portal-workspace-label','MY WORKSPACE'),tabs);
+   const heading=main.querySelector('.title-row h1');if(heading){const group=create('div','portal-page-heading');heading.before(group);group.append(create('div','portal-breadcrumb','내 작업공간 / 프로젝트'),heading);}
+   const tabButtons=[...tabs.querySelectorAll('[data-tab]')];
+   for(const button of tabButtons){const label=create('span','',button.textContent);button.replaceChildren(icon(button.dataset.tab==='list'?'projects':'settings'),label);button.setAttribute('aria-controls','tab-'+button.dataset.tab);button.title=label.textContent;}
+   const sync=()=>{for(const button of tabButtons)button.tabIndex=button.getAttribute('aria-selected')==='true'?0:-1;const storage=tabButtons.some(b=>b.dataset.tab==='store'&&b.getAttribute('aria-selected')==='true');if(heading)heading.textContent=storage?'저장소 설정':'프로젝트 관리';};
+   new MutationObserver(sync).observe(tabs,{subtree:true,attributes:true,attributeFilter:['aria-selected']});sync();
+   tabs.addEventListener('keydown',event=>{const index=tabButtons.indexOf(document.activeElement);if(index<0)return;let next;if(event.key==='ArrowDown')next=(index+1)%tabButtons.length;else if(event.key==='ArrowUp')next=(index-1+tabButtons.length)%tabButtons.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=tabButtons.length-1;else return;event.preventDefault();tabButtons[next].focus();tabButtons[next].click();});
+   const add=main.querySelector('#btn-new');if(add?.lastChild?.nodeType===Node.TEXT_NODE)add.lastChild.textContent='새 프로젝트';
+  }else if(sidebar){
+   const label=sidebar.querySelector('.section-label');if(label){label.classList.add('portal-workspace-label');label.textContent='MY WORKSPACE';}const nav=sidebar.querySelector('nav');nav?.classList.add('portal-workspace-nav');nav?.setAttribute('aria-label','분석 작업공간');
+   for(const button of sidebar.querySelectorAll('[data-page]')){const label=button.querySelector('span');button.replaceChildren(icon(button.dataset.page==='settings'?'settings':button.dataset.page==='data'?'document':'chart'),label);button.title=label.textContent;}
+   const breadcrumb=document.querySelector('.title-row .eyebrow');if(breadcrumb){breadcrumb.className='portal-breadcrumb';breadcrumb.textContent='내 작업공간 / 데이터 분석';}
+  }
+  if(sidebar){
+   sidebar.id='portal-app-sidebar';sidebar.querySelector('.side-bottom')?.remove();
+   const storage=create('div','portal-workspace-storage');const open=create('button','','저장소 관리 ↗');open.type='button';open.onclick=()=>window.PortalCloudUI.open();storage.append(create('small','','CONNECTED STORAGE'),create('strong','','작업공간 저장소'),create('p','','저장소를 선택하고 작업을 이어가세요.'),open);sidebar.append(storage);
+  }
  }
  function init(){
   const host=id==='markdown'?document.querySelector('.top-actions'):id==='insight'?document.querySelector('header .header-right'):document.querySelector('.topbar>.wrap');
   if(!host||document.querySelector('#portal-app-tools'))return;
   if(id==='markdown'){const brand=document.querySelector('.brand-icon');if(brand)brand.replaceChildren(icon('document'));const name=document.querySelector('.brand strong');if(name)name.textContent='Write Studio';document.title=document.title.replace('MD Editor','Write Studio');}
 
+  setupWorkspace();
   const tools=document.createElement('div');tools.id='portal-app-tools';tools.className='portal-app-tools';tools.setAttribute('role','group');tools.setAttribute('aria-label','앱 화면 도구');
   const native=document.querySelector('#theme');if(native)native.hidden=true;
   document.querySelectorAll('.theme-seg').forEach(n=>n.hidden=true);
@@ -49,8 +80,8 @@
    const oldList=document.querySelector('.storage-list');if(oldList)oldList.hidden=true;
    const oldTitle=document.querySelector('.storage-overview h2');if(oldTitle)oldTitle.textContent='브라우저 자동 저장 설정';
   }
-  if(id==='markdown'||id==='insight'){
-   const sidebar=document.querySelector(id==='markdown'?'.workspace > .sidebar':'.shell > aside');
+  if(['markdown','insight','projects'].includes(id)){
+   const sidebar=document.querySelector(id==='markdown'?'.workspace > .sidebar':id==='projects'?'.portal-workspace > aside':'.shell > aside');
    if(sidebar){
     sidebar.id='portal-app-sidebar';
     const toggle=document.createElement('button');toggle.type='button';toggle.id='portal-sidebar-toggle';toggle.className='portal-app-action';toggle.setAttribute('aria-controls',sidebar.id);
@@ -58,7 +89,7 @@
     try{collapsed=localStorage.getItem(sidebarKey)==='true'}catch{}
     function setCollapsed(value){
      collapsed=value;document.body.classList.toggle('portal-sidebar-collapsed',value);sidebar.hidden=value;
-     const label=value?'사이드바 펼치기':'사이드바 접기';toggle.textContent=value?'☰':'◧';toggle.title=label;toggle.setAttribute('aria-label',label);toggle.setAttribute('aria-expanded',String(!value));
+     const label=value?'사이드바 펼치기':'사이드바 접기';toggle.replaceChildren(icon(value?'menu':'collapse'));toggle.title=label;toggle.setAttribute('aria-label',label);toggle.setAttribute('aria-expanded',String(!value));
      window.dispatchEvent(new Event('resize'));
     }
     toggle.onclick=()=>{setCollapsed(!collapsed);try{localStorage.setItem(sidebarKey,String(collapsed))}catch{}};
