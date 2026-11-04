@@ -108,12 +108,12 @@ def run_browser_suite(base_url, chromium):
             print('PASS insert / reload', cmd)
         reset()
         insert('db-table')
-        for fieldName in ['값','위도','경도']:
+        for fieldName in ['값','위도','경도','날짜']:
             f.locator('.studio-widget').get_by_role('button',name='속성 추가',exact=True).click()
             f.locator('dialog[open]').get_by_placeholder('속성 이름').fill(fieldName)
-            f.locator('dialog[open] select').select_option('number')
+            f.locator('dialog[open] select').select_option('date' if fieldName=='날짜' else 'number')
             f.locator('dialog[open]').get_by_role('button',name='추가',exact=True).click()
-        f.locator('.studio-widget').get_by_role('button',name='데이터베이스 메뉴',exact=True).click()
+        f.locator('.studio-widget').get_by_role('button',name='보기 설정',exact=True).click()
         f.locator('#studioDbPanel').get_by_role('button',name='새 페이지 상세 입력',exact=True).click()
         f.locator('dialog[open] input[aria-label="이름"]').fill('Project A')
         f.locator('dialog[open] input[aria-label="값"]').fill('42')
@@ -124,9 +124,9 @@ def run_browser_suite(base_url, chromium):
         assert 'Project A' in f.locator('.studio-db-table').inner_text()
         for view in ['board', 'gallery', 'list', 'feed', 'dashboard', 'calendar', 'timeline', 'map', 'form', 'bar', 'horizontal', 'line', 'donut', 'number', 'table']:
             f.locator('.studio-widget').get_by_role('button',name='보기 설정',exact=True).click()
-            f.locator('#studioDbPanel').get_by_role('button',name='레이아웃',exact=True).click()
-            f.locator('#studioDbPanel').get_by_label('보기 종류',exact=True).select_option(view)
-            f.locator('#studioDbPanel').get_by_role('button',name='적용',exact=True).click()
+            f.locator('#studioDbPanel').get_by_role('button',name='모든 보기 설정',exact=True).click()
+            f.locator('dialog[open]').get_by_label('레이아웃',exact=True).select_option(view)
+            f.locator('dialog[open]').get_by_role('button',name='보기 저장',exact=True).click()
             assert js('JSON.parse(richTopBlocks().find(b=>b.node.type.name==="studioWidget").node.attrs.data).rows[0].title') == 'Project A'
         print('PASS database CRUD, 15 views retain data')
         f.locator('.studio-widget').get_by_role('button',name='검색',exact=True).click()
@@ -187,7 +187,7 @@ def run_browser_suite(base_url, chromium):
         insert('db-source')
         f.locator('dialog[open] button').filter(has_text=' / ').click()
         linked = f.locator('[data-studio-widget="database-link"]')
-        linked.get_by_role('button',name='데이터베이스 메뉴',exact=True).click()
+        linked.get_by_role('button',name='보기 설정',exact=True).click()
         f.locator('#studioDbPanel').get_by_role('button',name='새 페이지 상세 입력',exact=True).click()
         f.locator('dialog[open] input[aria-label="이름"]').fill('Linked row')
         f.locator('dialog[open]').get_by_role('button', name='저장', exact=True).click()

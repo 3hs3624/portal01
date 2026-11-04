@@ -318,8 +318,7 @@ function newStudioDatabase(view = "table") {
     view,
     fields: [
       { id: 'title', name: '이름', type: 'text' },
-      { id: 'status', name: '상태', type: 'select' },
-      { id: 'date', name: '날짜', type: 'date' },
+      ...(view==='table'?[]:[{ id: 'status', name: '상태', type: 'select' },{ id: 'date', name: '날짜', type: 'date' }]),
       ...(['timeline'].includes(view)?[{id:'end',name:'종료일',type:'date'}]:[]),
       ...(['chart','bar','horizontal','line','donut','number','dashboard'].includes(view)?[{id:'value',name:'값',type:'number'}]:[]),
       ...(view==='map'?[{id:'lat',name:'위도',type:'number'},{id:'lng',name:'경도',type:'number'}]:[]),
