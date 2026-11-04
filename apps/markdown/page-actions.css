@@ -7,3 +7,5 @@
 @media(max-width:640px){.studio-page-preview-header{flex-wrap:wrap;padding:12px}.studio-page-preview-content{padding:20px}.studio-page-preview-header strong{flex-basis:100%}.studio-page-row .studio-page-handle{left:-19px;width:17px}#openPageComments{font-size:11px}}
 @media print{.studio-page-handle,.studio-page-menu{display:none!important}}
 .studio-page-row>.studio-page-link{color:var(--text);line-height:1.5}.studio-page-row>.studio-page-link>svg{width:17px;height:19px;max-height:19px;flex:0 0 17px}
+
+.studio-page-comments>textarea{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:10px;resize:vertical;line-height:1.6}.studio-page-comment-status{min-height:18px;margin-bottom:0}

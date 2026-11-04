@@ -7,7 +7,7 @@ const STUDIO_PAGES=(()=>{
  const menu=el('div','studio-page-menu');menu.id='studioPageMenu';menu.hidden=true;menu.setAttribute('role','menu');menu.setAttribute('aria-label','페이지 메뉴');document.body.append(menu);
  const preview=el('dialog','studio-page-preview');preview.id='studioPagePreview';document.body.append(preview);
  const comments=el('dialog','studio-page-comments');comments.id='studioPageComments';document.body.append(comments);
- let state=null;
+ let state=null,commentState=null;
  const btn=(text,fn,cls='')=>{const b=el('button',cls,text);b.type='button';b.onclick=fn;return b;};
  function notify(){document.dispatchEvent(new Event('studio:page-metadata-changed'));}
  function close(focus=false){const node=state?.dom;node?.classList.remove('studio-page-selected');state=null;menu.hidden=true;if(focus)node?.querySelector('.studio-page-handle')?.focus();}
@@ -34,14 +34,62 @@ const STUDIO_PAGES=(()=>{
   item('▣ 댓글',()=>{const target=valid();if(!target)return;const id=target.id;close();openComments(id);},'Ctrl+Shift+M');
   menu.append(el('hr'));item('↗ 링크 복사',()=>{const target=valid();if(target){const id=target.id;close();copy(id);}});menu.append(el('hr'));menu.append(el('small','studio-page-menu-caption','최종 편집 일시'),el('div','studio-page-menu-date',new Date(d.updatedAt).toLocaleString('ko-KR')));
  }
- function openComments(id){
-  const owner=APP.activeId;let d=APP.documents.find(d=>d.id===id);if(!d)return;comments.replaceChildren();comments.setAttribute('aria-label','페이지 댓글');const heading=el('div','studio-dialog-header');heading.append(el('h2','','페이지 댓글 · '+d.title),btn('닫기',()=>comments.close()));comments.append(heading,el('p','footnote','댓글은 현재 작업공간에 저장됩니다.'));
-  const list=el('div','studio-page-comment-list'),input=el('textarea');input.placeholder='댓글을 작성하세요.';input.maxLength=5000;input.setAttribute('aria-label','페이지 댓글 내용');
-  const get=()=>{if(owner!==APP.activeId||locked())return null;return APP.documents.find(doc=>doc.id===id);};
-  const persist=target=>{target.updatedAt=new Date().toISOString();changed(false);saveDraft().catch(onError);notify();};
-  const draw=()=>{d=APP.documents.find(doc=>doc.id===id);list.replaceChildren();if(!d?.pageComments?.length)list.append(el('p','footnote','아직 댓글이 없습니다.'));for(const note of d?.pageComments||[]){const row=el('div','studio-page-comment');row.append(el('p','',note.text),el('small','',new Date(note.date).toLocaleString('ko-KR')));const remove=btn('삭제',()=>{const target=get();if(!target||!writable())return comments.close();if(!confirm('이 댓글을 삭제할까요?'))return;target.pageComments=(target.pageComments||[]).filter(n=>n.id!==note.id);persist(target);draw();});remove.disabled=!writable();row.append(remove);list.append(row);}};
-  const submit=btn('댓글 등록',()=>{const target=get();if(!target||!writable())return comments.close();const text=input.value.trim();if(!text)return input.focus();if((target.pageComments||[]).length>=100)return toast('페이지 댓글은 최대 100개입니다.',true);target.pageComments=[...(target.pageComments||[]),{id:crypto.randomUUID(),text,date:new Date().toISOString()}];persist(target);input.value='';draw();});input.disabled=submit.disabled=!writable();comments.append(list,input,submit);draw();if(!comments.open)comments.showModal();if(!input.disabled)input.focus();
+ function commentLock(session){
+  if(APP.externalDraft)return '다른 탭에서 변경되었습니다. 입력 내용을 복사해 보관한 뒤 새로고침해 주세요.';
+  if(APP.loading||$('#editor').disabled)return '문서를 불러오는 중입니다. 완료되면 댓글을 작성할 수 있습니다.';
+  if(typeof ST!=='undefined'&&ST.busy)return '저장소 작업 중입니다. 완료되면 댓글을 작성할 수 있습니다.';
+  if(session.owner!==APP.activeId||!APP.documents.some(d=>d.id===session.target))return '댓글 대상 페이지가 변경되었습니다. 창을 닫고 다시 열어 주세요.';
+  return '';
  }
+ function syncComments(){
+  const s=commentState;if(!s||!comments.open)return;
+  const reason=commentLock(s),target=APP.documents.find(d=>d.id===s.target),full=(target?.pageComments?.length||0)>=100;
+  s.input.readOnly=!!reason;
+  s.input.disabled=(!!reason&&!APP.externalDraft)||s.saving;
+  s.submit.disabled=!!reason||s.saving||!s.input.value.trim()||full;
+  s.list.querySelectorAll('button').forEach(b=>b.disabled=!!reason||s.saving);
+  s.status.textContent=reason||(s.saving?'댓글 저장 중…':s.error||s.message||(full?'페이지 댓글은 최대 100개입니다.':s.input.value.trim()?'댓글을 등록할 수 있습니다.':'댓글을 입력한 뒤 등록하세요.'));
+ }
+ function openComments(id){
+  const doc=APP.documents.find(d=>d.id===id);if(!doc)return;
+  comments.replaceChildren();comments.setAttribute('aria-label','페이지 댓글');
+  const heading=el('div','studio-dialog-header');heading.append(el('h2','','페이지 댓글 · '+doc.title),btn('닫기',()=>comments.close()));comments.append(heading,el('p','footnote','댓글은 현재 작업공간에 저장됩니다.'));
+  const list=el('div','studio-page-comment-list'),input=el('textarea'),status=el('p','footnote studio-page-comment-status');
+  input.placeholder='댓글을 작성하세요.';input.maxLength=5000;input.setAttribute('aria-label','페이지 댓글 내용');status.setAttribute('role','status');status.setAttribute('aria-live','polite');
+  const session={owner:APP.activeId,target:id,list,input,status,submit:null,saving:false,error:'',message:''};commentState=session;
+  const get=()=>commentState===session&&!commentLock(session)&&!session.saving?APP.documents.find(d=>d.id===id):null;
+  const persist=async(target,next,added)=>{
+   const previous=target.pageComments,updatedAt=target.updatedAt;
+   session.saving=true;session.error='';session.message='';syncComments();
+   target.pageComments=next;target.updatedAt=new Date().toISOString();changed(false);
+   try{
+    await saveDraft();notify();
+    if(commentState===session){if(added)input.value='';session.message=added?'댓글을 등록했습니다.':'댓글을 삭제했습니다.';draw();}
+   }catch(error){
+    if(target.pageComments===next){if(previous===undefined)delete target.pageComments;else target.pageComments=previous;target.updatedAt=updatedAt;renderDocList();renderMetadata();notify();}
+    session.error='댓글을 저장하지 못했습니다. 입력 내용은 유지됩니다. 다시 시도해 주세요.';
+   }finally{session.saving=false;if(commentState===session)syncComments();}
+  };
+  const draw=()=>{
+   const target=APP.documents.find(d=>d.id===id);list.replaceChildren();
+   if(!target?.pageComments?.length)list.append(el('p','footnote','아직 댓글이 없습니다.'));
+   for(const note of target?.pageComments||[]){
+    const row=el('div','studio-page-comment');row.append(el('p','',note.text),el('small','',new Date(note.date).toLocaleString('ko-KR')));
+    row.append(btn('삭제',()=>{let target=get();if(!target){syncComments();return;}if(!confirm('이 댓글을 삭제할까요?'))return;target=get();if(target)persist(target,(target.pageComments||[]).filter(n=>n.id!==note.id),false);}));list.append(row);
+   }
+  };
+  const submit=btn('댓글 등록',()=>{
+   const target=get(),text=input.value.trim();if(!target||!text){syncComments();return;}
+   if((target.pageComments||[]).length>=100){syncComments();return;}
+   persist(target,[...(target.pageComments||[]),{id:crypto.randomUUID(),text,date:new Date().toISOString()}],true);
+  });session.submit=submit;
+  input.oninput=()=>{session.error=session.message='';syncComments();};
+  comments.append(list,input,submit,status);draw();if(!comments.open)comments.showModal();syncComments();if(!input.disabled)input.focus();
+ }
+ comments.addEventListener('close',()=>{if(!comments.open)commentState=null;});
+ document.addEventListener('studio:workspace-state-changed',syncComments);
+ document.addEventListener('studio:editability-changed',syncComments);
+ const previousRenderStorage=renderStorage;renderStorage=function(){previousRenderStorage();syncComments();};
  function render(dom,data){
   dom.classList.add('studio-page-row');const d=APP.documents.find(d=>d.id===data.docId);const handle=btn('',()=>{const r=handle.getBoundingClientRect();show(dom,data.docId,r.left,r.bottom+4);},'studio-page-handle');handle.setAttribute('aria-label','페이지 메뉴 열기');handle.setAttribute('aria-haspopup','menu');handle.title='클릭 또는 Ctrl+/로 페이지 메뉴 열기';for(let i=0;i<6;i++)handle.append(el('i'));handle.disabled=!d;
   const link=el('a','studio-page-link');link.href=d?'#doc-'+d.id:'#';link.innerHTML=icon;link.append(el('span','',d?.title||data.title||'삭제된 페이지'));link.title=d?'페이지 열기: '+d.title:'연결된 페이지를 찾을 수 없습니다.';link.onclick=e=>{e.preventDefault();e.stopPropagation();if(d)open(d.id,e.ctrlKey||e.metaKey?'tab':'full');else toast('연결된 페이지를 찾을 수 없습니다.',true);};dom.append(handle,link);if(!d)dom.append(el('small','studio-page-missing','페이지를 찾을 수 없습니다.'));

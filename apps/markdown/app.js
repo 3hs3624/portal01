@@ -161,7 +161,7 @@ async function init(){
  try{await initStorage()}catch(e){onError(e)}
  APP.loading=false;$('#editor').disabled=$('#docTitle').disabled=false;renderStorage();renderDocList();if(typeof renderKnowledge==='function')renderKnowledge();if(typeof restoreBlockLink==='function')restoreBlockLink();
  await saveDraft().catch(()=>{});
- if('BroadcastChannel' in window){APP.channel=new BroadcastChannel('md-editor-draft');APP.channel.onmessage=()=>{APP.externalDraft=true;clearTimeout(APP.draftTimer);clearTimeout(ST.timer);ST.blocked=true;$('#localStatus').textContent='다른 탭 변경 감지';toast('다른 탭에서 작업공간을 저장했습니다. 현재 내용을 파일로 내보낸 뒤 새로고침해 주세요.',true);};}
+ if('BroadcastChannel' in window){APP.channel=new BroadcastChannel('md-editor-draft');APP.channel.onmessage=()=>{APP.externalDraft=true;document.dispatchEvent(new Event('studio:workspace-state-changed'));clearTimeout(APP.draftTimer);clearTimeout(ST.timer);ST.blocked=true;$('#localStatus').textContent='다른 탭 변경 감지';toast('다른 탭에서 작업공간을 저장했습니다. 현재 내용을 파일로 내보낸 뒤 새로고침해 주세요.',true);};}
 }
 $('#editor').addEventListener('input',onEditorInput);
 $('#editor').addEventListener('click',updateCursor);$('#editor').addEventListener('keyup',updateCursor);
