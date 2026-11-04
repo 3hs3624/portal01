@@ -247,8 +247,21 @@ function studioExtensions() {
       return dom;
     },
   });
+  const tableCellColors = Extension.create({
+    name: "studioTableCellColors",
+    addGlobalAttributes() {
+      return [{ types: ["tableCell", "tableHeader"], attributes: Object.fromEntries(
+        [["studioColor", "data-studio-color"], ["studioBackground", "data-studio-background"]].map(([key, attribute]) => [key, {
+          default: null,
+          parseHTML: node => STUDIO_COLORS.includes(node.getAttribute(attribute)) ? node.getAttribute(attribute) : null,
+          renderHTML: attrs => attrs[key] && STUDIO_COLORS.includes(attrs[key]) ? { [attribute]: attrs[key] } : {},
+        }])
+      ) }];
+    },
+  });
   return [
     metadata,
+    tableCellColors,
     toggle,
     container("studioCallout", "콜아웃"),
     container("studioNote", "AI 노트 · 수동 작성"),
@@ -259,7 +272,7 @@ function studioExtensions() {
 function studioNeedsHTML(node) {
   let inline = false;
   node.descendants((n) => {
-    if (n.type.name === "studioInlineEquation") inline = true;
+    if (n.type.name === "studioInlineEquation" || (n.type.name === "table" && n.attrs.studioEdited) || (["tableCell", "tableHeader"].includes(n.type.name) && (n.attrs.studioColor || n.attrs.studioBackground))) inline = true;
   });
   return (
     inline ||
