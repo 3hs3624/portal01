@@ -27,14 +27,22 @@ const STUDIO_DB_LAYOUT=(()=>{
   return {read:()=>({...Object.fromEntries(Object.entries(inputs).map(([k,i])=>[k,i.type==='checkbox'?i.checked:k==='initialLoad'?Number(i.value):i.value])),chart:chart.read()})};
  }
  function icon(){const n=el('span','studio-db-record-icon','▤');n.setAttribute('aria-hidden','true');return n;}
- function openRecord(data,row,update,editable){editDatabaseRow(data,row,update,editable);const view=STUDIO_DB_VIEWS.current(data);studioDialog.dataset.recordMode=view.openMode||'side';studioDialog.classList.add('studio-db-record-dialog');}
+ let opened=null;
+ function clearRecordMark(){if(opened?.dom){delete opened.dom.dataset.openRecord;for(const tr of opened.dom.querySelectorAll('[data-row-id]')){tr.classList.remove('db-ui-record-open');const b=tr.querySelector('.db-ui-open-record');if(b){b.textContent='열기';b.setAttribute('aria-label','열기');b.title='페이지로 열기';}}}document.body.classList.remove('studio-db-side-open');opened=null;}
+ function modeRecord(mode){if(studioDialog.open)studioDialog.close();studioDialog.dataset.recordMode=mode;document.body.classList.toggle('studio-db-side-open',mode==='side');if(mode==='side')studioDialog.show();else studioDialog.showModal();}
+ function openRecord(data,row,update,editable,dom){
+  if(row&&opened?.id===row.id&&opened.dom===dom&&studioDialog.open){studioDialog.close();return;}
+  clearRecordMark();editDatabaseRow(data,row,update,editable);const mode=STUDIO_DB_VIEWS.current(data).openMode||'side';studioDialog.classList.add('studio-db-record-dialog');opened={id:row?.id,dom};if(dom&&row){dom.dataset.openRecord=row.id;for(const tr of dom.querySelectorAll('[data-row-id]'))if(tr.dataset.rowId===row.id){tr.classList.add('db-ui-record-open');const b=tr.querySelector('.db-ui-open-record');if(b){b.textContent='닫기';b.setAttribute('aria-label','닫기');b.title=mode==='side'?'사이드 보기 닫기':'페이지 닫기';}}}const header=studioDialog.querySelector('.studio-dialog-header');header.querySelector('h2').textContent=row?.title||'새 페이지';const expand=widgetButton(mode==='full'?'사이드 보기로 전환':'전체 페이지로 열기',()=>{const full=studioDialog.dataset.recordMode==='full';modeRecord(full?'side':'full');expand.textContent=full?'전체 페이지로 열기':'사이드 보기로 전환';expand.setAttribute('aria-label',expand.textContent);});header.insertBefore(expand,header.lastElementChild);modeRecord(mode);
+ }
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&studioDialog.open&&studioDialog.classList.contains('studio-db-record-dialog')&&studioDialog.dataset.recordMode==='side'){e.preventDefault();studioDialog.close();}});
+ requestAnimationFrame(()=>studioDialog.addEventListener('close',()=>{if(!studioDialog.open)clearRecordMark();}));
  function render(body,data,allRows,update,editable){
   const view={...defaults,...STUDIO_DB_VIEWS.current(data)},kind=data.view;
   if(!data.fields.some(f=>f.id===view.dateField&&f.type==='date'))view.dateField=data.fields.find(f=>f.type==='date')?.id||'date';
   if(!['table','board','timeline','calendar','list','gallery','feed','map',...chartViews].includes(kind))return false;
   const key=data.activeView+'|'+kind+'|'+allRows.map(r=>r.id).join(','),prior=state.get(body),s=prior?.key===key?prior:{key,limit:view.initialLoad,collapsed:new Set(),date:new Date().toISOString().slice(0,10)};state.set(body,s);body.replaceChildren();
   body.dataset.layout=kind;body.dataset.wrap=String(view.wrap);body.dataset.verticalLines=String(view.verticalLines);body.dataset.cardSize=view.cardSize;body.dataset.cardLayout=view.cardLayout;body.dataset.fitMedia=String(view.fitMedia);body.dataset.titleWrap=String(view.titleWrap);body.dataset.propertyWrap=String(view.propertyWrap);
-  const showRow=row=>openRecord(data,row,update,editable),title=row=>{const b=widgetButton('',()=>showRow(row));b.classList.add('studio-db-row-title');if(view.pageIcons)b.append(icon());b.append(el('span','',row.title||'제목 없음'));return b;};
+  const showRow=row=>openRecord(data,row,update,editable,body.closest('[data-studio-widget]')),title=row=>{const b=widgetButton('',()=>showRow(row));b.classList.add('studio-db-row-title');if(view.pageIcons)b.append(icon());b.append(el('span','',row.title||'제목 없음'));return b;};
   let rows=allRows,total=allRows.length;
   const footer=()=>{const bar=el('div','studio-db-pagination');bar.append(el('span','',Math.min(s.limit,total)+' / '+total+'개'));if(s.limit<total)bar.append(widgetButton('↓ 더 불러오기',()=>{s.limit+=view.initialLoad;render(body,data,allRows,update,editable);}));body.append(bar);};
   if(isChart(kind)){const result=STUDIO_CHARTS.render(body,data,allRows,{...view,layout:kind},showRow,s.limit);total=result.total;footer();return true;}
@@ -81,5 +89,5 @@ const STUDIO_DB_LAYOUT=(()=>{
   try{await navigator.clipboard.writeText(url.href);toast('데이터베이스 보기 링크를 복사했습니다.');}catch{openStudioDialog('보기 링크',dialog=>{const input=el('textarea');input.value=url.href;input.readOnly=true;input.setAttribute('aria-label','데이터베이스 보기 링크');dialog.append(input);input.select();});}
  }
  function editField(data,field,update){openStudioDialog('속성 편집',dialog=>{const input=el('input'),type=el('select'),options=el('input');input.value=field.name;input.setAttribute('aria-label','속성 이름');type.setAttribute('aria-label','데이터 유형');for(const [id,text]of [['text','텍스트'],['number','숫자'],['date','날짜'],['select','선택'],['checkbox','체크박스'],['url','URL'],['page','페이지 연결']])type.append(new Option(text,id));type.value=field.type;options.value=(field.options||[]).join(', ');options.setAttribute('aria-label','선택 옵션');options.placeholder='쉼표로 구분';dialog.append(input,type,options,el('p','footnote','유형 변경은 기존 값을 보존합니다. 새 유형에 맞는 값을 입력하세요.'),widgetButton('속성 저장',()=>{if(!input.value.trim())return;update({...data,fields:data.fields.map(f=>f.id===field.id?{...f,name:input.value.trim(),type:type.value,options:[...new Set(options.value.split(',').map(x=>x.trim()).filter(Boolean))].slice(0,100)}:f)});studioDialog.close();}),widgetButton('속성 삭제',()=>{if(field.id==='title')return toast('이름 속성은 삭제할 수 없습니다.',true);if(!confirm('이 속성을 삭제할까요? 보기에서 숨기려면 보기 설정을 사용하세요.'))return;update({...data,fields:data.fields.filter(f=>f.id!==field.id)});studioDialog.close();}));});}
- return {defaults,isChart,controls,render,copyView};
+ return {defaults,isChart,controls,render,copyView,openRecord};
 })();

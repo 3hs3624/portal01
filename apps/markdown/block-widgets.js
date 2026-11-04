@@ -1165,6 +1165,7 @@ function editDatabaseRow(data, row, update, editable = true) {
       dialog.append(label);
       fields.push([field, input]);
     }
+    const content=el('textarea','studio-db-page-content');content.value=row?.pageBody||'';content.placeholder='페이지 내용을 입력하세요';content.setAttribute('aria-label','페이지 내용');content.disabled=!editable;const contentLabel=el('label','','페이지 내용');contentLabel.append(content);dialog.append(contentLabel);
     let parentInput=null;
     if (data.savedViews?.find(v=>v.id===data.activeView)?.subItems) {
       parentInput=el('select');parentInput.setAttribute('aria-label','상위 항목');parentInput.append(new Option('없음 (최상위)',''));
@@ -1185,6 +1186,7 @@ function editDatabaseRow(data, row, update, editable = true) {
                   ? ""
                   : Number(input.value)
                 : input.value;
+        item.pageBody=content.value;
         if (parentInput) item.parentId=parentInput.value;
         if (!String(item.title || "").trim())
           return toast("이름을 입력하세요.", true);

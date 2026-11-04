@@ -1,5 +1,5 @@
 'use strict';
-const ST={settings:null,infos:{},revision:null,ready:false,busy:false,dirty:false,timer:0,token:'',defaultPath:'',blocked:false};
+const ST={settings:null,infos:{},revision:null,ready:false,busy:false,dirty:false,timer:0,token:'',defaultPath:'',blocked:false,saving:false};
 const PROVIDERS={local:'로컬 폴더',google:'Google Drive',onedrive:'MS OneDrive',sqlite:'SQLite DB',odbc:'외부 DB (ODBC)'};
 function activeStorage(){return ST.settings?.profiles.find(p=>p.id===ST.settings.activeId)}
 async function storageAPI(action,payload={}){
@@ -10,7 +10,7 @@ async function storageAPI(action,payload={}){
   const data=await r.json();if(!r.ok){const error=Error(data.error||'저장소 요청 실패');error.external=data.external;throw error;}return data;
  }
 }
-function storageStatus(message,error=false){for(const id of ['storageStatus','storageMessage']){$('#'+id).textContent=message;$('#'+id).classList.toggle('error',error)}}
+function storageStatus(message,error=false){const status=$('#saveWorkspace');if(status){status.textContent=error?'자동저장 실패':message.includes('저장 완료')?(ST.dirty?'자동저장 대기 중…':'✓ 자동저장 완료'):ST.saving||message==='저장 중…'?'자동저장 중…':ST.dirty?'자동저장 대기 중…':ST.ready?'✓ 자동저장 사용 중':'자동저장 준비 중…';status.classList.toggle('error',error);status.title=message;}for(const id of ['storageStatus','storageMessage']){$('#'+id).textContent=message;$('#'+id).classList.toggle('error',error)}}
 function storageChanged(){
  if(APP.loading)return;
  ST.dirty=true;clearTimeout(ST.timer);
@@ -26,13 +26,13 @@ async function saveWorkspace(){
 }
 async function saveRemote(manual=true){
  clearTimeout(ST.timer);
- if(ST.busy){if(manual)throw Error('저장소 작업이 진행 중입니다. 완료 후 다시 저장해 주세요.');return}
+ if(ST.busy||ST.saving){if(manual)throw Error('저장소 작업이 진행 중입니다. 완료 후 다시 저장해 주세요.');return}
  if(APP.externalDraft)throw Error('다른 탭의 변경을 확인하고 새로고침한 뒤 저장해 주세요.');
  const p=activeStorage();if(!p)throw Error('저장소를 먼저 연결해 주세요.');if(p.needsCredential)throw Error('연결 수정에서 인증 정보를 다시 입력해 주세요.');
  if(!manual&&(!ST.ready||!ST.dirty||ST.blocked))return;
  if(!ST.ready&&ST.infos[p.id]?.hasWorkspace&&!confirm('이 저장소에 기존 문서가 있습니다. 현재 작업공간으로 교체할까요? 폴더 저장소에서는 빠지는 .md 파일이 버전 보관 후 삭제됩니다. 기존 문서를 사용하려면 취소 후 불러오기를 선택하세요.'))return;
  const w=EditorCore.validate(captureWorkspace()),generation=APP.generation;
- ST.busy=true;renderStorage();storageStatus('저장 중…');
+ ST.busy=manual;ST.saving=!manual;renderStorage();storageStatus('저장 중…');
  try{
   const r=await storageAPI('save',{id:p.id,workspace:w,revision:ST.revision});
   ST.revision=r.revision;ST.infos[p.id]=r;ST.ready=true;ST.blocked=false;ST.dirty=APP.generation!==generation;APP.dirty=ST.dirty;
@@ -40,10 +40,10 @@ async function saveRemote(manual=true){
   storageStatus('저장 완료 · '+p.name+' · '+new Date(r.savedAt).toLocaleTimeString('ko-KR')+(r.markdownFiles?' · .md '+r.markdownFiles.documents+'개':''));
   if(manual){if($('#storageDialog').open)$('#storageDialog').close();toast('모든 문서를 저장했습니다.');}
  }catch(e){ST.dirty=true;ST.blocked=true;if(e.external){showExternal(e.external);openFileConflicts(e.external);}storageStatus('저장 실패 · '+e.message,true);throw e}
- finally{ST.busy=false;renderStorage();if(ST.dirty&&!ST.blocked&&ST.ready&&ST.settings.autoSave)ST.timer=setTimeout(()=>saveRemote(false).catch(()=>{}),1600);}
+ finally{ST.busy=false;ST.saving=false;renderStorage();if(ST.dirty&&!ST.blocked&&ST.ready&&ST.settings.autoSave)ST.timer=setTimeout(()=>saveRemote(false).catch(()=>{}),1600);}
 }
 async function loadRemote(startup=false){
- if(ST.busy)throw Error('저장소 작업이 진행 중입니다.');
+ if(ST.busy||ST.saving)throw Error('저장소 작업이 진행 중입니다.');
  const p=activeStorage();if(!p)throw Error('저장소를 먼저 선택해 주세요.');
  if(!startup&&!confirm('저장소의 문서 전체로 현재 작업공간을 교체할까요? 미저장 내용은 먼저 내보내 주세요.'))return;
  clearTimeout(ST.timer);ST.busy=true;renderStorage();const generation=APP.generation;
@@ -51,7 +51,7 @@ async function loadRemote(startup=false){
  $('#editor').disabled=$('#docTitle').disabled=true;syncPreviewEditable();
  try{
   const r=await storageAPI('load',{id:p.id,includeBaseline:Boolean(startup&&APP.recovery?.pending)});ST.infos[p.id]=r;
-  if(!r.hasWorkspace){ST.revision=null;ST.ready=false;storageStatus('연결됨 · 저장된 문서가 없습니다. 지금 저장을 눌러 시작하세요.');return}
+  if(!r.hasWorkspace){ST.revision=null;ST.ready=true;ST.blocked=false;storageStatus('자동저장 준비 완료 · 변경 사항이 자동으로 저장됩니다.');return}
   if(APP.generation!==generation)throw Error('불러오는 동안 작업공간이 변경되었습니다. 다시 불러와 주세요.');
   if(startup&&APP.recovery?.profileId===p.id&&APP.recovery.pending&&(JSON.stringify(APP.documents)!==JSON.stringify(r.workspace.documents)||JSON.stringify(APP.folders)!==JSON.stringify(r.workspace.folders||[])||APP.theme!==(r.workspace.theme||'light'))){
    ST.base=APP.recovery.base?await restoreRecoveryBase(APP.recovery.base,captureWorkspace(),r.workspace):(r.baselineWorkspace||r.workspace);
@@ -61,27 +61,28 @@ async function loadRemote(startup=false){
   }
   EditorCore.validate(r.workspace);await restoreWorkspace(r.workspace);rememberFileBaseline(r);ST.revision=r.revision;ST.ready=true;ST.dirty=false;ST.blocked=false;APP.dirty=false;
   saveDraft().catch(()=>{});
-  storageStatus('불러오기 완료 · '+p.name+' · 문서 '+r.workspace.documents.length+'개');
+  storageStatus('자동저장 사용 중 · '+p.name+' · 문서 '+r.workspace.documents.length+'개');
  }catch(e){ST.ready=false;storageStatus('불러오기 실패 · '+e.message,true);throw e}
  finally{ST.busy=false;$('#editor').disabled=$('#docTitle').disabled=APP.loading;renderStorage();}
 }
 function renderStorage(){
  syncPreviewEditable();
  if(typeof renderDocumentTree==='function')renderDocumentTree();
+ const working=ST.busy||ST.saving;
  const s=ST.settings,p=activeStorage();if(!s)return;
  $('#storageAutoSave').checked=s.autoSave;$('#storageAutoRestore').checked=s.autoRestore;
- $('#storageAutoSave').disabled=$('#storageAutoRestore').disabled=ST.busy;
+ $('#storageAutoSave').disabled=true;$('#storageAutoSave').title='변경 사항은 자동으로 저장됩니다.';$('#storageAutoRestore').disabled=working;
  $('#activeStorageLabel').textContent=p?p.name:'브라우저 작업공간';$('#storageActiveName').textContent=p?p.name:'선택한 저장소 없음';
  $('#storageBrief').textContent=p?PROVIDERS[p.provider]+' · '+(p.needsCredential?'인증 재입력 필요':ST.ready?'문서 저장·복원 사용 중':'불러오기 또는 첫 저장 필요'):'저장소를 연결하면 다른 실행에서도 복원할 수 있어요.';
  $('#storageDot').classList.toggle('connected',Boolean(p&&!p.needsCredential));
- $('#storageSaveNow').disabled=$('#storageLoadNow').disabled=!p||ST.busy;
- $('#saveWorkspace').disabled=ST.busy||APP.loading;$('#newStorageProfile').disabled=ST.busy;
- for(const id of ['newDoc','duplicateDoc','deleteDoc','importDoc','importWorkspace'])$('#'+id).disabled=ST.busy||APP.loading;
+ $('#storageSaveNow').disabled=$('#storageLoadNow').disabled=!p||working;
+ $('#saveWorkspace').disabled=working||APP.loading;$('#newStorageProfile').disabled=working;
+ for(const id of ['newDoc','duplicateDoc','deleteDoc','importDoc','importWorkspace'])$('#'+id).disabled=working||APP.loading;
  $('#storageRows').replaceChildren(...s.profiles.map(profile=>{
-  const row=el('div','storage-row'),radio=el('input');radio.type='radio';radio.name='storage';radio.checked=profile.id===s.activeId;radio.disabled=ST.busy;radio.setAttribute('aria-label',profile.name+' 기본 저장소로 선택');
+  const row=el('div','storage-row'),radio=el('input');radio.type='radio';radio.name='storage';radio.checked=profile.id===s.activeId;radio.disabled=working;radio.setAttribute('aria-label',profile.name+' 기본 저장소로 선택');
   radio.onchange=safeAction(async()=>{if(ST.dirty&&ST.ready&&!confirm('현재 변경은 브라우저 임시 보관본에 남습니다. 다른 저장소로 전환할까요?')){renderStorage();return}clearTimeout(ST.timer);ST.busy=true;renderStorage();try{const r=await storageAPI('preferences',{activeId:profile.id});ST.settings=r.settings;ST.ready=false;ST.revision=null;ST.blocked=false;const info=await storageAPI('load',{id:profile.id});ST.infos[profile.id]=info;ST.revision=info.revision;storageStatus('저장소 선택 · 불러오기 또는 지금 저장을 선택하세요.')}finally{ST.busy=false;renderStorage()}});
   const info=el('div');info.append(el('strong','',profile.name),el('small','',PROVIDERS[profile.provider]+' · '+(profile.path||profile.remotePath||profile.folderId||profile.workspaceKey)),el('small','',profile.needsCredential?'인증 재입력 필요':ST.infos[profile.id]?.savedAt||profile.lastSavedAt?'최근 저장 '+new Date(ST.infos[profile.id]?.savedAt||profile.lastSavedAt).toLocaleString('ko-KR'):'아직 저장 안 함'));
-  const edit=el('button','','수정'),remove=el('button','','해제');edit.disabled=remove.disabled=ST.busy;edit.onclick=()=>openProfile(profile);remove.onclick=safeAction(async()=>{if(!confirm('저장소 연결을 해제할까요? 실제 파일과 DB 내용은 유지됩니다.'))return;clearTimeout(ST.timer);ST.busy=true;renderStorage();try{const r=await storageAPI('disconnect',{id:profile.id});ST.settings=r.settings;if(!activeStorage()){ST.ready=false;ST.revision=null}storageStatus('연결 해제 완료 · 실제 파일은 유지됩니다.')}finally{ST.busy=false;renderStorage()}});
+  const edit=el('button','','수정'),remove=el('button','','해제');edit.disabled=remove.disabled=working;edit.onclick=()=>openProfile(profile);remove.onclick=safeAction(async()=>{if(!confirm('저장소 연결을 해제할까요? 실제 파일과 DB 내용은 유지됩니다.'))return;clearTimeout(ST.timer);ST.busy=true;renderStorage();try{const r=await storageAPI('disconnect',{id:profile.id});ST.settings=r.settings;if(!activeStorage()){ST.ready=false;ST.revision=null}storageStatus('연결 해제 완료 · 실제 파일은 유지됩니다.')}finally{ST.busy=false;renderStorage()}});
   row.append(radio,info,edit,remove);return row;
  }));
  if(!s.profiles.length)$('#storageRows').append(el('p','footnote','연결된 저장소가 없습니다. ＋ 새 연결에서 등록하세요.'));
@@ -99,7 +100,7 @@ function openProfile(p=null){
  $('#profileError').textContent='';profileFields();$('#profileDialog').showModal();$('#profileName').focus();
 }
 async function initStorage(){
- try{const r=await storageAPI('status');ST.settings=r.settings;ST.features=r.features||{};ST.defaultPath=r.defaultPath;renderStorage();const p=activeStorage();if(p&&r.settings.autoRestore&&!p.needsCredential)await loadRemote(true);else storageStatus(p?'저장소 연결됨 · 불러오기 또는 지금 저장을 선택하세요.':'브라우저 임시 보관 · 저장소 미연결');}
+ try{const r=await storageAPI('status');ST.settings=r.settings;if(!ST.settings.autoSave){const prefs=await storageAPI('preferences',{autoSave:true});ST.settings=prefs.settings;}ST.features=r.features||{};ST.defaultPath=r.defaultPath;renderStorage();const p=activeStorage();if(p&&r.settings.autoRestore&&!p.needsCredential)await loadRemote(true);else storageStatus(p?'저장소 연결됨 · 불러오기 또는 지금 저장을 선택하세요.':'브라우저 임시 보관 · 저장소 미연결');}
  catch(e){storageStatus('저장소 연결 실패 · '+e.message,true);throw e}
  finally{renderStorage()}
 }
@@ -117,7 +118,7 @@ $('#storageForm').onsubmit=async e=>{
  finally{ST.busy=false;$('#storageForm').querySelectorAll('input,select,button').forEach(n=>n.disabled=false);$('#profileDialog > .dialog-heading button').disabled=false;renderStorage()}
 };
 $('#storageSaveNow').onclick=safeAction(()=>saveRemote(true));$('#storageLoadNow').onclick=safeAction(()=>loadRemote(false));
-for(const id of ['storageAutoSave','storageAutoRestore'])$('#'+id).onchange=safeAction(async()=>{if(ST.busy)return;ST.busy=true;const prefs={autoSave:$('#storageAutoSave').checked,autoRestore:$('#storageAutoRestore').checked};renderStorage();try{const r=await storageAPI('preferences',prefs);ST.settings=r.settings;}finally{ST.busy=false;renderStorage();if(ST.dirty&&ST.settings.autoSave)storageChanged()}});
+for(const id of ['storageAutoRestore'])$('#'+id).onchange=safeAction(async()=>{if(ST.busy)return;ST.busy=true;const prefs={autoSave:$('#storageAutoSave').checked,autoRestore:$('#storageAutoRestore').checked};renderStorage();try{const r=await storageAPI('preferences',prefs);ST.settings=r.settings;}finally{ST.busy=false;renderStorage();if(ST.dirty&&ST.settings.autoSave)storageChanged()}});
 
 storageAPI=(action,payload={})=>PagesStorage.handle(action,payload);
 PROVIDERS.browser='브라우저 저장소';
