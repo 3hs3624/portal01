@@ -1,7 +1,7 @@
 /* Notion-style table axis menus. All mutations use the editor's document/history. */
 'use strict';
 (() => {
- const root=$('#preview'),state={hover:null,menu:null,hide:0,frame:0,drag:null,suppressClick:null};
+ const root=$('#preview'),state={hover:null,menu:null,hide:0,frame:0,drag:null,suppressClick:null,visible:false,observed:null};
  const make=(tag,cls,text)=>{const node=document.createElement(tag);if(cls)node.className=cls;if(text)node.textContent=text;return node};
  const menu=make('div','studio-table-menu');menu.id='studioTableMenu';menu.hidden=true;menu.setAttribute('role','dialog');
  const palette=make('div','studio-table-menu studio-table-palette');palette.id='studioTablePalette';palette.hidden=true;palette.setAttribute('role','dialog');palette.setAttribute('aria-label','표 색상');
@@ -37,7 +37,7 @@
   commit(c,c.node.type.create({...c.node.attrs,studioEdited:new Date().toISOString()},rows,c.node.marks),axis==='row'?rows.length-1:c.row,axis==='column'?c.width+delta-1:c.column);refresh(c);
  }
  const editable=()=>RICH.editor?.isEditable&&RICH.enabled&&!APP.loading&&!RICH.loading&&APP.view!=='edit'&&RICH.markdown===currentDoc()?.content;
- function hideHandles(){handles.row.hidden=handles.column.hidden=addRow.hidden=addColumn.hidden=true;}
+ function hideHandles(){state.visible=false;handles.row.hidden=handles.column.hidden=addRow.hidden=addColumn.hidden=true;}
  function close(focus=false){state.menu=null;menu.hidden=palette.hidden=true;handles.row.setAttribute('aria-expanded','false');handles.column.setAttribute('aria-expanded','false');if(focus&&editable())RICH.editor.commands.focus();}
  function context(cell){
   if(!editable()||!cell||!root.contains(cell))return null;
@@ -49,15 +49,24 @@
   const node=resolved.node(tableDepth),pos=resolved.before(tableDepth),map=BlockEngine.TableMap.get(node),rect=map.findCell(resolved.before(cellDepth)-pos-1);
   return {node,pos,map,row:rect.top,column:rect.left,width:map.width,height:map.height,document:APP.activeId,editor};
  }
+ const resizeObserver=new ResizeObserver(()=>{if(state.visible&&!state.drag)requestAnimationFrame(()=>show(state.hover?.cell));});
+ function gridBounds(element){
+  const first=element.rows[0]?.getBoundingClientRect(),last=element.rows[element.rows.length-1]?.getBoundingClientRect();
+  if(!first||!last)return element.getBoundingClientRect();
+  const left=Math.min(first.left,last.left),right=Math.max(first.right,last.right);return {left,right,top:first.top,bottom:last.bottom,width:right-left,height:last.bottom-first.top};
+ }
  function show(cell){
   const c=context(cell);if(!c){hideHandles();return;}state.hover={cell,context:c};clearTimeout(state.hide);
   if(state.menu)return;
-  const r=cell.getBoundingClientRect(),table=cell.closest('table').getBoundingClientRect(),bounds=root.getBoundingClientRect();
+  state.visible=true;
+  const element=cell.closest('table');
+  if(state.observed!==element){resizeObserver.disconnect();resizeObserver.observe(element);if(element.tBodies[0])resizeObserver.observe(element.tBodies[0]);if(element.closest('.tableWrapper'))resizeObserver.observe(element.closest('.tableWrapper'));state.observed=element;}
+  const r=cell.getBoundingClientRect(),table=gridBounds(element),bounds=root.getBoundingClientRect();
   const top=Math.max(bounds.top,0),bottom=Math.min(bounds.bottom,innerHeight),left=Math.max(bounds.left,0),right=Math.min(bounds.right,innerWidth);
   handles.row.hidden=r.bottom<=top||r.top>=bottom||table.left<left+16||table.left>right;
   handles.column.hidden=r.right<=left||r.left>=right||table.top<top+16||table.top>bottom;
-  addRow.hidden=table.bottom<top||table.bottom+28>bottom||table.right<=left||table.left>=right;addRow.style.left=Math.max(left+2,table.left)+'px';addRow.style.top=(table.bottom+3)+'px';addRow.style.width=Math.max(20,Math.min(table.right,right-2)-Math.max(left+2,table.left))+'px';
-  addColumn.hidden=table.right<left||table.right+28>right||table.bottom<=top||table.top>=bottom;addColumn.style.left=(table.right+3)+'px';addColumn.style.top=Math.max(top+2,table.top)+'px';addColumn.style.height=Math.max(20,Math.min(table.bottom,bottom-2)-Math.max(top+2,table.top))+'px';
+  addRow.hidden=table.bottom<top||table.bottom+28>bottom||table.right<=left||table.left>=right;addRow.style.left=table.left+'px';addRow.style.top=(table.bottom+3)+'px';addRow.style.width=table.width+'px';addRow.style.clipPath=`inset(0 ${Math.max(0,table.right-right)}px 0 ${Math.max(0,left-table.left)}px)`;
+  addColumn.hidden=table.right<left||table.right+28>right||table.bottom<=top||table.top>=bottom;addColumn.style.left=(table.right+3)+'px';addColumn.style.top=table.top+'px';addColumn.style.height=table.height+'px';addColumn.style.clipPath=`inset(${Math.max(0,top-table.top)}px 0 ${Math.max(0,table.bottom-bottom)}px 0)`;
   handles.row.style.left=Math.max(4,table.left-20)+'px';handles.row.style.top=Math.max(top,Math.min(r.top+(r.height-26)/2,bottom-26))+'px';
   handles.column.style.left=Math.max(left,Math.min(r.left+(r.width-26)/2,right-26))+'px';handles.column.style.top=Math.max(top,table.top-20)+'px';
  }
@@ -136,7 +145,7 @@
   if(!['ArrowDown','ArrowUp'].includes(event.key))return;const panel=palette.hidden?menu:palette,buttons=[...panel.querySelectorAll('button:not(:disabled)')];if(!buttons.length)return;
   const index=buttons.indexOf(document.activeElement),next=index<0?(event.key==='ArrowDown'?0:buttons.length-1):(index+(event.key==='ArrowDown'?1:-1)+buttons.length)%buttons.length;event.preventDefault();event.stopImmediatePropagation();buttons[next].focus();
  },true);
- document.addEventListener('scroll',event=>{if(state.drag)return;if(menu.contains(event.target)||palette.contains(event.target))return;close();hideHandles();},true);
- addEventListener('resize',()=>{stopDrag();close();hideHandles();});document.addEventListener('studio:document-changed',()=>{stopDrag();close();hideHandles();});
+ document.addEventListener('scroll',event=>{if(state.drag)return;if(menu.contains(event.target)||palette.contains(event.target))return;close();if(state.visible)requestAnimationFrame(()=>show(state.hover?.cell));},true);
+ addEventListener('resize',()=>{stopDrag();close();if(state.visible)requestAnimationFrame(()=>show(state.hover?.cell));});document.addEventListener('studio:document-changed',()=>{stopDrag();close();hideHandles();});
  const previous=updateTableTools;updateTableTools=function(){previous();if(!editable()){stopDrag();close();hideHandles();}else if(state.menu)valid();else if(!state.drag&&root.contains(document.activeElement)){const c=engineTableContext();if(c){const cell=c.editor?.view?.nodeDOM?.(c.pos+1+c.map.map[c.row*c.width+c.column])||RICH.editor.view.nodeDOM(c.pos+1+c.map.map[c.row*c.width+c.column]);if(cell)show(cell);}}};
 })();

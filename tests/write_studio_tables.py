@@ -42,6 +42,16 @@ def run(base):
   with page.expect_download() as exported:f.locator('#exportHtml').click()
   html=Path(exported.value.path()).read_text();assert 'data-studio-color="red"' in html;assert '[data-studio-color="red"]{color:#c4554d}' in html;f.locator('#exportDialog [data-close]').click()
 
+  reset();table.locator('td').first.hover()
+  geometry="""()=>{const table=document.querySelector('.block-editor-content table'),first=table.rows[0].getBoundingClientRect(),last=table.rows[table.rows.length-1].getBoundingClientRect(),row=document.querySelector('#studioTableAddRow'),column=document.querySelector('#studioTableAddColumn');return Math.abs(parseFloat(row.style.width)-(first.right-first.left))<1&&Math.abs(parseFloat(column.style.height)-(last.bottom-first.top))<1&&Math.abs(parseFloat(row.style.left)-first.left)<1&&Math.abs(parseFloat(column.style.left)-first.right-3)<1}"""
+  frame.wait_for_function(geometry)
+  style=frame.add_style_tag(content='.block-editor-content td{height:75px!important}')
+  frame.wait_for_function(geometry);style.evaluate('(e)=>e.remove()');frame.wait_for_function(geometry)
+  page.set_viewport_size({'width':1350,'height':1000});frame.wait_for_function(geometry);page.set_viewport_size({'width':1500,'height':1100});frame.wait_for_function(geometry)
+  wide=frame.add_style_tag(content='.block-editor-content td:first-child,.block-editor-content th:first-child{min-width:1200px!important}')
+  frame.wait_for_function(geometry);table.evaluate('(e)=>e.scrollLeft=100');frame.wait_for_function(geometry);wide.evaluate('(e)=>e.remove()');frame.wait_for_function(geometry)
+  print('PASS edge bars match actual cell grid width/height after layout changes, viewport resizing and horizontal scrolling',flush=True)
+
   reset();table.locator('td').first.hover();f.locator('#studioTableAddRow').click();assert table.locator('tr').count()==4
   table.locator('td').first.hover();f.locator('#studioTableAddColumn').click();assert table.locator('tr').first.locator('td,th').count()==4
   def drag(axis,distance):

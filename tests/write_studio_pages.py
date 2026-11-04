@@ -16,7 +16,7 @@ def run(base):
   def reset(content):
    fr.evaluate('''text=>{currentDoc().content=text;$('#editor').value=text;RICH.markdown=null;renderEditor();setView('preview');resetEditHistory();historyRecord()}''',content)
   source='<details data-studio-toggle="true" data-level="2" open><summary>Projects</summary><div data-studio-toggle-body="true"><p><a href="#doc-'+target+'">Old title</a></p></div></details>'
-  reset(source);row=f.locator('.studio-page-row');expect(row.locator('.studio-page-link')).to_have_text('사업진행 계획(by 전략사업팀)');expect(row.locator('svg')).to_be_visible();assert row.bounding_box()['height']<=46;assert row.locator('svg').bounding_box()['width']==17;f.locator('summary').click();expect(row).to_be_hidden();f.locator('summary').click();expect(row).to_be_visible()
+  reset(source);row=f.locator('.studio-page-row');expect(row.locator('.studio-page-link')).to_have_text('사업진행 계획(by 전략사업팀)');expect(row.locator('svg')).to_be_visible();assert row.bounding_box()['height']<=46;assert row.locator('svg').bounding_box()['width']==17;f.locator('.studio-toggle-arrow').click();expect(row).to_be_hidden();f.locator('.studio-toggle-arrow').click();expect(row).to_be_visible()
   menu=f.locator('#studioPageMenu')
   def show():row.hover();row.get_by_label('페이지 메뉴 열기').click();expect(menu).to_be_visible()
   show();expect(row).to_have_class(re.compile('studio-page-selected'));menu.get_by_role('menuitem',name='☆ 즐겨찾기에 추가',exact=True).click();assert fr.evaluate('(id)=>APP.documents.find(d=>d.id===id).favorite',target) is True;show();expect(menu.get_by_role('menuitem',name='★ 즐겨찾기에서 제거',exact=True)).to_be_visible();page.keyboard.press('Escape');expect(menu).to_be_hidden()

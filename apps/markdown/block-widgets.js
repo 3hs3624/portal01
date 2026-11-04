@@ -243,6 +243,7 @@ function studioWidgetExtensions() {
           };
           document.addEventListener("studio:document-changed", refresh);
           document.addEventListener("studio:page-metadata-changed", refresh);
+          document.addEventListener("studio:editability-changed", render);
           return {
             dom,
             update(next) {
@@ -264,6 +265,7 @@ function studioWidgetExtensions() {
             destroy() {
               document.removeEventListener("studio:document-changed", refresh);
               document.removeEventListener("studio:page-metadata-changed", refresh);
+              document.removeEventListener("studio:editability-changed", render);
               objectURLs.forEach((url) => URL.revokeObjectURL(url));
             },
           };
@@ -1183,7 +1185,7 @@ function editDatabaseRow(data, row, update) {
   });
 }
 function renderStudioDatabase(dom, data, update, editable) {
-  data = { ...newStudioDatabase(), ...data };
+  data = STUDIO_DB_VIEWS.normalize({ ...newStudioDatabase(), ...data });
   const header = el("div", "studio-db-header"),
     title = el("strong", "", data.title),
     views = el("select");
@@ -1192,7 +1194,7 @@ function renderStudioDatabase(dom, data, update, editable) {
     views.append(new Option(label, id));
   views.value = data.view;
   views.disabled = !editable;
-  views.onchange = () => update({ ...data, view: views.value });
+  views.onchange = () => STUDIO_DB_VIEWS.layout(data, views.value, update);
   header.append(title, views);
   if (editable)
     header.append(
@@ -1202,6 +1204,7 @@ function renderStudioDatabase(dom, data, update, editable) {
       }),
     );
   dom.append(header);
+  STUDIO_DB_VIEWS.render(dom, data, update, editable);
   const toolbar = el("div", "studio-db-toolbar"),
     search = el("input"),
     sort = el("select");
@@ -1214,6 +1217,8 @@ function renderStudioDatabase(dom, data, update, editable) {
       new Option(f.name + " 오름차순", f.id),
       new Option(f.name + " 내림차순", "-" + f.id),
     );
+  const savedView=STUDIO_DB_VIEWS.current(data);
+  sort.value=(savedView.sortDir==='desc'?'-':'')+(savedView.sortField||'');
   toolbar.append(search, sort);
   if (editable)
     toolbar.append(
@@ -1260,7 +1265,7 @@ function renderStudioDatabase(dom, data, update, editable) {
   let calendarMonth = new Date().toISOString().slice(0, 7);
   const draw = () => {
     body.replaceChildren();
-    let rows = data.rows.filter((r) =>
+    let rows = data.rows.filter((r) => STUDIO_DB_VIEWS.filter(data, r) &&
       data.fields.some((f) =>
         String(r[f.id] ?? "")
           .toLowerCase()
@@ -1569,7 +1574,7 @@ function renderStudioDatabase(dom, data, update, editable) {
     }
     const table = el("table", "studio-db-table"),
       head = el("tr");
-    for (const field of data.fields) {
+    for (const field of STUDIO_DB_VIEWS.fields(data)) {
       const th = el("th", "", field.name);
       if (editable)
         th.ondblclick = () => {
@@ -1607,7 +1612,7 @@ function renderStudioDatabase(dom, data, update, editable) {
     table.append(head);
     for (const row of rows) {
       const tr = el("tr");
-      for (const field of data.fields) {
+      for (const field of STUDIO_DB_VIEWS.fields(data)) {
         const cell = el("td");
         if (field.type === "checkbox") {
           const input = el("input");
@@ -1644,7 +1649,12 @@ function renderStudioDatabase(dom, data, update, editable) {
         el("p", "studio-empty", "새 항목을 추가하거나 폼 보기에서 입력하세요."),
       );
   };
-  search.oninput = sort.onchange = draw;
+  search.oninput = draw;
+  sort.onchange = () => {
+    if (!editable) return draw();
+    const desc=sort.value.startsWith('-'),field=desc?sort.value.slice(1):sort.value;
+    update({...data,savedViews:data.savedViews.map(v=>v.id===data.activeView?{...v,sortField:field,sortDir:desc?'desc':'asc'}:v)});
+  };
   draw();
 }
 function studioSVG(tag, attrs) {

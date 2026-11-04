@@ -137,7 +137,7 @@ function studioExtensions() {
     addNodeView() {
       return ({ node, HTMLAttributes, getPos, editor }) => {
         const dom = document.createElement("details"),
-          summary = el("summary", "", node.attrs.summary),
+          summary = el("summary"),
           body = el("div");
         for (const [k, v] of Object.entries(HTMLAttributes))
           if (v !== null) dom.setAttribute(k, v);
@@ -145,13 +145,20 @@ function studioExtensions() {
         dom.dataset.level = node.attrs.level;
         dom.open = node.attrs.open;
         summary.contentEditable = "false";
-        summary.tabIndex = 0;
-        summary.title = "클릭하여 접기·펼치기 · 더블 클릭하여 제목 편집";
+        summary.tabIndex = -1;
+        const arrow = el('button', 'studio-toggle-arrow'), title = el('input', 'studio-toggle-title');
+        arrow.type = 'button'; arrow.setAttribute('aria-label', '하위 블록 접기·펼치기');
+        arrow.innerHTML = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="m5 3 5 5-5 5" fill="currentColor"/></svg>';
+        title.type = 'text'; title.maxLength = 200; title.setAttribute('aria-label', '토글 제목');
+        title.placeholder = '토글 제목'; title.value = node.attrs.summary;
+        summary.append(arrow, title);
         body.dataset.studioToggleBody = "true";
         dom.append(summary, body);
         let current = node;
         const sync = () => {
-          summary.textContent = current.attrs.summary;
+          if (title.value !== current.attrs.summary) title.value = current.attrs.summary;
+          title.readOnly = !editor.isEditable;
+          arrow.setAttribute('aria-expanded', String(current.attrs.open));
           dom.dataset.level = current.attrs.level;
           for (const [key, attribute] of [
             ['blockId', 'data-block-id'], ['studioColor', 'data-studio-color'],
@@ -181,29 +188,26 @@ function studioExtensions() {
             studioEdited: new Date().toISOString(),
           }));
         };
-        summary.onclick = (event) => {
-          event.preventDefault();
-          if (event.detail < 2) activate();
+        arrow.onclick = event => {event.preventDefault();activate();};
+        summary.onclick = event => {event.preventDefault();};
+        const commitTitle = event => {
+          if (event?.isComposing || !editor.isEditable) return;
+          const pos = getPos(), actual = typeof pos === 'number' && editor.state.doc.nodeAt(pos);
+          if (actual?.type !== current.type || actual.attrs.summary === title.value) return;
+          HISTORY.area = 'preview';
+          editor.view.dispatch(editor.state.tr.setNodeMarkup(pos, undefined, {...actual.attrs, summary:title.value, studioEdited:new Date().toISOString()}));
         };
-        summary.onkeydown = (event) => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            if (!event.repeat) activate();
-          }
-        };
-        summary.ondblclick = (e) => {
-          e.preventDefault();
-          if (!editor.isEditable) return;
-          const value = prompt("토글 제목", summary.textContent);
-          if (value !== null && value.trim()) {
-            const pos = getPos();
-            editor.view.dispatch(
-              editor.state.tr.setNodeMarkup(pos, undefined, {
-                ...editor.state.doc.nodeAt(pos).attrs,
-                summary: value.trim(),
-              }),
-            );
-          }
+        title.oninput = commitTitle; title.oncompositionend = commitTitle;
+        title.onfocus = () => {historyBoundary();const b=currentStudioBlock(current.attrs.blockId);if(b){activateBlock(b.id);updateBlockControls(b);}};
+        title.onblur = () => historyBoundary();
+        title.onkeydown = event => {
+          if (event.isComposing) return;
+          if (event.key === 'Enter') {
+            event.preventDefault();if (!editor.isEditable) return;
+            commitTitle();const pos=getPos(),actual=editor.state.doc.nodeAt(pos);
+            if (!actual.attrs.open) editor.view.dispatch(editor.state.tr.setNodeMarkup(pos, undefined, {...actual.attrs,open:true}));
+            editor.chain().focus().setTextSelection(BlockEngine.TextSelection.near(editor.state.doc.resolve(pos+1)).from).run();
+          } else if (event.key === 'Escape') {event.preventDefault();title.blur();arrow.focus();}
         };
         return {
           dom, contentDOM: body,
@@ -212,8 +216,8 @@ function studioExtensions() {
             current = next; sync(); return true;
           },
           stopEvent: (event) => summary.contains(event.target),
-          ignoreMutation: (mutation) => mutation.type === "attributes" &&
-            (mutation.target === dom || mutation.target === summary),
+          ignoreMutation: mutation => mutation.type === 'attributes' &&
+            (mutation.target === dom || summary.contains(mutation.target)),
         };
       };
     },
@@ -396,7 +400,7 @@ const SLASH = [
 ];
 let slashState = null;
 function currentStudioBlock(id = BLOCK_UI.id || RICH.activeBlock) {
-  return richTopBlocks().find((b) => b.id === id);
+  return richBlocks().find((b) => b.id === id);
 }
 function blockUIValid() {
   return (
@@ -468,7 +472,7 @@ function updateBlockControls(block) {
   const dom = RICH.editor.view.nodeDOM(b.pos);
   if (!dom?.getBoundingClientRect) return;
   if (dom.classList.contains("studio-page-row")) {blockControls.hidden = true; return;}
-  const r = dom.getBoundingClientRect(),
+  const r = richBlockRect(b),
     bounds = $("#preview").getBoundingClientRect(),
     visibleTop = Math.max(bounds.top, 0);
   if (r.bottom < visibleTop || r.top > Math.min(bounds.bottom, innerHeight)) {
@@ -498,7 +502,7 @@ function updateBlockControls(block) {
   )
     anchor = selection.from;
   let center = r.top + Math.min(r.height, 28) / 2;
-  if (!b.node.isAtom) {
+  if (!b.node.isAtom && b.node.type.name !== "studioToggle") {
     const caret = RICH.editor.view.coordsAtPos(anchor);
     center = (caret.top + caret.bottom) / 2;
   }
@@ -617,7 +621,7 @@ function convertStudioBlock(command) {
         summary: b.node.textContent || "토글 제목",
         level: Number(command.slice(6)) || 0,
       },
-      studioParagraph("내용을 입력하세요."),
+      studioParagraph(),
     );
   if (node) {
     closeBlockMenus();
@@ -1197,8 +1201,10 @@ function restoreBlockLink() {
 addEventListener("hashchange", restoreBlockLink);
 addEventListener("DOMContentLoaded", () => setTimeout(restoreBlockLink, 100));
 function showMoveMenu() {
-  const menu = submenu("옮기기"),
-    id = BLOCK_UI.id;
+  const menu = submenu("옮기기"), id = BLOCK_UI.id;
+  const selected = currentStudioBlock(id), siblings = richSiblingBlocks(id);
+  if (selected?.parentPos >= 0) menu.append(menuButton('상위 수준으로 내어쓰기', () => {closeBlockMenus();indentRichBlock(id, true);}, '←', 'Shift+Tab'));
+  if (siblings[selected?.index - 1]?.node.type.name === 'studioToggle') menu.append(menuButton('이전 토글 아래로 들여쓰기', () => {closeBlockMenus();indentRichBlock(id);}, '→', 'Tab'));
   menu.append(
     menuButton("문서 맨 위로", () => {
       closeBlockMenus();
@@ -1207,7 +1213,7 @@ function showMoveMenu() {
   );
   menu.append(
     menuButton("문서 맨 아래로", () => {
-      const index = richTopBlocks().length - 1;
+      const index = richSiblingBlocks(id).length - 1;
       closeBlockMenus();
       mutateRichBlocks("move", id, index);
     }),
@@ -1597,16 +1603,12 @@ dragBlock.onpointerdown = (event) => {
     const bounds = $("#preview").getBoundingClientRect();
     if (e.clientY < bounds.top + 35) $("#preview").scrollTop -= 16;
     if (e.clientY > bounds.bottom - 35) $("#preview").scrollTop += 16;
-    const blocks = richTopBlocks(),
-      found = blocks
-        .map((b) => ({
-          b,
-          r: RICH.editor.view.nodeDOM(b.pos)?.getBoundingClientRect(),
-        }))
-        .filter((o) => o.r);
+    const blocks = richBlocks(),
+      found = blocks.map(b => ({b, r:richBlockRect(b)})).filter(o => o.r?.height && o.b.id !== id &&
+        !(o.b.pos > currentStudioBlock(id).pos && o.b.pos < currentStudioBlock(id).pos + currentStudioBlock(id).node.nodeSize));
     const hit = found.find((o) => e.clientY < o.r.bottom) || found.at(-1);
     if (!hit) return;
-    target = { id: hit.b.id, after: e.clientY > hit.r.top + hit.r.height / 2 };
+    target = { id: hit.b.id, after: e.clientY > hit.r.top + hit.r.height / 2, inside:hit.b.node.type.name === "studioToggle" && e.clientX > hit.r.left + 28 };
     if (!line) {
       line = el("div", "studio-drop-line");
       document.body.append(line);
@@ -1626,12 +1628,7 @@ dragBlock.onpointerdown = (event) => {
       return;
     }
     if (!chosen || chosen.id === id) return;
-    const blocks = richTopBlocks(),
-      source = blocks.findIndex((b) => b.id === id),
-      dest = blocks.findIndex((b) => b.id === chosen.id);
-    let next = dest + (chosen.after ? 1 : 0);
-    if (source < next) next--;
-    mutateRichBlocks("move", id, next);
+    moveRichBlock(id, chosen.id, chosen.inside ? 'inside' : chosen.after ? 'after' : 'before');
   };
   dragBlock.onpointercancel = cleanup;
 };
@@ -1643,17 +1640,13 @@ $("#preview").addEventListener("mousemove", (e) => {
   });
   if (hit)
     updateBlockControls(
-      richTopBlocks().find(
-        (b) => hit.pos >= b.pos && hit.pos < b.pos + b.node.nodeSize,
-      ),
+      richBlockAt(e.target, hit.pos),
     );
 });
 $("#preview").addEventListener("contextmenu", (e) => {
   if (!RICH.editor?.isEditable || APP.view === "edit") return;
   const hit = RICH.editor.view.posAtCoords({ left: e.clientX, top: e.clientY });
-  const b = richTopBlocks().find(
-    (b) => hit && hit.pos >= b.pos && hit.pos < b.pos + b.node.nodeSize,
-  );
+  const b = hit && richBlockAt(e.target, hit.pos);
   if (!b) return;
   e.preventDefault();
   RICH.editor.commands.setTextSelection(
@@ -1682,6 +1675,9 @@ addEventListener("resize", () => {
 });
 function handleRichKey(event) {
   if (event.isComposing) return false;
+  if (event.key === 'Tab' && !event.ctrlKey && !event.metaKey && !event.altKey && !RICH.editor.isActive('codeBlock') && !RICH.editor.isActive('table') && (!slashState || slashMenu.hidden)) {
+    const b=activeRichBlock();if(b && indentRichBlock(b.id, event.shiftKey)){event.preventDefault();return true;}
+  }
   if (slashState && !slashMenu.hidden) {
     if (["ArrowDown", "ArrowUp"].includes(event.key)) {
       event.preventDefault();
