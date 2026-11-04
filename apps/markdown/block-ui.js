@@ -149,22 +149,51 @@ function studioExtensions() {
         summary.title = "클릭하여 접기·펼치기 · 더블 클릭하여 제목 편집";
         body.dataset.studioToggleBody = "true";
         dom.append(summary, body);
-        dom.addEventListener("toggle", () => {
+        let current = node;
+        const sync = () => {
+          summary.textContent = current.attrs.summary;
+          dom.dataset.level = current.attrs.level;
+          for (const [key, attribute] of [
+            ['blockId', 'data-block-id'], ['studioColor', 'data-studio-color'],
+            ['studioBackground', 'data-studio-background'], ['studioList', 'data-studio-list'],
+            ['studioEdited', 'data-studio-edited'], ['studioNotes', 'data-studio-notes'],
+          ]) {
+            const value = current.attrs[key];
+            if (value) dom.setAttribute(attribute, key === 'studioNotes' ? encodeURIComponent(value) : value);
+            else dom.removeAttribute(attribute);
+          }
+          dom.open = current.attrs.open;
+          summary.setAttribute("aria-expanded", String(dom.open));
+        };
+        sync();
+        const activate = () => {
           const pos = getPos();
-          if (
-            typeof pos === "number" &&
-            editor.state.doc.nodeAt(pos)?.type.name === "studioToggle" &&
-            editor.state.doc.nodeAt(pos).attrs.open !== dom.open
-          )
-            editor.view.dispatch(
-              editor.state.tr.setNodeMarkup(pos, undefined, {
-                ...editor.state.doc.nodeAt(pos).attrs,
-                open: dom.open,
-              }),
-            );
-        });
+          if (typeof pos !== "number") return;
+          const actual = editor.state.doc.nodeAt(pos);
+          if (actual?.type !== current.type) return;
+          if (!editor.isEditable) {
+            dom.open = !dom.open;
+            summary.setAttribute("aria-expanded", String(dom.open));
+            return;
+          }
+          editor.view.dispatch(editor.state.tr.setNodeMarkup(pos, undefined, {
+            ...actual.attrs, open: !actual.attrs.open,
+            studioEdited: new Date().toISOString(),
+          }));
+        };
+        summary.onclick = (event) => {
+          event.preventDefault();
+          if (event.detail < 2) activate();
+        };
+        summary.onkeydown = (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            if (!event.repeat) activate();
+          }
+        };
         summary.ondblclick = (e) => {
           e.preventDefault();
+          if (!editor.isEditable) return;
           const value = prompt("토글 제목", summary.textContent);
           if (value !== null && value.trim()) {
             const pos = getPos();
@@ -176,7 +205,16 @@ function studioExtensions() {
             );
           }
         };
-        return { dom, contentDOM: body };
+        return {
+          dom, contentDOM: body,
+          update(next) {
+            if (next.type !== current.type) return false;
+            current = next; sync(); return true;
+          },
+          stopEvent: (event) => summary.contains(event.target),
+          ignoreMutation: (mutation) => mutation.type === "attributes" &&
+            (mutation.target === dom || mutation.target === summary),
+        };
       };
     },
   });
