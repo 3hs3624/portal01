@@ -116,6 +116,7 @@ SLASH.sort(
       : 0),
 );
 const DB_VIEWS = {
+  chart: "차트",
   table: "표",
   board: "보드",
   gallery: "갤러리",
@@ -1121,12 +1122,12 @@ function updateStudioSource(source, data) {
   document.dispatchEvent(new Event("studio:document-changed"));
 }
 function databaseFieldInput(field, value) {
-  const input = el(field.type === "select" ? "select" : "input");
-  if (field.type === "select") {
-    for (const text of ["시작 전", "진행 중", "완료"])
-      input.append(new Option(text, text));
-    if (value && !["시작 전", "진행 중", "완료"].includes(value))
-      input.append(new Option(value, value));
+  const input = el(["select","page"].includes(field.type) ? "select" : "input");
+  if (field.type === "page") {
+    input.append(new Option('연결 없음',''));for(const doc of APP.documents)input.append(new Option(doc.title,doc.id));
+  } else if (field.type === "select") {
+    const choices=[...new Set([...(Array.isArray(field.options)?field.options:[]),"시작 전", "진행 중", "완료",...(value?[String(value)]:[])])];
+    for (const text of choices) input.append(new Option(text,text));
   } else
     input.type =
       field.type === "number"
@@ -1141,20 +1142,29 @@ function databaseFieldInput(field, value) {
   input.setAttribute("aria-label", field.name);
   return input;
 }
-function editDatabaseRow(data, row, update) {
+function editDatabaseRow(data, row, update, editable = true) {
   openStudioDialog(row ? "항목 편집" : "새 항목", (dialog) => {
     const fields = [];
     for (const field of data.fields) {
       const label = el("label", "", field.name),
         input = databaseFieldInput(field, row?.[field.id]);
       if (field.type === "number") input.step = "any";
+      input.disabled = !editable;
       label.append(input);
       dialog.append(label);
       fields.push([field, input]);
     }
-    dialog.append(
+    let parentInput=null;
+    if (data.savedViews?.find(v=>v.id===data.activeView)?.subItems) {
+      parentInput=el('select');parentInput.setAttribute('aria-label','상위 항목');parentInput.append(new Option('없음 (최상위)',''));
+      const descendant=id=>{const seen=new Set();let current=id;while(current&&!seen.has(current)){if(current===row?.id)return true;seen.add(current);current=data.rows.find(r=>r.id===current)?.parentId;}return false;};
+      for(const candidate of data.rows)if(!descendant(candidate.id))parentInput.append(new Option(candidate.title,candidate.id));parentInput.value=row?.parentId||'';parentInput.disabled=!editable;const label=el('label','','상위 항목');label.append(parentInput);dialog.append(label);
+    }
+    if (editable) dialog.append(
       widgetButton("저장", () => {
-        const item = { id: row?.id || crypto.randomUUID() };
+        if (!RICH.editor?.isEditable || APP.loading || APP.externalDraft || ST.busy) return toast('작업공간 상태를 확인한 뒤 다시 저장하세요.', true);
+        const now = new Date().toISOString();
+        const item = { ...row, id: row?.id || crypto.randomUUID(), createdAt:row?.createdAt||now, updatedAt:now };
         for (const [field, input] of fields)
           item[field.id] =
             field.type === "checkbox"
@@ -1164,6 +1174,7 @@ function editDatabaseRow(data, row, update) {
                   ? ""
                   : Number(input.value)
                 : input.value;
+        if (parentInput) item.parentId=parentInput.value;
         if (!String(item.title || "").trim())
           return toast("이름을 입력하세요.", true);
         update({
@@ -1175,9 +1186,11 @@ function editDatabaseRow(data, row, update) {
         studioDialog.close();
       }),
     );
-    if (row)
+    if (row && editable)
       dialog.append(
         widgetButton("항목 삭제", () => {
+          if (!RICH.editor?.isEditable || APP.loading || APP.externalDraft || ST.busy) return;
+          if (!confirm('이 데이터베이스 항목을 삭제할까요?')) return;
           update({ ...data, rows: data.rows.filter((r) => r.id !== row.id) });
           studioDialog.close();
         }),
@@ -1186,16 +1199,21 @@ function editDatabaseRow(data, row, update) {
 }
 function renderStudioDatabase(dom, data, update, editable) {
   data = STUDIO_DB_VIEWS.normalize({ ...newStudioDatabase(), ...data });
+  data=STUDIO_DB_VIEWS.applyRoute(data,dom);
+  const sourceEditable=editable;editable=editable&&!data.locked;
   const header = el("div", "studio-db-header"),
     title = el("strong", "", data.title),
     views = el("select");
   views.setAttribute("aria-label", "데이터베이스 보기");
   for (const [id, label] of Object.entries(DB_VIEWS))
     views.append(new Option(label, id));
+  title.hidden = STUDIO_DB_VIEWS.current(data).showTitle === false;
   views.value = data.view;
   views.disabled = !editable;
   views.onchange = () => STUDIO_DB_VIEWS.layout(data, views.value, update);
   header.append(title, views);
+  if(sourceEditable)header.append(widgetButton(data.locked?'잠금 해제':'데이터베이스 잠금',()=>update({...data,locked:!data.locked})));
+  if(data.locked){const status=el('small','','잠겨 있음 · 보기와 검색은 사용할 수 있습니다.');status.setAttribute('role','status');header.append(status);}
   if (editable)
     header.append(
       widgetButton("이름 변경", () => {
@@ -1235,6 +1253,7 @@ function renderStudioDatabase(dom, data, update, editable) {
             ["select", "상태"],
             ["checkbox", "체크박스"],
             ["url", "URL"],
+            ["page", "페이지 연결"],
           ])
             type.append(new Option(name, id));
           dialog.append(
@@ -1242,17 +1261,8 @@ function renderStudioDatabase(dom, data, update, editable) {
             type,
             widgetButton("추가", () => {
               if (!input.value.trim()) return input.focus();
-              update({
-                ...data,
-                fields: [
-                  ...data.fields,
-                  {
-                    id: "field-" + crypto.randomUUID(),
-                    name: input.value.trim(),
-                    type: type.value,
-                  },
-                ],
-              });
+              const field={id:'field-'+crypto.randomUUID(),name:input.value.trim(),type:type.value};
+              update({...data,fields:[...data.fields,field],savedViews:data.savedViews.map(v=>v.id===data.activeView?{...v,visibleFields:[...(v.visibleFields||data.fields.map(f=>f.id)),field.id]}:v)});
               studioDialog.close();
             }),
           );
@@ -1284,8 +1294,9 @@ function renderStudioDatabase(dom, data, update, editable) {
           (desc ? -1 : 1),
       );
     }
+    if (STUDIO_DB_LAYOUT.render(body, data, rows, update, editable)) return;
     const edit = (row) => {
-      if (editable) editDatabaseRow(data, row, update);
+      editDatabaseRow(data, row, update, editable);
     };
     if (data.view === "form") {
       const form = el("form", "studio-db-form"),

@@ -1,4 +1,4 @@
-const appPageVersions={"markdown":"ba91c5417484","insight":"20d3c0da66ad","projects":"d0676f2e07e6"};
+const appPageVersions={"markdown":"959dc440c9c1","insight":"20d3c0da66ad","projects":"d0676f2e07e6"};
 'use strict';
 const $=s=>document.querySelector(s);
 let modules=[],summaries={};
@@ -147,7 +147,10 @@ function appFrameSource(id){
  const source=new URL('/portal01/apps/'+id+'/',location.origin);source.searchParams.set('v',appPageVersions[id]);
  if(id==='markdown'){
   const params=new URLSearchParams(location.search),doc=params.get('studioDoc'),block=params.get('studioBlock');
-  if(doc&&/^[A-Za-z0-9_-]{1,128}$/.test(doc))source.hash=block&&/^[A-Za-z0-9_-]{1,128}$/.test(block)?'block='+encodeURIComponent(doc)+'&id='+encodeURIComponent(block):'doc='+encodeURIComponent(doc);
+  if(doc&&/^[A-Za-z0-9_-]{1,128}$/.test(doc)){
+   source.hash=block&&/^[A-Za-z0-9_-]{1,128}$/.test(block)?'block='+encodeURIComponent(doc)+'&id='+encodeURIComponent(block):'doc='+encodeURIComponent(doc);
+   const view=params.get('studioDbView');if(block&&view&&/^[A-Za-z0-9_-]{1,128}$/.test(view))source.hash+='&view='+encodeURIComponent(view);
+  }
  }
  return source.href;
 }

@@ -1267,6 +1267,7 @@ function showMoveMenu() {
 const studioDialog = el("dialog", "studio-dialog");
 document.body.append(studioDialog);
 function openStudioDialog(title, build) {
+  studioDialog.classList.remove('studio-db-record-dialog');delete studioDialog.dataset.recordMode;
   studioDialog.replaceChildren();
   const header = el("div", "studio-dialog-header");
   header.append(
