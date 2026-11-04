@@ -35,11 +35,33 @@ def run(base,probe=False):
   f.locator('#f-kw').fill('Alpha');f.locator('#btn-search').click()
   with page.expect_download() as info:f.locator('#btn-xlsx').click()
   filtered=load_workbook(BytesIO(Path(info.value.path()).read_bytes())).active;assert filtered.max_row==13;assert all('Alpha' in filtered.cell(i,2).value for i in range(2,14));f.locator('#f-kw').fill('no-matching-project');f.locator('#btn-search').click();f.locator('#btn-xlsx').click();expect(f.locator('#toast')).to_contain_text('내려받을 프로젝트가 없습니다');expect(f.locator('#btn-xlsx')).to_be_enabled();print('PASS current filters and empty-result feedback',flush=True)
-  f.locator('#f-kw').fill('');f.locator('#btn-search').click();f.locator('#btn-new').click();f.locator('#p-name').fill('Excel detail regression');f.locator('#p-client').fill('Local fixture');f.locator('#p-start').fill('2026-11-01');f.locator('#p-end').fill('2026-12-31')
+  f.locator('#f-kw').fill('');f.locator('#btn-search').click();f.locator('#btn-new').click();f.locator('#p-name').fill('Excel detail regression');f.locator('#p-client').fill('Local fixture');f.locator('#p-start').fill('2026-02-24' if '--sample' in sys.argv else '2026-11-01');f.locator('#p-end').fill('2026-11-30' if '--sample' in sys.argv else '2026-12-31')
   with c.expect_page() as event:f.locator('#pm-ok').click()
   popup=event.value;popup.on('pageerror',lambda e:errors.append(str(e)));popup.on('console',lambda m:violations.append(m.text) if 'Content Security Policy' in m.text else None);popup.locator('[data-view=excel]').wait_for(timeout=15000);popup.locator('[data-view=excel]').click()
   with popup.expect_download() as info:popup.locator('#btn-xlsx').click()
-  detail=load_workbook(BytesIO(Path(info.value.path()).read_bytes()));assert {'WBS','기준정보','달력'}.issubset(detail.sheetnames);assert detail['WBS'].max_row>12;assert detail['WBS'].column_dimensions['M'].hidden;assert any(cell.data_type=='f' for row in detail['WBS'] for cell in row);assert detail['WBS']['B2'].value=='Excel detail regression';cached=load_workbook(BytesIO(Path(info.value.path()).read_bytes()),data_only=True);assert cached['기준정보']['B3'].value=='Excel detail regression';assert cached['WBS']['D4'].value.year==2026;assert not errors,errors;assert not violations,violations;assert not external,external;print('PASS detailed WBS .xlsx from real project popup, three worksheets, formulas, hidden stable IDs, project metadata, local library only, no CSP violations or browser errors',flush=True);popup.close();browser.close()
+  detail=load_workbook(BytesIO(Path(info.value.path()).read_bytes()));assert {'WBS','기준정보','달력'}.issubset(detail.sheetnames);assert detail['WBS'].max_row>12;assert detail['WBS'].column_dimensions['M'].hidden;assert any(cell.data_type=='f' for row in detail['WBS'] for cell in row);assert detail['WBS']['B2'].value=='Excel detail regression';cached=load_workbook(BytesIO(Path(info.value.path()).read_bytes()),data_only=True);assert cached['기준정보']['B3'].value=='Excel detail regression';assert cached['WBS']['D4'].value.year==2026;assert not errors,errors;assert not violations,violations;assert not external,external;print('PASS detailed WBS .xlsx from real project popup, three worksheets, formulas, hidden stable IDs, project metadata, local library only, no CSP violations or browser errors',flush=True);
+  # Upload/edit/download through the actual dashboard; formulas are rebuilt, never replaced with cached values.
+  import tempfile
+  with tempfile.TemporaryDirectory() as tmp:
+   source=Path(sys.argv[sys.argv.index('--sample')+1]) if '--sample' in sys.argv else Path(tmp)/'sample.xlsx'
+   if '--sample' not in sys.argv:
+    generated=load_workbook(BytesIO(Path(info.value.path()).read_bytes()));task=next(r for r in range(13,generated['WBS'].max_row+1) if generated['WBS'].cell(r,1).value=='Y');generated['WBS'].cell(task,11).value=0.25;generated.save(source)
+   expected=load_workbook(source)
+   popup.locator('#xfile').set_input_files(source);expect(popup.locator('#imp-apply')).to_be_visible(timeout=15000);popup.locator('input[name=imp-mode][value=full]').check();popup.locator('#imp-apply').click();popup.locator('[data-view=excel]').click()
+   with popup.expect_download() as event:popup.locator('#btn-xlsx').click()
+   raw=Path(event.value.path()).read_bytes();actual=load_workbook(BytesIO(raw));formulas=lambda sh:{c.coordinate:c.value for row in sh for c in row if c.data_type=='f'}
+   assert formulas(expected['WBS'])==formulas(actual['WBS']);assert formulas(expected['기준정보'])==formulas(actual['기준정보']);assert actual['WBS'].max_column==expected['WBS'].max_column
+   for sr,ar in zip(list(expected['WBS'].rows)[12:],list(actual['WBS'].rows)[12:]):
+    assert [sr[i].value for i in [0,1,2,3]]==[ar[i].value for i in [0,1,2,3]]
+    if sr[0].value=='Y':
+     for i in [5,6,7,8,10]:assert sr[i].value==ar[i].value,(sr[i].coordinate,sr[i].value,ar[i].value)
+   assert actual['WBS'].column_dimensions['M'].hidden;assert len(actual['WBS'].conditional_formatting)>0;assert actual.calculation.fullCalcOnLoad
+   task=next(r for r in range(13,actual['WBS'].max_row+1) if actual['WBS'].cell(r,1).value=='Y');actual['WBS'].cell(task,11).value=0.375;edited=Path(tmp)/'edited.xlsx';actual.save(edited)
+   popup.locator('#xfile').set_input_files(edited);expect(popup.locator('#imp-apply')).to_be_visible(timeout=15000);expect(popup.locator('input[name=imp-mode][value=progress]')).to_be_checked();popup.locator('#imp-apply').click();popup.locator('[data-view=excel]').click()
+   with popup.expect_download() as event:popup.locator('#btn-xlsx').click()
+   updated=load_workbook(BytesIO(Path(event.value.path()).read_bytes()));assert updated['WBS'].cell(task,11).value==0.375;assert formulas(updated['WBS'])==formulas(actual['WBS']);assert not errors,errors;assert not violations,violations
+   print('PASS upload → full replacement → download → progress edit → reupload → download; exact WBS/reference formulas, task dates/progress, weekly columns, hidden IDs, conditional formatting and recalculation',flush=True)
+  popup.close();browser.close()
 
 if __name__=='__main__':
  s=ThreadingHTTPServer(('127.0.0.1',0),StudioHandler);Thread(target=s.serve_forever,daemon=True).start()

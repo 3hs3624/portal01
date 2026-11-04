@@ -9,3 +9,5 @@ ExcelJS 4.4.0 is served from this directory for the project list and WBS detail 
 The WBS detail template is gzip/base64 encoded in `../index.html`. If its script changes, update the matching inline hash in the parent Content Security Policy together with the list script hash. Do not enable external scripts or unsafe inline execution.
 
 Verification from repository root: `python3 tests/projects_excel.py` (Playwright, Chromium and openpyxl). It downloads real workbooks, checks current filters and all pages, tests library-load retry, and verifies WBS worksheets and formulas without external requests.
+
+Dashboard uploads normalize workbook bytes into the ExcelJS window’s Uint8Array type; this supports the separately opened same-origin dashboard. The export always rebuilds WBS calculation formulas and requests full recalculation. Optional sample parity regression: `python3 tests/projects_excel.py --sample /path/to/sample.xlsx`. It compares every WBS/reference formula and task date/progress after upload/download, then tests an edited progress round trip.
