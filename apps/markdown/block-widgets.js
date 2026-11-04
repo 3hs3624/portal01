@@ -256,8 +256,21 @@ function studioWidgetExtensions() {
                 next.attrs.studioBackground !==
                   current.attrs.studioBackground ||
                 next.attrs.studioNotes !== current.attrs.studioNotes;
+              let titleOnly=false;
+              if(current.attrs.kind==='database'&&next.attrs.kind==='database'&&current.attrs.data!==next.attrs.data&&current.attrs.blockId===next.attrs.blockId&&current.attrs.studioColor===next.attrs.studioColor&&current.attrs.studioBackground===next.attrs.studioBackground&&current.attrs.studioNotes===next.attrs.studioNotes){
+                try{
+                  const before=JSON.parse(current.attrs.data),after=JSON.parse(next.attrs.data);
+                  if(before.title!==after.title){
+                    const previous=STUDIO_DB_VIEWS.normalize({...newStudioDatabase(),...before}),updated=STUDIO_DB_VIEWS.normalize({...newStudioDatabase(),...after});
+                    previous.title=updated.title;
+                    const canonical=value=>Array.isArray(value)?value.map(canonical):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(key=>[key,canonical(value[key])])):value;
+                    titleOnly=JSON.stringify(canonical(previous))===JSON.stringify(canonical(updated))&&STUDIO_DB_UI.syncTitle(dom,updated);
+                  }
+                }catch{}
+              }
               current = next;
-              if (changed) render();
+              if(titleOnly)dom.dataset.studioData=encodeURIComponent(current.attrs.data);
+              else if (changed) render();
               return true;
             },
             stopEvent: (e) =>
@@ -304,13 +317,12 @@ function newStudioDatabase(view = "table") {
     title: "새 데이터베이스",
     view,
     fields: [
-      { id: "title", name: "이름", type: "text" },
-      { id: "status", name: "상태", type: "select" },
-      { id: "date", name: "날짜", type: "date" },
-      { id: "end", name: "종료일", type: "date" },
-      { id: "value", name: "값", type: "number" },
-      { id: "lat", name: "위도", type: "number" },
-      { id: "lng", name: "경도", type: "number" },
+      { id: 'title', name: '이름', type: 'text' },
+      { id: 'status', name: '상태', type: 'select' },
+      { id: 'date', name: '날짜', type: 'date' },
+      ...(['timeline'].includes(view)?[{id:'end',name:'종료일',type:'date'}]:[]),
+      ...(['chart','bar','horizontal','line','donut','number','dashboard'].includes(view)?[{id:'value',name:'값',type:'number'}]:[]),
+      ...(view==='map'?[{id:'lat',name:'위도',type:'number'},{id:'lng',name:'경도',type:'number'}]:[]),
     ],
     rows: [],
   };
@@ -1270,6 +1282,7 @@ function renderStudioDatabase(dom, data, update, editable) {
       ),
     );
   dom.append(toolbar);
+  STUDIO_DB_UI.enhance(dom,data,update,editable,sourceEditable,{header,title,views,toolbar,search,sort});
   const body = el("div", "studio-db-body");
   dom.append(body);
   let calendarMonth = new Date().toISOString().slice(0, 7);

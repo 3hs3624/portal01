@@ -14,9 +14,10 @@ const STUDIO_DB_VIEWS=(()=>{
    const visible=Array.isArray(v.visibleFields)?v.visibleFields.filter(id=>keys.includes(id)):keys;
    return {...STUDIO_DB_LAYOUT.defaults,...v,initialLoad:[10,25,50,100].includes(v.initialLoad)?v.initialLoad:10,name:String(v.name||'보기').slice(0,40),visibleFields:visible.length?visible:keys,filterField:keys.includes(v.filterField)?v.filterField:'',filterValue:String(v.filterValue||'').slice(0,200),sortField:keys.includes(v.sortField)?v.sortField:'',sortDir:v.sortDir==='desc'?'desc':'asc'};
   });
-  const views=valid.length?valid:[{id:'all',name:data.title||'전체',layout:data.view||'table',visibleFields:data.fields.map(f=>f.id),filterField:'',filterOp:'contains',filterValue:'',sortField:'',sortDir:'asc'}];
+  const views=valid.length?valid:[{id:'all',name:DB_VIEWS[data.view]||'표',layout:data.view||'table',visibleFields:data.fields.map(f=>f.id),filterField:'',filterOp:'contains',filterValue:'',sortField:'',sortDir:'asc'}];
   const enriched=views.map(v=>({...STUDIO_DB_LAYOUT.defaults,...v}));const active=enriched.find(v=>v.id===data.activeView)||enriched[0];return {...data,savedViews:enriched,activeView:active.id,view:data.view||active.layout};
  }
+ const clearRoute=dom=>routeViews.delete(APP.activeId+':'+dom.dataset.blockId);
  const current=data=>data.savedViews.find(v=>v.id===data.activeView);
  function layout(data,value,update){routeViews.clear();update({...data,view:value,savedViews:data.savedViews.map(v=>v.id===data.activeView?{...v,layout:value}:v)});}
  function render(dom,data,update,editable){
@@ -41,5 +42,5 @@ const STUDIO_DB_VIEWS=(()=>{
  }
  function filter(data,row){const v=current(data);if(!v.filterField)return true;const field=data.fields.find(f=>f.id===v.filterField);if(!field)return true;const raw=row[v.filterField],a=String(raw??'').toLocaleLowerCase(),b=String(v.filterValue||'').toLocaleLowerCase();switch(v.filterOp){case'equals':return a===b;case'notEquals':return a!==b;case'empty':return raw===undefined||raw===null||raw==='';case'notEmpty':return raw!==undefined&&raw!==null&&raw!=='';case'before':if(raw===undefined||raw===null||raw==='')return false;return field.type==='number'?Number(raw)<Number(b):a<b;case'after':if(raw===undefined||raw===null||raw==='')return false;return field.type==='number'?Number(raw)>Number(b):a>b;default:return a.includes(b);}}
  function fields(data){const ids=current(data).visibleFields;return ids?data.fields.filter(f=>ids.includes(f.id)):data.fields;}
- return {normalize,current,layout,render,filter,fields,applyRoute};
+ return {normalize,current,layout,render,filter,fields,applyRoute,clearRoute};
 })();
