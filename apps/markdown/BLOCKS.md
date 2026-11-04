@@ -110,3 +110,5 @@ python3 tests/database_layouts.py
 ```sh
 python3 tests/database_usability.py
 ```
+
+데이터베이스 보기 설정은 아이콘 메뉴와 3×3 레이아웃 카드로 구성됩니다. 표시 옵션은 스위치로 선택한 뒤 적용합니다. 도구 모음의 전체 화면 버튼으로 표를 넓게 열고 최소화 버튼 또는 Esc로 돌아올 수 있습니다. 메뉴가 열린 경우 Esc는 메뉴를 먼저 닫습니다.
