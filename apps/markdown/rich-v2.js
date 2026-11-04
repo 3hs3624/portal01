@@ -50,6 +50,7 @@ function renderRichDocument(text){
    const html=marked.parser(list,{gfm:true,async:false}),template=richSanitize(html),parsed=BlockEngine.DOMParser.fromSchema(editor.schema).parse(template.content);
    let nodes=Array.from({length:parsed.childCount},(_,i)=>parsed.child(i).toJSON());
    if(!nodes.length||(!template.content.textContent.trim()&&!template.content.querySelector('img,hr,table,[data-studio-kind],[data-studio-toggle],[data-studio-widget],[data-studio-embed]'))&&token.type==='html')nodes=[{type:'rawBlock',attrs:{raw}}];
+   nodes=nodes.map(node=>typeof STUDIO_PAGES!=='undefined'?STUDIO_PAGES.promote(node):node);
    nodes.forEach((node,index)=>{
     node.attrs={...node.attrs,blockId:node.attrs?.blockId||crypto.randomUUID()};content.push(node);
     if(nodes.length===1)RICH.raw.set(node.attrs.blockId,{signature:signature(node),raw});

@@ -176,6 +176,8 @@ function studioWidgetExtensions() {
           const render = () => {
             objectURLs.splice(0).forEach((url) => URL.revokeObjectURL(url));
             dom.replaceChildren();
+            dom.classList.remove("studio-page-row");
+            dom.oncontextmenu = dom.onkeydown = null;
             dom.dataset.studioWidget = current.attrs.kind;
             dom.dataset.blockId = current.attrs.blockId;
             dom.dataset.studioData = encodeURIComponent(current.attrs.data);
@@ -233,18 +235,20 @@ function studioWidgetExtensions() {
           render();
           const refresh = () => {
             if (
-              ["toc", "breadcrumb", "sync", "database-link"].includes(
+              ["toc", "breadcrumb", "sync", "database-link", "page-link"].includes(
                 current.attrs.kind,
               )
             )
               render();
           };
           document.addEventListener("studio:document-changed", refresh);
+          document.addEventListener("studio:page-metadata-changed", refresh);
           return {
             dom,
             update(next) {
               if (next.type !== current.type) return false;
               const changed =
+                next.attrs.kind !== current.attrs.kind ||
                 next.attrs.data !== current.attrs.data ||
                 next.attrs.studioColor !== current.attrs.studioColor ||
                 next.attrs.studioBackground !==
@@ -259,6 +263,7 @@ function studioWidgetExtensions() {
             ignoreMutation: () => true,
             destroy() {
               document.removeEventListener("studio:document-changed", refresh);
+              document.removeEventListener("studio:page-metadata-changed", refresh);
               objectURLs.forEach((url) => URL.revokeObjectURL(url));
             },
           };
@@ -494,7 +499,11 @@ function insertStudioExtra(command, state) {
     );
     return;
   }
-  if (["pageLink", "pageMention"].includes(command)) {
+  if (command === "pageLink") {
+    chooseStudioDocument("페이지 연결", d => STUDIO_PAGES.insert(state, d));
+    return;
+  }
+  if (command === "pageMention") {
     chooseStudioDocument("페이지 연결", (d) =>
       insertExtraInline(state, d.title, "#doc-" + d.id),
     );
@@ -723,6 +732,10 @@ function renderStudioWidget(
   editable,
   objectURLs = [],
 ) {
+  if (kind === "page-link") {
+    STUDIO_PAGES.render(dom, data);
+    return;
+  }
   if (kind === "database") {
     renderStudioDatabase(dom, data, update, editable);
     return;

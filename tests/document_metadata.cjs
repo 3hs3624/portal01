@@ -11,3 +11,8 @@ const empty=workspace();empty.documents[0].tags=[];assert.equal(merge(base,empty
 for(const tags of ['invalid',new Array(21).fill('tag'),['x'.repeat(41)],[''],[{}]]){const w=workspace();w.documents[0].tags=tags;assert.throws(()=>validate(w));}
 const w=workspace();w.documents[0].tags=['doc','<script>'];assert.deepEqual(validate(JSON.parse(JSON.stringify(w))).documents[0].tags,w.documents[0].tags);
 console.log('PASS metadata validation, legacy documents, workspace round-trip, independent tag/content merge and explicit tag conflict choices');
+const commentBase=workspace(),commentMine=workspace(),commentDisk=workspace();
+commentMine.documents[0].pageComments=[{id:'c',date:'2026-11-04T00:00:00Z',text:'Review'}];commentDisk.documents[0].content='edited elsewhere';
+const commentMerge=merge(commentBase,commentMine,commentDisk);assert.equal(commentMerge.conflicts.length,0);assert.equal(commentMerge.workspace.documents[0].pageComments[0].text,'Review');assert.equal(commentMerge.workspace.documents[0].content,'edited elsewhere');validate(commentMerge.workspace);
+for(const pageComments of ['invalid',[{id:'c',date:'now',text:''}],[{id:'c',date:'now',text:'x'.repeat(5001)}]]){const item=workspace();item.documents[0].pageComments=pageComments;assert.throws(()=>validate(item));}
+console.log('PASS page comment validation, workspace preservation and merge with independent content edits');

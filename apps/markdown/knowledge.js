@@ -6,7 +6,11 @@ const favorite=el('button','','☆');favorite.id='favoriteDocument';favorite.tit
 const linkButton=el('button','','문서 연결');linkButton.id='linkDocument';linkButton.onclick=()=>openDocumentLink();$('.doc-actions').append(linkButton);
 const backlinks=el('section','backlinks');backlinks.innerHTML='<b>연결된 문서</b><div id="backlinkRows"></div>';$('#outlinePane').append(backlinks);
 const picker=el('dialog');picker.id='documentLinkDialog';picker.innerHTML='<div class="dialog-heading"><h2>문서 연결</h2><button id="closeDocumentLink" aria-label="닫기">×</button></div><input id="documentLinkSearch" placeholder="문서 제목 검색" aria-label="연결할 문서 검색"><div id="documentLinkChoices"></div>';document.body.append(picker);$('#closeDocumentLink').onclick=()=>picker.close();
-function references(doc){return [...doc.content.matchAll(/\[[^\]]*\]\(#doc-([A-Za-z0-9_-]+)\)/g)].map(m=>m[1]);}
+function references(doc){
+ const ids=[...doc.content.matchAll(/\[[^\]]*\]\(#doc-([A-Za-z0-9_-]+)\)/g)].map(m=>m[1]);
+ for(const match of doc.content.matchAll(/<section\b[^>]*data-studio-data=["']([^"']*)["'][^>]*>/g))if(/data-studio-widget=["']page-link["']/.test(match[0]))try{const data=JSON.parse(decodeURIComponent(match[1]));if(typeof data.docId==='string')ids.push(data.docId);}catch{}
+ return ids;
+}
 function renderKnowledge(){
  if(!currentDoc())return;const d=currentDoc();favorite.textContent=d.favorite?'★':'☆';favorite.setAttribute('aria-pressed',String(Boolean(d.favorite)));
  const incoming=APP.documents.filter(doc=>doc.id!==d.id&&references(doc).includes(d.id));
@@ -44,6 +48,6 @@ $('#documentLinkSearch').oninput=renderDocumentChoices;
 $('#previewEditable').addEventListener('change',renderKnowledge);
 $('#preview').addEventListener('click',e=>{
  const anchor=e.target.closest('a'),href=anchor?.getAttribute('href')||'';
- if(!href.startsWith('#doc-'))return;
+ if(!href.startsWith('#doc-')||anchor.closest('.studio-page-row'))return;
  if(!RICH.enabled||e.ctrlKey||e.metaKey){e.preventDefault();e.stopImmediatePropagation();const id=href.slice(5);if(APP.documents.some(d=>d.id===id))selectDocument(id);else toast('연결된 문서를 찾을 수 없습니다.',true);}
 },true);

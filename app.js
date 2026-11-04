@@ -1,4 +1,4 @@
-const appPageVersions={"markdown":"d1c2437093b0","insight":"20d3c0da66ad","projects":"d0676f2e07e6"};
+const appPageVersions={"markdown":"d53f128ebe53","insight":"20d3c0da66ad","projects":"d0676f2e07e6"};
 'use strict';
 const $=s=>document.querySelector(s);
 let modules=[],summaries={};
@@ -147,7 +147,7 @@ function appFrameSource(id){
  const source=new URL('/portal01/apps/'+id+'/',location.origin);source.searchParams.set('v',appPageVersions[id]);
  if(id==='markdown'){
   const params=new URLSearchParams(location.search),doc=params.get('studioDoc'),block=params.get('studioBlock');
-  if(doc&&block&&/^[A-Za-z0-9_-]{1,128}$/.test(doc)&&/^[A-Za-z0-9_-]{1,128}$/.test(block))source.hash='block='+encodeURIComponent(doc)+'&id='+encodeURIComponent(block);
+  if(doc&&/^[A-Za-z0-9_-]{1,128}$/.test(doc))source.hash=block&&/^[A-Za-z0-9_-]{1,128}$/.test(block)?'block='+encodeURIComponent(doc)+'&id='+encodeURIComponent(block):'doc='+encodeURIComponent(doc);
  }
  return source.href;
 }

@@ -467,6 +467,7 @@ function updateBlockControls(block) {
   RICH.activeBlock = b.id;
   const dom = RICH.editor.view.nodeDOM(b.pos);
   if (!dom?.getBoundingClientRect) return;
+  if (dom.classList.contains("studio-page-row")) {blockControls.hidden = true; return;}
   const r = dom.getBoundingClientRect(),
     bounds = $("#preview").getBoundingClientRect(),
     visibleTop = Math.max(bounds.top, 0);
@@ -715,7 +716,8 @@ function renderInsertItems() {
 function updateSlashMenu() {
   if (BLOCK_UI.document && BLOCK_UI.document !== APP.activeId) {
     closeBlockMenus();
-    return;
+    BLOCK_UI.document = APP.activeId;
+    BLOCK_UI.id = null;
   }
   if (slashState && slashState.mode !== "slash") return;
   if (
@@ -787,6 +789,7 @@ function runSlash(command) {
     return closeBlockMenus();
   if (STUDIO_EXTRA.has(command))
     return insertStudioExtra(command, { ...slashState });
+  if (command === "page") return insertStudioPage({ ...slashState });
   const state = { ...slashState },
     b = currentStudioBlock(state.id);
   if (!b) return closeBlockMenus();
@@ -802,11 +805,6 @@ function runSlash(command) {
     if (command !== "embed" && !/^https?:\/\//i.test(value.trim()))
       return toast("HTTP(S) 주소를 입력하세요.", true);
     state.value = value;
-  }
-  if (command === "page") {
-    const title = prompt("새 페이지 제목", "제목 없는 문서");
-    if (title === null || !title.trim()) return;
-    state.value = title.trim().slice(0, 200);
   }
   closeBlockMenus();
   historyBoundary();
@@ -901,18 +899,7 @@ function runSlash(command) {
         ],
       }),
     });
-  else if (command === "page") {
-    if (APP.documents.length >= 500)
-      return toast("문서는 최대 500개입니다.", true);
-    const d = newRecord(state.value, "");
-    APP.documents.push(d);
-    node = schema.nodes.paragraph.create(
-      attrs,
-      schema.text(state.value, [
-        schema.marks.link.create({ href: "#doc-" + d.id }),
-      ]),
-    );
-  } else if (command === "table") {
+  else if (command === "table") {
     const row = (header) =>
       schema.nodes.tableRow.create(
         null,
@@ -1184,6 +1171,11 @@ async function copyBlockLink() {
   closeBlockMenus();
 }
 function restoreBlockLink() {
+  if (location.hash.startsWith("#doc=")) {
+    const doc = new URLSearchParams(location.hash.slice(1)).get("doc");
+    if (!APP.loading && APP.documents.some(d => d.id === doc) && APP.activeId !== doc) selectDocument(doc);
+    return;
+  }
   if (!location.hash.startsWith("#block=")) return;
   const params = new URLSearchParams(location.hash.slice(1)),
     doc = params.get("block"),
@@ -1718,6 +1710,8 @@ document.addEventListener(
   "keydown",
   (event) => {
     if (event.isComposing) return;
+    if (event.target.closest?.('.studio-page-row') && (event.ctrlKey || event.metaKey) &&
+      (event.key === '/' || event.shiftKey && event.key.toLowerCase() === 'm')) return;
     const inMenu =
       blockMenu.contains(document.activeElement) ||
       slashMenu.contains(document.activeElement);
