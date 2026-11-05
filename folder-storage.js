@@ -29,11 +29,11 @@
   async authorize(provider){const c=await record('connection:'+provider);if(!c)throw Error('연결된 폴더가 없습니다.');if(await c.handle.requestPermission({mode:'readwrite'})!=='granted')throw Error('폴더 접근이 승인되지 않았습니다.');return this.info(provider)},
   disconnect:provider=>record('connection:'+provider,undefined,true),
   load:read,
-  async save(provider,workspace,expected){if(new Blob([JSON.stringify(workspace)]).size>49*1024*1024)throw Error('작업공간은 최대 49MB입니다.');return lock(provider,async()=>{
-   const before=await read(provider);if((before.revision??null)!==(expected??null))throw Error('다른 탭·기기의 저장 내용이 변경되었습니다. 연결 다시 확인 후 불러와 비교하세요. 자동 덮어쓰기는 하지 않습니다.');
+  async save(provider,workspace,expected,expectedWorkspace){if(new Blob([JSON.stringify(workspace)]).size>49*1024*1024)throw Error('작업공간은 최대 49MB입니다.');return lock(provider,async()=>{
+   const before=await read(provider);if((before.revision??null)!==(expected??null)||expectedWorkspace!==undefined&&JSON.stringify(before.workspace)!==JSON.stringify(expectedWorkspace)){const e=Error('다른 탭·기기의 저장 내용이 변경되었습니다. 연결 다시 확인 후 불러와 비교하세요. 자동 덮어쓰기는 하지 않습니다.');e.conflict=true;throw e;}
    const next={format:'3hs-workspace',version:1,app,workspace,revision:crypto.randomUUID(),savedAt:new Date().toISOString(),hasWorkspace:true};
    if(provider==='browser')await record('snapshot:'+app,next);
-   else {const dir=await directory(provider,true);if(before.hasWorkspace)await writeFile(dir,'workspace.previous.json',JSON.stringify(before));const check=await read(provider);if((check.revision??null)!==(expected??null))throw Error('저장 중 외부 변경이 확인되었습니다. 다시 불러와 비교해 주세요.');await writeFile(dir,'workspace.json',JSON.stringify(next))}
+   else {const dir=await directory(provider,true);if(before.hasWorkspace)await writeFile(dir,'workspace.previous.json',JSON.stringify(before));const check=await read(provider);if((check.revision??null)!==(expected??null)||expectedWorkspace!==undefined&&JSON.stringify(check.workspace)!==JSON.stringify(expectedWorkspace)){const e=Error('저장 중 외부 변경이 확인되었습니다. 다시 불러와 비교해 주세요.');e.conflict=true;throw e;}await writeFile(dir,'workspace.json',JSON.stringify(next))}
    return next;
   })}
  };

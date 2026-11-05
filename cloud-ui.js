@@ -2,6 +2,7 @@
 (() => {
  const base=new URL('./',document.currentScript.src);
  const app=location.pathname.split('/apps/')[1]?.split('/')[0];if(!['markdown','insight','projects'].includes(app)||!location.pathname.endsWith('/'))return;
+ if(app==='markdown'&&window.PortalWriteStorageUI){window.PortalCloudUI=window.PortalWriteStorageUI;return;}
  let revision=null,hasRemote=false,connected=false,busy=false,dialog,controls={},generation=0,provider='supabase';
  const dbPromise=new Promise((resolve,reject)=>{const r=indexedDB.open('portal-cloud-recovery',1);r.onupgradeneeded=()=>r.result.createObjectStore('backups');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(Error('불러오기 전 로컬 백업을 만들 수 없습니다.'))});
  async function recovery(action,value){const db=await dbPromise;return new Promise((resolve,reject)=>{const tx=db.transaction('backups',action==='get'?'readonly':'readwrite'),s=tx.objectStore('backups');let result;s.get(app).onsuccess=e=>{result=e.target.result||[];if(action==='put'){result=[{at:new Date().toISOString(),workspace:value},...result].slice(0,3);s.put(result,app)}};tx.oncomplete=()=>resolve(result);tx.onerror=tx.onabort=()=>reject(tx.error||Error('로컬 복구본 저장에 실패했습니다.'))})}
