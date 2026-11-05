@@ -5,6 +5,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 import base64,json,sys
 from io import BytesIO
+from copy import copy
 from openpyxl import load_workbook
 from playwright.sync_api import sync_playwright, expect
 from write_studio_blocks import StudioHandler
@@ -46,6 +47,10 @@ def run(base,probe=False):
    source=Path(sys.argv[sys.argv.index('--sample')+1]) if '--sample' in sys.argv else Path(tmp)/'sample.xlsx'
    if '--sample' not in sys.argv:
     generated=load_workbook(BytesIO(Path(info.value.path()).read_bytes()));task=next(r for r in range(13,generated['WBS'].max_row+1) if generated['WBS'].cell(r,1).value=='Y');generated['WBS'].cell(task,11).value=0.25;generated.save(source)
+   if '--format-fixture' in sys.argv:
+    from openpyxl.styles import Font,PatternFill
+    from openpyxl.formatting.rule import CellIsRule
+    fixture=load_workbook(source);fixture['WBS']['B2'].font=Font(name='Arial',size=17,bold=True,color='FF123456');fixture['WBS']['D15'].fill=PatternFill('solid',fgColor='FFFFCC88');fixture['WBS']['K15'].number_format='0.000%';fixture['WBS'].column_dimensions['F'].width=24;fixture['WBS'].row_dimensions[15].height=32;fixture['WBS'].conditional_formatting.add('K13:K106',CellIsRule(operator='greaterThan',formula=['0.7'],fill=PatternFill('solid',fgColor='FFAA77CC'),font=Font(bold=True,color='FF880033')));analysis=fixture.create_sheet('사용자 분석');analysis['A1']='사용자 정의 수식';analysis['B2']='=SUM(WBS!E13:E106)';analysis['B2'].number_format='#,##0.000';source=Path(tmp)/'format-fixture.xlsx';fixture.save(source)
    expected=load_workbook(source)
    popup.locator('#xfile').set_input_files(source);expect(popup.locator('#imp-apply')).to_be_visible(timeout=15000);popup.locator('input[name=imp-mode][value=full]').check();popup.locator('#imp-apply').click();popup.locator('[data-view=excel]').click()
    with popup.expect_download() as event:popup.locator('#btn-xlsx').click()
@@ -55,11 +60,19 @@ def run(base,probe=False):
     assert [sr[i].value for i in [0,1,2,3]]==[ar[i].value for i in [0,1,2,3]]
     if sr[0].value=='Y':
      for i in [5,6,7,8,10]:assert sr[i].value==ar[i].value,(sr[i].coordinate,sr[i].value,ar[i].value)
-   gantt=actual['WBS'];assert gantt['N10'].value<=min(expected['WBS'].cell(r,6).value for r in range(13,expected['WBS'].max_row+1) if expected['WBS'].cell(r,1).value=='Y' and expected['WBS'].cell(r,6).value);rules=[rule for region in gantt.conditional_formatting for rule in gantt.conditional_formatting[region]];assert len(rules)==6;assert {r.dxf.fill.fgColor.rgb for r in rules}=={'FFC0392B','FF2E8B57','FFBFC9D6','FF2B3748','FFFFF4CC','FFFFFFFF'};assert rules[-1].formula==['TRUE'];assert any(c.fill.fgColor.rgb in {'FF2E8B57','FFBFC9D6','FF2B3748'} for row in gantt.iter_rows(min_row=13,min_col=14) for c in row);assert all(gantt.cell(10,c).value<=gantt.cell(11,c).value for c in range(14,gantt.max_column+1));assert actual['WBS'].column_dimensions['M'].hidden;assert len(actual['WBS'].conditional_formatting)>0;assert actual.calculation.fullCalcOnLoad
+   gantt=actual['WBS'];assert gantt['N10'].value<=min(expected['WBS'].cell(r,6).value for r in range(13,expected['WBS'].max_row+1) if expected['WBS'].cell(r,1).value=='Y' and expected['WBS'].cell(r,6).value);rules=[rule for region in gantt.conditional_formatting for rule in gantt.conditional_formatting[region]];expected_rules=[r for region in expected['WBS'].conditional_formatting for r in expected['WBS'].conditional_formatting[region]];assert [(r.type,r.priority,r.formula) for r in rules]==[(r.type,r.priority,r.formula) for r in expected_rules];assert all(r.dxf.fill.fgColor.rgb==r.dxf.fill.bgColor.rgb for r in rules if r.dxf and r.dxf.fill.patternType=='solid' and r.dxf.fill.bgColor.type=='rgb' and r.dxf.fill.bgColor.rgb!='00000000');assert all(gantt.cell(10,c).value<=gantt.cell(11,c).value for c in range(14,gantt.max_column+1));assert actual['WBS'].column_dimensions['M'].hidden;assert len(actual['WBS'].conditional_formatting)>0;assert actual.calculation.fullCalcOnLoad;assert list(actual['WBS'].merged_cells.ranges)==list(expected['WBS'].merged_cells.ranges);assert copy(actual['WBS']['B2'].font)==copy(expected['WBS']['B2'].font);assert actual['WBS']['K15'].number_format==expected['WBS']['K15'].number_format;assert copy(actual['WBS']['D15'].fill)==copy(expected['WBS']['D15'].fill);assert actual['WBS'].column_dimensions['F'].width==expected['WBS'].column_dimensions['F'].width;assert actual['WBS'].row_dimensions[15].height==expected['WBS'].row_dimensions[15].height
+   if '--format-fixture' in sys.argv:
+    assert actual['사용자 분석']['B2'].value=='=SUM(WBS!E13:E106)';assert actual['사용자 분석']['B2'].number_format=='#,##0.000';assert rules[-1].dxf.font.color.rgb=='FF880033'
    task=next(r for r in range(13,actual['WBS'].max_row+1) if actual['WBS'].cell(r,1).value=='Y');actual['WBS'].cell(task,11).value=0.375;edited=Path(tmp)/'edited.xlsx';actual.save(edited)
    popup.locator('#xfile').set_input_files(edited);expect(popup.locator('#imp-apply')).to_be_visible(timeout=15000);expect(popup.locator('input[name=imp-mode][value=progress]')).to_be_checked();popup.locator('#imp-apply').click();popup.locator('[data-view=excel]').click()
    with popup.expect_download() as event:popup.locator('#btn-xlsx').click()
    updated=load_workbook(BytesIO(Path(event.value.path()).read_bytes()));assert updated['WBS'].cell(task,11).value==0.375;assert formulas(updated['WBS'])==formulas(actual['WBS']);assert not errors,errors;assert not violations,violations
+   popup.locator('#btn-save').click();popup.locator('#save-name').fill('원본 수식 서식 보존 검증');popup.locator('#save-author').fill('Regression');popup.locator('#save-ok').click();expect(popup.locator('#save-modal')).to_be_hidden();popup.close()
+   f.locator('#f-kw').fill('Excel detail regression');f.locator('#btn-search').click()
+   with c.expect_page() as reopened_event:f.get_by_text('Excel detail regression',exact=True).click()
+   popup=reopened_event.value;popup.on('pageerror',lambda e:errors.append(str(e)));popup.locator('[data-view=excel]').click()
+   with popup.expect_download() as reopened_download:popup.locator('#btn-xlsx').click()
+   restored=load_workbook(BytesIO(Path(reopened_download.value.path()).read_bytes()));assert formulas(restored['WBS'])==formulas(expected['WBS']);assert [(str(region),[(r.type,r.formula) for r in restored['WBS'].conditional_formatting[region]]) for region in restored['WBS'].conditional_formatting]==[(str(region),[(r.type,r.formula) for r in expected['WBS'].conditional_formatting[region]]) for region in expected['WBS'].conditional_formatting];assert restored['WBS'].cell(task,11).value==0.375
    print('PASS upload → full replacement → download → progress edit → reupload → download; exact WBS/reference formulas, task dates/progress, weekly columns, hidden IDs, conditional formatting and recalculation',flush=True)
   popup.close();browser.close()
 

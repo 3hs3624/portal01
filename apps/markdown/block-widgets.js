@@ -1153,7 +1153,7 @@ function databaseFieldInput(field, value) {
   input.setAttribute("aria-label", field.name);
   return input;
 }
-function editDatabaseRow(data, row, update, editable = true) {
+function editDatabaseRow(data, row, update, editable = true, getCurrent = () => data) {
   openStudioDialog(row ? "항목 편집" : "새 항목", (dialog) => {
     const fields = [];
     for (const field of data.fields) {
@@ -1175,10 +1175,11 @@ function editDatabaseRow(data, row, update, editable = true) {
     if (editable) dialog.append(
       widgetButton("저장", () => {
         if (!RICH.editor?.isEditable || APP.loading || APP.externalDraft || ST.busy) return toast('작업공간 상태를 확인한 뒤 다시 저장하세요.', true);
+        const latestData=getCurrent(),currentRow=row?latestData.rows.find(r=>r.id===row.id):null;if(row&&!currentRow)return toast('이 페이지가 이미 삭제되었습니다.',true);
         const now = new Date().toISOString();
-        const item = { ...row, id: row?.id || crypto.randomUUID(), createdAt:row?.createdAt||now, updatedAt:now };
-        for (const [field, input] of fields)
-          item[field.id] =
+        const item = { ...currentRow, id: row?.id || crypto.randomUUID(), createdAt:row?.createdAt||now, updatedAt:now };
+        for (const [field, input] of fields) {
+          const nextValue =
             field.type === "checkbox"
               ? input.checked
               : field.type === "number"
@@ -1186,15 +1187,17 @@ function editDatabaseRow(data, row, update, editable = true) {
                   ? ""
                   : Number(input.value)
                 : input.value;
-        item.pageBody=content.value;
-        if (parentInput) item.parentId=parentInput.value;
+          if(!row||nextValue!==(row[field.id]??(field.type==='checkbox'?false:'')))item[field.id]=nextValue;
+        }
+        if(!row||content.value!==(row.pageBody||''))item.pageBody=content.value;
+        if (parentInput&&(!row||parentInput.value!==(row.parentId||'')))item.parentId=parentInput.value;
         if (!String(item.title || "").trim())
           return toast("이름을 입력하세요.", true);
         update({
-          ...data,
+          ...latestData,
           rows: row
-            ? data.rows.map((r) => (r.id === row.id ? item : r))
-            : [...data.rows, item],
+            ? latestData.rows.map((r) => (r.id === row.id ? item : r))
+            : [...latestData.rows, item],
         });
         studioDialog.close();
       }),
@@ -1204,7 +1207,7 @@ function editDatabaseRow(data, row, update, editable = true) {
         widgetButton("항목 삭제", () => {
           if (!RICH.editor?.isEditable || APP.loading || APP.externalDraft || ST.busy) return;
           if (!confirm('이 데이터베이스 항목을 삭제할까요?')) return;
-          update({ ...data, rows: data.rows.filter((r) => r.id !== row.id) });
+          const latestData=getCurrent();update({ ...latestData, rows: latestData.rows.filter((r) => r.id !== row.id) });
           studioDialog.close();
         }),
       );

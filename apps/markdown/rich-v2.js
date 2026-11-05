@@ -11,7 +11,7 @@ markdownWriter.addRule('tableCell',{filter:['th','td'],replacement:(c,n)=>(n.cel
 function richEngineActive(){return Boolean(RICH.editor);}
 function engineRoot(){return RICH.editor?.view.dom||$('#preview');}
 function richSanitize(html){
- const template=document.createElement('template');template.innerHTML=DOMPurify.sanitize(html,{USE_PROFILES:{html:true},FORBID_TAGS:['style','form','button','textarea','select','video','audio','iframe','object','embed'],FORBID_ATTR:['style','id','name','contenteditable','tabindex','autofocus']});
+ const template=document.createElement('template');template.innerHTML=DOMPurify.sanitize(html,{USE_PROFILES:{html:true},ADD_ATTR:['colwidth'],FORBID_TAGS:['style','form','button','textarea','select','video','audio','iframe','object','embed'],FORBID_ATTR:['style','id','name','contenteditable','tabindex','autofocus']});
  for(const input of template.content.querySelectorAll('input')){if(input.type==='checkbox'){const li=input.closest('li');if(li){li.setAttribute('data-type','taskItem');li.setAttribute('data-checked',String(input.checked));li.parentElement.setAttribute('data-type','taskList');}input.remove();}else input.remove();}
  for(const img of template.content.querySelectorAll('img'))if(!/^(https?:\/\/|data:image\/(png|jpeg|gif|webp);base64,)/i.test(img.getAttribute('src')||''))img.removeAttribute('src');
  return template;
