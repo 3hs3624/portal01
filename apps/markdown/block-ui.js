@@ -90,6 +90,7 @@ function studioExtensions() {
             },
           },
         },
+        {types:['table'],attributes:Object.fromEntries([['studioHeaderRow','data-studio-header-row'],['studioHeaderColumn','data-studio-header-column']].map(([key,attr])=>[key,{default:null,parseHTML:n=>n.hasAttribute(attr)?n.getAttribute(attr)==='true':null,renderHTML:a=>typeof a[key]==='boolean'?{[attr]:String(a[key])}:{}}]))},
       ];
     },
   });
