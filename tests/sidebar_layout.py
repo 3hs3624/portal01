@@ -30,11 +30,11 @@ def run(base):
     reopen.press('Enter');assert side.is_visible();assert toggle.get_attribute('aria-expanded')=='true'
    f.locator('#portal-sidebar-toggle').click();page.reload();f.locator('#portal-sidebar-reopen').wait_for();assert f.locator('#portal-app-sidebar').is_hidden();f.locator('#portal-sidebar-reopen').click();assert f.locator('#portal-app-sidebar').is_visible()
    page.set_viewport_size({'width':1440,'height':1000})
-   handle=f.locator('.portal-sidebar-resizer');handle.wait_for(state='visible');side=f.locator('#portal-app-sidebar')
+   handle=f.locator('.portal-sidebar-resizer[aria-controls=portal-app-sidebar]');handle.wait_for(state='visible');side=f.locator('#portal-app-sidebar')
    assert side.bounding_box()['width']==227
    h=handle.bounding_box();page.mouse.move(h['x']+4,h['y']+100);page.mouse.down();page.mouse.move(h['x']+104,h['y']+100,steps=10);page.mouse.up()
    assert side.bounding_box()['width']==327,(app,side.bounding_box())
-   assert f.locator('.portal-sidebar-resize-shield').is_hidden()
+   assert f.locator('.portal-sidebar-resize-shield:visible').count()==0
    page.reload();f.locator('#portal-sidebar-toggle').wait_for();assert side.bounding_box()['width']==327
    handle.focus();page.keyboard.press('ArrowLeft');assert side.bounding_box()['width']==317
    f.locator('#portal-sidebar-toggle').click();assert handle.is_hidden();f.locator('#portal-sidebar-reopen').click();assert side.bounding_box()['width']==317
@@ -42,6 +42,18 @@ def run(base):
    handle.focus();page.keyboard.press('Home');assert side.bounding_box()['width']==227
    page.reload();f.locator('#portal-sidebar-toggle').wait_for();assert side.bounding_box()['width']==227
    print('PASS '+app+': pointer resize, persistence, keyboard, collapse/reopen, Escape rollback and default reset',flush=True)
+   if app=='markdown':
+    outline=f.locator('#outlinePane');right=f.locator('.portal-sidebar-resizer[aria-controls=outlinePane]');initial=outline.bounding_box()['width'];before_main=f.locator('.preview-pane').bounding_box()['width']
+    h=right.bounding_box();page.mouse.move(h['x']+4,h['y']+100);page.mouse.down();page.mouse.move(h['x']-116,h['y']+100,steps=12);page.mouse.up()
+    assert outline.bounding_box()['width']==initial+120
+    assert f.locator('.preview-pane').bounding_box()['width']<before_main
+    page.reload();right.wait_for(state='visible');assert outline.bounding_box()['width']==initial+120
+    f.locator('#portal-sidebar-toggle').click();assert right.is_visible();f.locator('#portal-sidebar-reopen').click()
+    right.focus();page.keyboard.press('ArrowLeft');assert outline.bounding_box()['width']==initial+130
+    page.frames[1].evaluate("document.body.classList.add('focus')");assert right.is_hidden();page.frames[1].evaluate("document.body.classList.remove('focus')");assert right.is_visible()
+    right.dblclick(position={'x':4,'y':100});assert outline.bounding_box()['width']==initial
+    page.set_viewport_size({'width':900,'height':1000});right.wait_for(state='hidden');page.set_viewport_size({'width':1440,'height':1000});right.wait_for(state='visible')
+    print('PASS ON THIS PAGE: left-edge drag, editor relayout, persistence, left sidebar independence, keyboard, focus/narrow hiding and double-click reset',flush=True)
    assert not errors,errors
    print('PASS '+app+': equal widths at 8 viewports, top-right placement, exact portal icon, collapse/reopen, keyboard and persistence',flush=True)
    context.close()
@@ -54,7 +66,7 @@ def run(base):
   page.reload();handle.wait_for(state='visible');assert side.bounding_box()['width']==before+100
   page.locator('#sidebar-toggle').click();assert handle.is_hidden();page.locator('#sidebar-toggle').click();assert side.bounding_box()['width']==before+100
   handle.focus();page.keyboard.press('Home');assert side.bounding_box()['width']==before
-  page.set_viewport_size({'width':600,'height':1000});assert handle.is_hidden()
+  page.set_viewport_size({'width':600,'height':1000});handle.wait_for(state='hidden')
   print('PASS portal: resize aligns main content, persistence, collapse, reset and mobile layout',flush=True)
   context.close()
   browser.close()
