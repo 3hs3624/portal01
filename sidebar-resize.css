@@ -5,3 +5,5 @@
 body.portal-sidebar-resizing,body.portal-sidebar-resizing *{cursor:col-resize!important;user-select:none!important}
 @media(min-width:801px){body.portal-nav-custom-width:not(.sidebar-collapsed) #sidebar{width:var(--portal-nav-custom-width)}body.portal-nav-custom-width:not(.sidebar-collapsed)>.main,body.portal-nav-custom-width:not(.sidebar-collapsed) #workspace-shell>.main{margin-left:var(--portal-nav-custom-width)}}
 @media print{.portal-sidebar-resizer,.portal-sidebar-resize-shield{display:none!important}}
+
+body.portal-outline-custom-width #outlinePane{width:var(--portal-outline-width);min-width:var(--portal-outline-width);max-width:var(--portal-outline-width)}

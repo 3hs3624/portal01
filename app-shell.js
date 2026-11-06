@@ -101,6 +101,7 @@
     window.PortalSidebarResize?.(sidebar,{id,storage:localStorage});
    }
   }
+  if(id==='markdown')window.PortalSidebarResize?.(document.querySelector('#outlinePane'),{id:'markdown-outline',storage:localStorage,edge:'left',widthProperty:'--portal-outline-width',customClass:'portal-outline-custom-width',label:'ON THIS PAGE 폭 조절',minimum:135,maximum:480,available:()=>innerWidth-(document.querySelector('#portal-app-sidebar')?.getBoundingClientRect().width||0)-360});
   tools.append(theme);
   for(const [kind,label,target]of [['external','별도 창에서 열기','_blank'],['home','홈으로 돌아가기','_parent']]){
    let standalone=false;try{standalone=new URLSearchParams(parent.location.search).get('appWindow')===id}catch{}
