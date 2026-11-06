@@ -5,3 +5,7 @@ verify_jwt = false
 
 [functions.portal-user-delete]
 verify_jwt = false
+
+[functions.portal-project-assets]
+# Auth getUser and app write permission are checked by the handler.
+verify_jwt = false

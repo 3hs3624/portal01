@@ -1,0 +1,36 @@
+const {PGlite}=await import(process.env.PGLITE_MODULE||'@electric-sql/pglite');
+import {readFileSync} from 'node:fs';import assert from 'node:assert/strict';
+const db=new PGlite();
+await db.exec(`create role anon;create role authenticated;create schema auth;create schema storage;create table auth.users(id uuid primary key);create table storage.objects(bucket_id text,name text);alter table storage.objects enable row level security;
+create function auth.uid() returns uuid language sql as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
+grant usage on schema auth,storage to authenticated;grant execute on function auth.uid() to authenticated;
+create function public.portal_can_access(text,text) returns boolean language sql stable as $$select coalesce(current_setting('test.allowed',true),'yes')='yes' and ($2='read' or coalesce(current_setting('test.write',true),'yes')='yes')$$;`);
+await db.exec(readFileSync('portal-workspaces.sql','utf8'));
+await db.exec(readFileSync('portal-projects-relational.sql','utf8'));await db.exec(readFileSync('portal-projects-consistency.sql','utf8'));
+const user='11111111-1111-4111-8111-111111111111',other='22222222-2222-4222-8222-222222222222';
+await db.query('insert into auth.users values($1),($2)',[user,other]);
+const doc={schema:2,project:{name:'관계형 검증',client:'고객',pm:'PM',startDate:'2026-01-01',endDate:'2026-12-31'},settings:{unknown:'보존'},sample:false,holidays:[{date:'2026-01-01',name:'휴일',extra:1}],milestones:[],phases:[{id:'P1',name:'단계',custom:true,activities:[{id:'A1',name:'활동',tasks:[{id:'T1',name:'작업',group:'개발',planStart:'2026-01-01',planEnd:'2026-01-31',actStart:null,actEnd:'',progress:50,unknown:{hello:'유지'}}]}]}]};
+const meta={id:'PRJ20261106000000abc',name:'관계형 검증',pm:'PM',createdAt:'2026-01-01'};const id=meta.id;
+const workspace={format:'portal-project-relational',version:1,directories:['projects',`projects/${id}/snapshots`],files:[{path:`projects/${id}.meta.json`,kind:'json',document:meta},{path:`projects/${id}.json`,kind:'json',document:{format:'wbs-dashboard',schema:4,projectId:id,current:doc,snapshots:[{name:'처음',file:'history.json'}]}},{path:`projects/${id}/snapshots/history.json`,kind:'json',document:{format:'wbs-snapshot',projectId:id,name:'처음',savedAt:'2026-01-01T00:00:00Z',state:doc}},{path:`projects/${id}/snapshots/history.xlsx`,kind:'blob',hash:'a'.repeat(64),bytes:3},{path:'storage.json',kind:'json',document:{format:'wbs-pm-storage',name:'현재'}}]};
+async function sql(q,params=[]){return (await db.query(q,params)).rows}
+async function auth(id){await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[id]);await db.exec('set role authenticated')}
+await auth(user);let info=(await sql('select public.portal_project_workspace_info() as x'))[0].x;assert.equal(info.hasWorkspace,false);
+let result=(await sql('select public.portal_project_workspace_save($1::jsonb,null) as x',[JSON.stringify(workspace)]))[0].x;let rev=result.revision;
+let loaded=(await sql('select public.portal_project_workspace_get() as x'))[0].x;
+const current=loaded.workspace.files.find(x=>x.path===`projects/${id}.json`);assert.deepEqual(current.document.current,doc);assert.equal(loaded.backend,'relational');
+assert.equal((await sql('select name,progress,plan_start::text from public.portal_pm_tasks'))[0].name,'작업');
+assert.deepEqual(loaded.workspace.files.find(x=>x.path.endsWith('history.xlsx')),workspace.files[3]);
+assert.deepEqual(loaded.workspace.files.find(x=>x.path.endsWith('history.json')).document,workspace.files[2].document);
+await sql('update public.portal_pm_tasks set progress=75');let touched=(await sql('select public.portal_project_workspace_get() as x'))[0].x;assert.notEqual(touched.revision,rev);rev=touched.revision;assert.equal(touched.workspace.files.find(x=>x.path===`projects/${id}.json`).document.current.phases[0].activities[0].tasks[0].progress,75);
+await sql('update public.portal_pm_tasks set progress=null,plan_start=null');await sql("update public.portal_pm_projects set name='수정된 이름'");touched=(await sql('select public.portal_project_workspace_get() as x'))[0].x;rev=touched.revision;const changed=touched.workspace.files.find(x=>x.path===`projects/${id}.json`).document.current;assert.equal(changed.phases[0].activities[0].tasks[0].progress,null);assert.equal(changed.phases[0].activities[0].tasks[0].planStart,null);assert.equal(changed.project.name,'수정된 이름');assert.equal(touched.workspace.files.find(x=>x.path.endsWith('.meta.json')).document.name,'수정된 이름');
+await assert.rejects(()=>sql('select public.portal_project_workspace_save($1::jsonb,null)',[JSON.stringify(workspace)]),/changed/);
+await auth(other);assert.equal((await sql('select count(*)::int as n from public.portal_pm_tasks'))[0].n,0);assert.equal((await sql('select public.portal_project_workspace_info() as x'))[0].x.hasWorkspace,false);await assert.rejects(()=>sql('update public.portal_pm_tasks set user_id=$1',[user]).then(x=>{if(!x.length)throw Error('none')}));
+await auth(user);await db.query("select set_config('test.write','no',false)");await assert.rejects(()=>sql('select public.portal_project_workspace_save($1::jsonb,$2)',[JSON.stringify(workspace),rev]),/permission/);await db.query("select set_config('test.write','yes',false)");
+const bad=structuredClone(workspace);bad.files[1].document.current.phases[0].activities[0].tasks=null;await assert.rejects(()=>sql('select public.portal_project_workspace_save($1::jsonb,$2)',[JSON.stringify(bad),rev]));assert.equal((await sql('select public.portal_project_workspace_info() as x'))[0].x.revision,rev);assert.equal((await sql('select count(*)::int as n from public.portal_pm_tasks'))[0].n,1);
+await assert.rejects(()=>sql("select public.portal_workspace_save('projects','{}',$1)",[null]),/upgraded/);
+for(let i=0;i<12;i++){const r=(await sql('select public.portal_project_workspace_save($1::jsonb,$2) as x',[JSON.stringify(workspace),rev]))[0].x;rev=r.revision}assert.equal((await sql('select count(*)::int as n from public.portal_pm_backups'))[0].n,10);
+await db.query("select set_config('test.allowed','no',false)");await assert.rejects(()=>sql('select public.portal_project_workspace_get()'),/permission/);assert.equal((await sql('select count(*)::int as n from public.portal_pm_tasks'))[0].n,0);
+await db.exec('reset role;set role anon');await assert.rejects(()=>sql('select public.portal_project_workspace_info()'),/permission/);await db.exec('reset role');
+await db.query("select set_config('test.allowed','yes',false)");await auth(other);let legacy=(await sql("select public.portal_workspace_save('projects',$1,null) as x",[JSON.stringify({format:'wbs-pm-cloud',version:1,files:[],directories:[]})]))[0].x;assert.equal((await sql('select public.portal_project_workspace_get() as x'))[0].x.backend,'legacy-json');await sql('select public.portal_project_workspace_save($1::jsonb,$2)',[JSON.stringify(workspace),legacy.revision]);assert.equal((await sql("select count(*)::int as n from public.portal_workspaces where app_id='projects'"))[0].n,1,'Legacy source must remain available for rollback');
+console.log('PASS relational WBS round trip, typed queries, historical snapshots/assets, legacy cutover, CAS, rollback, account/read-only/disabled/anon isolation and ten server backups');
+await db.close();
