@@ -16,3 +16,12 @@ commentMine.documents[0].pageComments=[{id:'c',date:'2026-11-04T00:00:00Z',text:
 const commentMerge=merge(commentBase,commentMine,commentDisk);assert.equal(commentMerge.conflicts.length,0);assert.equal(commentMerge.workspace.documents[0].pageComments[0].text,'Review');assert.equal(commentMerge.workspace.documents[0].content,'edited elsewhere');validate(commentMerge.workspace);
 for(const pageComments of ['invalid',[{id:'c',date:'now',text:''}],[{id:'c',date:'now',text:'x'.repeat(5001)}]]){const item=workspace();item.documents[0].pageComments=pageComments;assert.throws(()=>validate(item));}
 console.log('PASS page comment validation, workspace preservation and merge with independent content edits');
+
+// A settings-only change on another device must not be ignored by workspace reconciliation.
+{
+ const base={format:'md-editor-workspace',version:1,activeId:'view',folders:[],documents:[{id:'view',title:'보기 설정',content:'원본',createdAt:'2026-11-06',updatedAt:'2026-11-06',editorOptions:{directEdit:true,syncScroll:true,syncScrollBoth:false}}]};
+ const local=structuredClone(base),remote=structuredClone(base);remote.documents[0].editorOptions.directEdit=false;
+ const result=merge(base,local,remote);assert.equal(result.conflicts.length,0);assert.equal(result.workspace.documents[0].editorOptions.directEdit,false);
+ local.documents[0].editorOptions.syncScroll=false;const conflict=merge(base,local,remote);assert.equal(conflict.conflicts.length,1);
+ console.log('PASS document editor settings participate in remote reconciliation and conflict detection');
+}

@@ -7,12 +7,12 @@
    const b=new Map((base[kind]||[]).map(i=>[i.id,i])),m=new Map((mine[kind]||[]).map(i=>[i.id,i])),d=new Map((disk[kind]||[]).map(i=>[i.id,i])),result=[];
    for(const id of new Set([...b.keys(),...m.keys(),...d.keys()])){
     const before=b.get(id),local=m.get(id),remote=d.get(id),key=kind+':'+id;
-    const semantic=item=>item?Object.fromEntries(fields.map(f=>[f,item[f]??(f==='favorite'?false:['tags','pageComments'].includes(f)?[]:'')])):null;
+    const semantic=item=>item?Object.fromEntries(fields.map(f=>[f,item[f]??(f==='editorOptions'?{}:f==='favorite'?false:['tags','pageComments'].includes(f)?[]:'')])):null;
     if(equal(semantic(local),semantic(remote))){if(local)result.push(local);continue;}
     if(equal(semantic(local),semantic(before))){if(remote)result.push(remote);continue;}
     if(equal(semantic(remote),semantic(before))){if(local)result.push(local);continue;}
     let item=local&&remote?{...remote,...local}:null,collision=!local||!remote;
-    if(item)for(const field of fields){const a=before?.[field]??(field==='favorite'?false:['tags','pageComments'].includes(field)?[]:''),l=local[field]??(field==='favorite'?false:['tags','pageComments'].includes(field)?[]:''),r=remote[field]??(field==='favorite'?false:['tags','pageComments'].includes(field)?[]:'');if(equal(l,r)||equal(r,a))item[field]=l;else if(equal(l,a))item[field]=r;else collision=true;}
+    if(item)for(const field of fields){if(field==='editorOptions'&&before?.editorOptions===undefined&&local.editorOptions===undefined&&remote.editorOptions===undefined)continue;const a=before?.[field]??(field==='editorOptions'?{}:field==='favorite'?false:['tags','pageComments'].includes(field)?[]:''),l=local[field]??(field==='editorOptions'?{}:field==='favorite'?false:['tags','pageComments'].includes(field)?[]:''),r=remote[field]??(field==='editorOptions'?{}:field==='favorite'?false:['tags','pageComments'].includes(field)?[]:'');if(equal(l,r)||equal(r,a))item[field]=l;else if(equal(l,a))item[field]=r;else collision=true;}
     if(!collision){item.updatedAt=[local.updatedAt||'',remote.updatedAt||''].sort().at(-1);result.push(item);continue;}
     const choice=choices[key];
     if(!choice){conflicts.push({key,kind,id,mine:local||null,disk:remote||null,base:before||null});if(remote)result.push(remote);continue;}
@@ -22,7 +22,7 @@
    }
    return result;
   }
-  let folders=items('folders',['name','parentId']),documents=items('documents',['title','content','folderId','favorite','tags','pageComments']);
+  let folders=items('folders',['name','parentId']),documents=items('documents',['title','content','folderId','favorite','tags','pageComments','editorOptions']);
   documents.push(...copies);const ids=new Set(folders.map(f=>f.id));
   // Keep content if a chosen folder deletion leaves a document without a parent.
   documents=documents.map(d=>ids.has(d.folderId)?d:{...d,folderId:''});
