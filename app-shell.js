@@ -98,6 +98,7 @@
     }
     toggle.onclick=()=>{setCollapsed(!collapsed);if(collapsed)reopen.focus();try{localStorage.setItem(sidebarKey,String(collapsed))}catch{}};
     reopen.onclick=()=>{setCollapsed(false);try{localStorage.setItem(sidebarKey,'false')}catch{}toggle.focus()};setCollapsed(collapsed);
+    window.PortalSidebarResize?.(sidebar,{id,storage:localStorage});
    }
   }
   tools.append(theme);

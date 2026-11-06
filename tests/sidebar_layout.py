@@ -29,9 +29,34 @@ def run(base):
     assert reopen.locator('svg').evaluate('(svg,expected)=>{const host=document.createElement("div");host.innerHTML=expected;return svg.outerHTML===host.firstChild.outerHTML}',portal_svg)
     reopen.press('Enter');assert side.is_visible();assert toggle.get_attribute('aria-expanded')=='true'
    f.locator('#portal-sidebar-toggle').click();page.reload();f.locator('#portal-sidebar-reopen').wait_for();assert f.locator('#portal-app-sidebar').is_hidden();f.locator('#portal-sidebar-reopen').click();assert f.locator('#portal-app-sidebar').is_visible()
+   page.set_viewport_size({'width':1440,'height':1000})
+   handle=f.locator('.portal-sidebar-resizer');handle.wait_for(state='visible');side=f.locator('#portal-app-sidebar')
+   assert side.bounding_box()['width']==227
+   h=handle.bounding_box();page.mouse.move(h['x']+4,h['y']+100);page.mouse.down();page.mouse.move(h['x']+104,h['y']+100,steps=10);page.mouse.up()
+   assert side.bounding_box()['width']==327,(app,side.bounding_box())
+   assert f.locator('.portal-sidebar-resize-shield').is_hidden()
+   page.reload();f.locator('#portal-sidebar-toggle').wait_for();assert side.bounding_box()['width']==327
+   handle.focus();page.keyboard.press('ArrowLeft');assert side.bounding_box()['width']==317
+   f.locator('#portal-sidebar-toggle').click();assert handle.is_hidden();f.locator('#portal-sidebar-reopen').click();assert side.bounding_box()['width']==317
+   h=handle.bounding_box();page.mouse.move(h['x']+4,h['y']+100);page.mouse.down();page.mouse.move(h['x']+84,h['y']+100,steps=8);page.keyboard.press('Escape');page.mouse.up();assert side.bounding_box()['width']==317
+   handle.focus();page.keyboard.press('Home');assert side.bounding_box()['width']==227
+   page.reload();f.locator('#portal-sidebar-toggle').wait_for();assert side.bounding_box()['width']==227
+   print('PASS '+app+': pointer resize, persistence, keyboard, collapse/reopen, Escape rollback and default reset',flush=True)
    assert not errors,errors
    print('PASS '+app+': equal widths at 8 viewports, top-right placement, exact portal icon, collapse/reopen, keyboard and persistence',flush=True)
    context.close()
+  context=browser.new_context(viewport={'width':1440,'height':1000});page=context.new_page()
+  context.route('**/portal01/login.js*',lambda r:r.fulfill(content_type='application/javascript',body="""window.__portalAuthenticated=true;window.PortalUserId='portal-resize';window.PortalStorage={getItem:k=>localStorage.getItem('portal-test:'+k),setItem:(k,v)=>localStorage.setItem('portal-test:'+k,v)};document.querySelector('#auth-loading').hidden=true;document.querySelector('#workspace-shell').hidden=false;import('./app.js');"""))
+  page.goto(base+'/portal01/');handle=page.locator('.portal-sidebar-resizer');handle.wait_for(state='visible');side=page.locator('#sidebar');before=side.bounding_box()['width'];main=page.locator('.main');main_before=main.bounding_box()['x']
+  h=handle.bounding_box();page.mouse.move(h['x']+4,h['y']+100);page.mouse.down();page.mouse.move(h['x']+104,h['y']+100,steps=10);page.mouse.up()
+  assert side.bounding_box()['width']==before+100
+  assert main.bounding_box()['x']==main_before+100,(main.bounding_box(),main_before)
+  page.reload();handle.wait_for(state='visible');assert side.bounding_box()['width']==before+100
+  page.locator('#sidebar-toggle').click();assert handle.is_hidden();page.locator('#sidebar-toggle').click();assert side.bounding_box()['width']==before+100
+  handle.focus();page.keyboard.press('Home');assert side.bounding_box()['width']==before
+  page.set_viewport_size({'width':600,'height':1000});assert handle.is_hidden()
+  print('PASS portal: resize aligns main content, persistence, collapse, reset and mobile layout',flush=True)
+  context.close()
   browser.close()
 
 if __name__=='__main__':

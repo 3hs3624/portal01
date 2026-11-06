@@ -1,4 +1,4 @@
-const appPageVersions={"markdown":"26ab2097050a","insight":"20d3c0da66ad","projects":"9f245cb636ac"};
+const appPageVersions={"markdown":"9c476db393ab","insight":"0a2420f77f41","projects":"d03722e3e469"};
 'use strict';
 const $=s=>document.querySelector(s);
 let modules=[],summaries={};
@@ -101,6 +101,7 @@ let savedSidebarCollapsed=false;
 try{savedSidebarCollapsed=PortalStorage.getItem('3hs-sidebar-collapsed')==='true'}catch{}
 setSidebarCollapsed(savedSidebarCollapsed);
 sidebarToggle.addEventListener('click',()=>setSidebarCollapsed(!document.body.classList.contains('sidebar-collapsed')));
+window.PortalSidebarResize?.($('#sidebar'),{id:'portal',storage:PortalStorage,portal:true});
 
 function node(tag,text,cls){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n}
 function appIcon(module,cls){
