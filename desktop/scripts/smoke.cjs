@@ -33,9 +33,10 @@ app.whenReady().then(async()=>{
     const r=document.querySelector('[aria-controls="outlinePane"]').getBoundingClientRect();return {x:Math.round(r.x+4),y:Math.round(r.y+80)};
   })()`);
   const pause=()=>new Promise(resolve=>setTimeout(resolve,100));
-  wc.sendInputEvent({type:'mouseMove',...handle});
+  win.show();win.focus();wc.focus();await pause();
+  wc.sendInputEvent({type:'mouseMove',...handle});await pause();
   wc.sendInputEvent({type:'mouseDown',...handle,button:'left',clickCount:1});await pause();
-  wc.sendInputEvent({type:'mouseMove',x:handle.x-60,y:handle.y,movementX:-60,movementY:0});await pause();
+  wc.sendInputEvent({type:'mouseMove',x:handle.x-60,y:handle.y,movementX:-60,movementY:0,button:'left',modifiers:['leftButtonDown']});await pause();
   wc.sendInputEvent({type:'mouseUp',x:handle.x-60,y:handle.y,button:'left',clickCount:1});await pause();
   const outline=await wc.executeJavaScript(`(()=>{const width=document.querySelector('#outlinePane').getBoundingClientRect().width,saved=localStorage.getItem('3hs-sidebar-width:desktop-test-outline');localStorage.removeItem('3hs-sidebar-width:desktop-test-outline');return {width,saved}})()`);
   if(outline.width!==226||outline.saved!=='226')throw Error('Native outline drag failed: '+JSON.stringify(outline));
