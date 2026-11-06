@@ -47,6 +47,7 @@ def run(base):
   recipient.frames[-2].evaluate('location.reload()');native.locator('.block-editor-content').wait_for();recipient.frames[-1].wait_for_function('()=>!APP.loading&&ST.ready&&RICH.editor.isEditable');recipient.frames[-1].evaluate("RICH.editor.commands.focus('end');RICH.editor.commands.insertContent(' 공유 편집 검증');")
   shared.get_by_role('button',name='변경사항 저장').click();expect(shared.locator('#status')).to_contain_text('저장 완료');assert '공유 편집 검증' in records[item]['workspace']['documents'][0]['content']
   dialog.get_by_role('button',name='공유 사용자 공유 해제').click();expect(dialog.get_by_text('아직 공유된 사용자가 없습니다.')).to_be_visible();assert not members[item]
+  dialog.get_by_role('button',name='닫기',exact=True).click();f.locator('#newDoc').click();page.frames[1].evaluate('(id)=>{APP.documents=APP.documents.filter(d=>d.id!==id);renderDocList();}',records[item]['source_key']);f.get_by_role('button',name=records[item]['title']+' 권한 관리',exact=True).click();expect(dialog.get_by_text('아직 공유된 사용자가 없습니다.')).to_be_visible();assert len([r for r in records.values() if r['app']=='markdown'])==1;print('PASS owner can manage sharing after private original is removed',flush=True)
   recipient.close();assert not errors,errors;print('PASS registered-user selection, view/edit grants, native isolated shared editor, shared save, personal data isolation and owner revocation',flush=True)
   for app in ['projects','insight']:
    context.route('**/owner-'+app,lambda r,request,app=app:r.fulfill(content_type='text/html',body=host('owner',app)))
