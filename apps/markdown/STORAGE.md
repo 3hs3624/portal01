@@ -24,3 +24,7 @@
 - `python tests/write_studio_autosave.py`
 - `python tests/workspace_ui.py`
 - `node --expose-gc tests/cloud_workspace_limits.cjs`
+
+## 문서별 편집 옵션
+
+직접 편집·스크롤 동기화·양방향 체크 상태는 문서의 `editorOptions`에 저장됩니다. 문서 전환·재시작·JSON/클라우드 복원 시 해당 문서 설정을 적용합니다. 변경은 자동저장하되 본문과 문서 수정일은 바꾸지 않습니다. 기존 설정 없는 문서는 브라우저의 이전 설정을 초기값으로 사용하고, 새 문서는 독립적인 기본값으로 시작합니다. 동기화를 꺼도 양방향 선택값은 보관합니다.

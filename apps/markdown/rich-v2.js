@@ -165,7 +165,7 @@ function updateSelectionBubble(){
  if(!RICH.editor?.isEditable||RICH.editor.state.selection.empty||RICH.editor.state.selection instanceof BlockEngine.CellSelection){bubble.hidden=true;return;}
  const rect=RICH.editor.view.coordsAtPos(RICH.editor.state.selection.from);bubble.style.left=Math.min(rect.left,innerWidth-280)+'px';bubble.style.top=Math.max(70,rect.top-40)+'px';bubble.hidden=false;
 }
-$('#previewEditable').onchange=()=>{RICH.enabled=$('#previewEditable').checked;localStorage.setItem('md-editor-direct-v2',String(RICH.enabled));syncPreviewEditable();};
+$('#previewEditable').onchange=()=>{RICH.enabled=$('#previewEditable').checked;syncPreviewEditable();if(typeof saveDocumentViewOptions==='function')saveDocumentViewOptions();};
 $('#preview').addEventListener('pointerdown',flushSourcePreview);
 document.querySelectorAll('[data-command]').forEach(button=>button.addEventListener('mousedown',e=>{if(previewHasFocus())e.preventDefault();}));
 document.addEventListener('keydown',event=>{

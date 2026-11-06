@@ -42,7 +42,7 @@ console.log(idea);
 지금, 첫 문장을 적어보세요.
 `;
 function newRecord(title='제목 없는 문서',content=''){
- const now=new Date().toISOString();return {id:crypto.randomUUID(),title,content,folderId:APP.selectedFolderId||'',createdAt:now,updatedAt:now};
+ const now=new Date().toISOString();return {id:crypto.randomUUID(),title,content,folderId:APP.selectedFolderId||'',createdAt:now,updatedAt:now,editorOptions:typeof defaultDocumentViewOptions==='function'?defaultDocumentViewOptions():{directEdit:true,syncScroll:true,syncScrollBoth:false}};
 }
 function currentDoc(){return APP.documents.find(d=>d.id===APP.activeId)}
 function captureWorkspace(){return {format:'md-editor-workspace',version:1,documents:structuredClone(APP.documents),folders:structuredClone(APP.folders),activeId:APP.activeId,theme:APP.theme};}
@@ -93,7 +93,7 @@ function renderMetadata(){const d=currentDoc();$('#breadcrumbTitle').textContent
 function selectDocument(id){
  clearTimeout(APP.previewTimer);APP.previewTimer=0;
  if(typeof selectTreeDocument==='function')selectTreeDocument(id);
- APP.activeId=id;const d=currentDoc();$('#docTitle').value=d.title;$('#editor').value=d.content;$('#editor').scrollTop=0;$('#preview').scrollTop=0;renderMetadata();renderDocList();renderEditor();
+ APP.activeId=id;const d=currentDoc();if(typeof applyDocumentViewOptions==='function')applyDocumentViewOptions(d);$('#docTitle').value=d.title;$('#editor').value=d.content;$('#editor').scrollTop=0;$('#preview').scrollTop=0;renderMetadata();renderDocList();renderEditor();
  if(typeof syncEditHistory==='function')syncEditHistory();
  if(!APP.loading){APP.generation++;clearTimeout(APP.draftTimer);APP.draftTimer=setTimeout(()=>saveDraft().catch(()=>{}),400);}
 }

@@ -22,8 +22,7 @@ function syncEditorScroll(origin,target,reverse=false){
 function updateScrollOptions(){
  $('#syncScrollBoth').disabled=!$('#syncScroll').checked;
  pendingScrollSync=new WeakMap();
- localStorage.setItem('md-editor-scroll-sync',String($('#syncScroll').checked));
- localStorage.setItem('md-editor-scroll-sync-both',String($('#syncScrollBoth').checked));
+ if(typeof saveDocumentViewOptions==='function')saveDocumentViewOptions();
 }
 $('#syncScroll').checked=localStorage.getItem('md-editor-scroll-sync')!=='false';
 $('#syncScrollBoth').checked=localStorage.getItem('md-editor-scroll-sync-both')==='true';
@@ -32,3 +31,19 @@ $('#syncScroll').addEventListener('change',updateScrollOptions);
 $('#syncScrollBoth').addEventListener('change',updateScrollOptions);
 $('#editor').addEventListener('scroll',()=>syncEditorScroll($('#editor'),$('#preview')),{passive:true});
 $('#preview').addEventListener('scroll',()=>syncEditorScroll($('#preview'),$('#editor'),true),{passive:true});
+
+// Existing browser preferences seed older documents; reading a document does not alter its data.
+const documentViewDefaults=Object.freeze({directEdit:RICH.enabled,syncScroll:$('#syncScroll').checked,syncScrollBoth:$('#syncScrollBoth').checked});
+function defaultDocumentViewOptions(){return {...documentViewDefaults};}
+function applyDocumentViewOptions(doc){
+ const saved=doc.editorOptions&&typeof doc.editorOptions==='object'&&!Array.isArray(doc.editorOptions)?doc.editorOptions:{};
+ const options={...saved};for(const [key,value]of Object.entries(documentViewDefaults))if(typeof options[key]!=='boolean')options[key]=value;
+ RICH.enabled=options.directEdit;$('#previewEditable').checked=options.directEdit;
+ $('#syncScroll').checked=options.syncScroll;$('#syncScrollBoth').checked=options.syncScrollBoth;$('#syncScrollBoth').disabled=!options.syncScroll;
+ pendingScrollSync=new WeakMap();
+}
+function saveDocumentViewOptions(){
+ if(APP.loading||!currentDoc()||$('#editor').disabled)return;
+ currentDoc().editorOptions={...currentDoc().editorOptions,directEdit:$('#previewEditable').checked,syncScroll:$('#syncScroll').checked,syncScrollBoth:$('#syncScrollBoth').checked};
+ changed(false);
+}

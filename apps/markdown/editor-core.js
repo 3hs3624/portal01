@@ -7,6 +7,7 @@
   const ids=new Set();
   for(const d of w.documents){
    if(!d||typeof d.id!=='string'||!d.id||ids.has(d.id)||typeof d.title!=='string'||!d.title.trim()||d.title.length>200||typeof d.content!=='string'||new TextEncoder().encode(d.content).length>MAX_DOC||typeof d.createdAt!=='string'||typeof d.updatedAt!=='string')throw Error('문서 형식 오류 · 문서 한 개는 UTF-8 기준 5MB까지 지원합니다.');
+   if(d.editorOptions!==undefined&&(!d.editorOptions||typeof d.editorOptions!=='object'||Array.isArray(d.editorOptions)||['directEdit','syncScroll','syncScrollBoth'].some(key=>d.editorOptions[key]!==undefined&&typeof d.editorOptions[key]!=='boolean')))throw Error('문서별 편집·스크롤 설정 형식을 확인하세요.');
    if(d.tags!==undefined&&(!Array.isArray(d.tags)||d.tags.length>20||d.tags.some(t=>typeof t!=='string'||!t.trim()||t.length>40)))throw Error('문서 태그는 20개까지, 각 40자까지 지원합니다.');
    if(d.pageComments!==undefined&&(!Array.isArray(d.pageComments)||d.pageComments.length>100||d.pageComments.some(n=>!n||typeof n.id!=='string'||typeof n.date!=='string'||typeof n.text!=='string'||!n.text.trim()||n.text.length>5000)))throw Error('페이지 댓글 형식을 확인하세요.');
    ids.add(d.id);
