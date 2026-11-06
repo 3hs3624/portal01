@@ -1,0 +1,52 @@
+name: Desktop preview
+on:
+  push:
+    branches: [desktop-preview]
+    paths: ['desktop/**', 'apps/**', '*.js', '*.css', '*.html', '*.json', '.github/workflows/desktop-preview.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preview:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-2025, macos-15, macos-15-intel]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run stage
+      - name: Linux smoke (isolated CI runner only)
+        if: runner.os == 'Linux'
+        run: xvfb-run -a npx electron --no-sandbox scripts/smoke.cjs
+      - name: Windows and Mac smoke
+        if: runner.os != 'Linux'
+        run: npx electron scripts/smoke.cjs
+      - name: Build unpacked preview (no publishing or signing)
+        run: npm run pack -- --publish never
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - run: npm run archive
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: desktop-report-${{ matrix.os }}
+          path: desktop/smoke-report.json
+          if-no-files-found: ignore
+      - uses: actions/upload-artifact@v4
+        with:
+          name: portal01-preview-${{ matrix.os }}
+          path: desktop/release/preview.tgz
+          retention-days: 7
+          if-no-files-found: error
