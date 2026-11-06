@@ -476,7 +476,7 @@ function updateBlockControls(block) {
   const r = richBlockRect(b),
     bounds = $("#preview").getBoundingClientRect(),
     visibleTop = Math.max(bounds.top, 0);
-  if (r.bottom < visibleTop || r.top > Math.min(bounds.bottom, innerHeight)) {
+  if (!r.width || !bounds.width || r.bottom < visibleTop || r.top > Math.min(bounds.bottom, innerHeight)) {
     blockControls.hidden = true;
     return;
   }
@@ -1592,6 +1592,8 @@ dragBlock.onpointerdown = (event) => {
     line = null;
   dragBlock.setPointerCapture(event.pointerId);
   const cleanup = () => {
+    document.removeEventListener('studio:view-changed',cleanup);
+    if(dragBlock.hasPointerCapture(event.pointerId))dragBlock.releasePointerCapture(event.pointerId);
     line?.remove();
     BLOCK_UI.dragging = false;
     document.body.classList.remove("studio-dragging");
@@ -1600,6 +1602,7 @@ dragBlock.onpointerdown = (event) => {
       dragBlock.onpointercancel =
         null;
   };
+  document.addEventListener('studio:view-changed',cleanup);
   dragBlock.onpointermove = (e) => {
     moving = moving || Math.hypot(e.clientX - start.x, e.clientY - start.y) > 5;
     if (!moving) return;
@@ -1637,6 +1640,10 @@ dragBlock.onpointerdown = (event) => {
   };
   dragBlock.onpointercancel = cleanup;
 };
+document.addEventListener('studio:view-changed',()=>{closeBlockMenus();blockControls.hidden=true;updateSelectionBubble();});
+let studioLayoutFrame=0;
+const studioLayoutObserver=new ResizeObserver(()=>{cancelAnimationFrame(studioLayoutFrame);studioLayoutFrame=requestAnimationFrame(()=>{updateBlockControls();updateSelectionBubble();});});
+studioLayoutObserver.observe($('#preview'));
 $("#preview").addEventListener("mousemove", (e) => {
   if (BLOCK_UI.dragging || BLOCK_UI.menu) return;
   const hit = RICH.editor?.view.posAtCoords({

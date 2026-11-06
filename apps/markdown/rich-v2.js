@@ -162,7 +162,7 @@ function indentRichBlock(id=RICH.activeBlock,out=false){
 }
 const bubble=el('div','selection-bubble');bubble.id='selectionBubble';bubble.hidden=true;for(const [command,label]of [['bold','B'],['italic','I'],['underline','U'],['link','링크'],['document','문서 연결']]){const button=el('button','',label);button.onmousedown=e=>e.preventDefault();button.onclick=()=>command==='document'?openDocumentLink():previewCommand(command);bubble.append(button);}document.body.append(bubble);
 function updateSelectionBubble(){
- if(!RICH.editor?.isEditable||RICH.editor.state.selection.empty||RICH.editor.state.selection instanceof BlockEngine.CellSelection){bubble.hidden=true;return;}
+ if(APP.view==='edit'||!$('#preview').getBoundingClientRect().width||!RICH.editor?.isEditable||RICH.editor.state.selection.empty||RICH.editor.state.selection instanceof BlockEngine.CellSelection){bubble.hidden=true;return;}
  const rect=RICH.editor.view.coordsAtPos(RICH.editor.state.selection.from);bubble.style.left=Math.min(rect.left,innerWidth-280)+'px';bubble.style.top=Math.max(70,rect.top-40)+'px';bubble.hidden=false;
 }
 $('#previewEditable').onchange=()=>{RICH.enabled=$('#previewEditable').checked;syncPreviewEditable();if(typeof saveDocumentViewOptions==='function')saveDocumentViewOptions();};

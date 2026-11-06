@@ -939,3 +939,6 @@
 .studio-menu-icon {
   line-height: 1;
 }
+
+/* Floating rich-editor controls must not cover the Markdown source pane. */
+body[data-editor-view="edit"] :is(.block-controls,.selection-bubble,.studio-axis-insertion,.studio-axis-ghost,.studio-axis-drag-hint,.studio-column-edge,.studio-table-handle,.studio-table-add-row,.studio-table-add-column){display:none!important}

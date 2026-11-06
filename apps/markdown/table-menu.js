@@ -151,6 +151,6 @@
   const index=buttons.indexOf(document.activeElement),next=index<0?(event.key==='ArrowDown'?0:buttons.length-1):(index+(event.key==='ArrowDown'?1:-1)+buttons.length)%buttons.length;event.preventDefault();event.stopImmediatePropagation();buttons[next].focus();
  },true);
  document.addEventListener('scroll',event=>{if(state.drag)return;if(menu.contains(event.target)||palette.contains(event.target))return;close();if(state.visible)requestAnimationFrame(()=>show(state.hover?.cell));},true);
- addEventListener('resize',()=>{stopDrag();close();if(state.visible)requestAnimationFrame(()=>show(state.hover?.cell));});document.addEventListener('studio:document-changed',()=>{stopDrag();close();hideHandles();});
+ addEventListener('resize',()=>{stopDrag();close();if(state.visible)requestAnimationFrame(()=>show(state.hover?.cell));});document.addEventListener('studio:view-changed',()=>{stopDrag();close();hideHandles();});document.addEventListener('studio:document-changed',()=>{stopDrag();close();hideHandles();});
  const previous=updateTableTools;updateTableTools=function(){previous();if(!editable()){stopDrag();close();hideHandles();}else if(state.menu)valid();else if(!state.drag&&root.contains(document.activeElement)){const c=engineTableContext();if(c){const cell=c.editor?.view?.nodeDOM?.(c.pos+1+c.map.map[c.row*c.width+c.column])||RICH.editor.view.nodeDOM(c.pos+1+c.map.map[c.row*c.width+c.column]);if(cell)show(cell);}}};
 })();
