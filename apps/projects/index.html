@@ -1,6 +1,6 @@
 <!doctype html>
 <html data-portal-app="projects" lang="ko">
-<head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; form-action 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; frame-src 'self' blob:; worker-src 'self' blob:; connect-src 'self' https://tqomsmhicrjsidhuxkcb.supabase.co; script-src 'self' 'sha256-uTrNz+1TpJ2uzw2hCLdqvwTmZ0qGVd3+RVWoSqUoHrg=' 'sha256-753FTkuJ6zptE2wUr6st+KGUR/8I/bHC2D3O0debR78='"><meta name="referrer" content="no-referrer"><link rel="stylesheet" href="/portal01/app-shell.css?v=6242ad3433c8"><script src="/portal01/pages-guard.js?v=620f1848783b"></script><script src="/portal01/cloud-files.js?v=d4bd63d1e856"></script>
+<head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; form-action 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; frame-src 'self' blob:; worker-src 'self' blob:; connect-src 'self' https://tqomsmhicrjsidhuxkcb.supabase.co; script-src 'self' 'sha256-MpOc4DUXGT0VY/sfZzRlIO4Ynkj778ZXnd0nUhSwHbs=' 'sha256-oxU7Gf19EFGuDmue0oQYApYzzB5eAp1txRAdD994kR4='        "><meta name="referrer" content="no-referrer"><link rel="stylesheet" href="/portal01/app-shell.css?v=6242ad3433c8"><script src="/portal01/pages-guard.js?v=08c48ea5080c"></script><script src="/portal01/sharing-frame.js?v=6fe4e9520d1b"></script><script src="/portal01/cloud-files.js?v=157263743cad"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>프로젝트 관리 · WBS 일정관리</title>
@@ -177,7 +177,7 @@ table.stt{min-width:980px}
 .radios{display:flex;gap:16px;flex-wrap:wrap;font-size:13px}
 .radios label{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
 </style>
-<link rel="stylesheet" href="/portal01/workspace-ui.css?v=5e5dc224804d"><link rel="stylesheet" href="/portal01/sidebar-resize.css?v=c05c5a5643f9"><script src="/portal01/sidebar-resize.js?v=d89d0fd28138"></script></head>
+<link rel="stylesheet" href="/portal01/workspace-ui.css?v=5e5dc224804d"><link rel="stylesheet" href="/portal01/sidebar-resize.css?v=c05c5a5643f9"><script src="/portal01/sidebar-resize.js?v=d89d0fd28138"></script><link rel="stylesheet" href="/portal01/sharing.css?v=4815a86f45a4"></head>
 <body>
 <div class="topbar"><div class="wrap">
   <div class="brand"><span class="mark" aria-hidden="true"><i style="width:9px;margin-left:-5px"></i><i style="width:11px;margin-left:3px"></i><i style="width:7px;margin-left:7px"></i></span><span>WBS 일정관리</span><span class="sep">|</span><span class="sub">프로젝트 관리</span></div>
@@ -560,7 +560,7 @@ function render(){
         <td class="c"><span class="chip ${st[2]}">${st[1]}</span></td>
         <td>${p.lastSave?`<span class="num">${esc(fmtT(p.lastSave.savedAt))}</span><span class="sub" title="${esc(p.lastSave.name)}">${esc(p.lastSave.name)}${p.lastSave.author?' · '+esc(p.lastSave.author):''}</span>`:'—'}</td>
         <td class="num">${esc(fmtT(p.createdAt).slice(0,10))}</td>
-        <td><div class="manage"><button class="icon-btn" data-open="${esc(p.id)}" title="대시보드 열기 (새 창)" aria-label="${esc(p.name)} 대시보드 열기">${IC.view}</button><button class="icon-btn" data-edit="${esc(p.id)}" title="수정" aria-label="${esc(p.name)} 수정">${IC.edit}</button></div></td>
+        <td><div class="manage">${!window.PortalShareSession?`<button class="icon-btn" data-share="${esc(p.id)}" title="공유" aria-label="${esc(p.name)} 공유">공유</button>`:''}<button class="icon-btn" data-open="${esc(p.id)}" title="대시보드 열기 (새 창)" aria-label="${esc(p.name)} 대시보드 열기">${IC.view}</button><button class="icon-btn" data-edit="${esc(p.id)}" title="수정" aria-label="${esc(p.name)} 수정">${IC.edit}</button></div></td>
       </tr>`}).join(''):`<tr><td colspan="14" class="empty" style="padding:40px">조건에 맞는 프로젝트가 없습니다.</td></tr>`}</tbody></table>`;
   const win=(()=>{const a=[];const s=Math.max(1,Math.min(ui.page-2,pages-4));for(let i=s;i<=Math.min(pages,s+4);i++)a.push(i);return a})();
   $('#foot').innerHTML=`<span class="info">총 ${list.length}건</span>
@@ -655,7 +655,8 @@ async function deleteStore(id){ // 삭제: 연결 해제된 저장소만, 이 �
 }
 
 document.addEventListener('click',e=>{
-  const o=e.target.closest('[data-open]'); if(o){openDashboard(o.dataset.open);return}
+  const share=e.target.closest('[data-share]');if(share){window.PortalItemSharing?.share(share.dataset.share);return;}
+  const o=e.target.closest('[data-open]'); if(o){if(window.PortalItemSharing)PortalItemSharing.openOrLocal(o.dataset.open,()=>openDashboard(o.dataset.open));else openDashboard(o.dataset.open);return}
   const ed=e.target.closest('[data-edit]'); if(ed){openForm(ed.dataset.edit);return}
   const pg=e.target.closest('[data-pg]'); if(pg&&!pg.disabled){ui.page=+pg.dataset.pg;render();return}
   const b=e.target.closest('button'); if(!b||b.disabled)return; const d=b.dataset;
@@ -941,6 +942,7 @@ async function portalActivateCloudStore(){
  curSid=store.id;lsSet('pm.storage',curSid);stState[store.id]='ok';delete roots[store.id];await load();
 }
 window.PortalWorkspaceAdapter={
+ sharedWindows:()=>Object.values(wins).filter(w=>w&&!w.closed),
  isEmpty:()=>!curStore()||!ready(),
  validate:workspace=>PortalCloudFiles.validate(workspace),
  async capture(){
@@ -967,8 +969,8 @@ window.PortalWorkspaceAdapter={
 };
 
 window.portalProjectSummary=()=>({items:projects.map(p=>({name:p.name,date:p.updatedAt||p.savedAt})),metrics:[['프로젝트',projects.length],['진행 중',projects.filter(p=>(p.pstatus||'진행 중')==='진행 중').length],['완료',projects.filter(p=>p.pstatus==='완료').length]]});
-init();
+window.PortalProjectReady=init();
 })();
 </script>
-<script src="vendor/fflate.min.js?v=c3b34f2e9f5e" defer></script><script src="workbook-preserve.js?v=06fe8363a562" defer></script><script src="/portal01/folder-storage.js?v=652b6eeb2692" defer></script><link rel="stylesheet" href="/portal01/storage-flow.css?v=0f5855be5037"><script src="/portal01/storage-flow.js?v=10d6d6e0b530" defer></script><script src="/portal01/storage-models.js?v=ea9b424231b9" defer></script><script src="/portal01/storage-adapters.js?v=b6640a56be25" defer></script><script src="/portal01/cloud-ui.js?v=df0d28706623" defer></script><script src="/portal01/app-shell.js?v=1175bd126173" defer></script><script src="/portal01/bridge.js?v=741de422b9d3"></script></body>
+<script src="vendor/fflate.min.js?v=c3b34f2e9f5e" defer></script><script src="workbook-preserve.js?v=06fe8363a562" defer></script><script src="/portal01/folder-storage.js?v=652b6eeb2692" defer></script><link rel="stylesheet" href="/portal01/storage-flow.css?v=0f5855be5037"><script src="/portal01/storage-flow.js?v=10d6d6e0b530" defer></script><script src="/portal01/storage-models.js?v=ea9b424231b9" defer></script><script src="/portal01/storage-adapters.js?v=b6640a56be25" defer></script><script src="/portal01/cloud-ui.js?v=df0d28706623" defer></script><script src="/portal01/app-shell.js?v=1175bd126173" defer></script><script src="/portal01/bridge.js?v=741de422b9d3"></script><script src="/portal01/item-sharing.js?v=a2f0391d8712" defer></script><script src="/portal01/item-sharing-adapters.js?v=466dcf24566f" defer></script></body>
 </html>

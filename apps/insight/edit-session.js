@@ -35,6 +35,7 @@ function guardDashboardExit(action){
 }
 const sessionSetEditing=setDashboardEditing;
 setDashboardEditing=function(editing){
+ if(editing&&window.PortalShareSession&&!window.PortalShareSession.canEdit)return notify('조회 전용 공유 항목입니다.');
  if(!editing&&!guardDashboardExit(()=>setDashboardEditing(false)))return;
  if(editing&&!dashboardState.editing&&!state.readOnly)beginDashboardSession();
  const result=sessionSetEditing(editing);

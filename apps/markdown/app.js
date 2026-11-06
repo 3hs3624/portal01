@@ -72,7 +72,7 @@ function saveDraft(){
  return APP.draftPromise;
 }
 function changed(updateDocument=true){
- if(APP.loading)return;
+ if(APP.loading||window.PortalShareSession&&!window.PortalShareSession.canEdit)return;
  APP.generation++;APP.dirty=true;
  if(updateDocument)currentDoc().updatedAt=new Date().toISOString();
  $('#localStatus').textContent='임시 보관 중…';

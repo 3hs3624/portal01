@@ -22,6 +22,7 @@
   }
   throw Error('지원하지 않는 작업입니다.');
  }};
+ if(window.PortalShareSession)window.PagesStorage={handle:(action,payload)=>window.PortalShareSession.storage(action,payload)};
  function csv(text,delimiter=','){
   const rows=[];let row=[],cell='',quoted=false;
   for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quoted&&text[i+1]==='"'){cell+='"';i++}else if(!cell||quoted)quoted=!quoted;else cell+=c}else if(c===delimiter&&!quoted){row.push(cell);cell=''}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);rows.push(row);row=[];cell=''}else cell+=c;if(rows.length>100000)throw Error('최대 100,000행까지 지원합니다.')}

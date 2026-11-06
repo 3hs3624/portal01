@@ -58,6 +58,7 @@ def run(base, chromium):
         assert popup.evaluate('window.opener===null')
         assert popup.evaluate('sessionStorage.getItem("3hs-auth-session")') is None
         assert popup.locator('#login-panel').is_hidden()
+        popup.wait_for_function('() => document.body.classList.contains("app-window")')
         assert popup.locator('#sidebar').is_hidden()
         assert popup.locator('.main > header').is_hidden()
         assert popup.locator('#frames iframe').count() == 1

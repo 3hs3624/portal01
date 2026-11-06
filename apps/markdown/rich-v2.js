@@ -74,7 +74,7 @@ function previewMarkdown(){
  return parts.map((part,i)=>i&&parts[i-1]&&!/\n\n$/.test(parts[i-1])?(/\n$/.test(parts[i-1])?'\n':'\n\n')+part:part).join('').replace(/\s+$/,'')+(RICH.trivia.trim()?'\n\n'+RICH.trivia.trim():'');
 }
 function syncPreviewEditable(){
- const enabled=RICH.enabled&&!APP.loading&&!$('#editor').disabled;
+ const enabled=(!window.PortalShareSession||window.PortalShareSession.canEdit)&&RICH.enabled&&!APP.loading&&!$('#editor').disabled;
  if(RICH.editor&&RICH.editor.isEditable!==enabled){RICH.editor.setEditable(enabled,false);document.dispatchEvent(new Event('studio:editability-changed'));}
  $('#preview').contentEditable='false';$('#preview').setAttribute('aria-readonly',String(!enabled));
  if(RICH.editor)for(const checkbox of engineRoot().querySelectorAll('input[type=checkbox]'))checkbox.disabled=!enabled;
