@@ -33,3 +33,5 @@
 - `node tests/storage_models.cjs`: 프로젝트 파일 묶음/엑셀 보존, BI 참조 복사, 셀 값 불변, 저장 시각 제외 비교.
 - `python tests/shared_storage_flow.py`: 최초 BI 자동저장, 양쪽 백업, 실제 열려 있는 프로젝트 변경 반영, 창 열림 차단, 충돌 감지, JSON 및 모바일 화면.
 - 기존 Write Studio 저장소·자동저장, 폴더 충돌, 두 앱 UI, 클라우드 크기/인증 계약 회귀 검증.
+
+Supabase의 세 앱 관계형 저장은 [프로젝트](PROJECT-RELATIONAL-STORAGE.md)와 [문서·BI](CONTENT-RELATIONAL-STORAGE.md) 문서를 참고하세요. 로컬 파일 형식과 공통 저장소 UI는 유지됩니다.

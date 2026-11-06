@@ -15,7 +15,7 @@
  };
  else{
   let draftCache;
-  A={...base,title:'Insight BI',unit:'데이터 묶음',folderName:'Insight-BI',intro:'대시보드와 연결 데이터는 브라우저에 자동저장됩니다. 다른 위치에 보관하려면 저장소를 선택하고 내용을 확인하세요.',note:'연결 관계를 유지하도록 대시보드와 데이터를 한 묶음으로 비교합니다. 둘 다 보관하면 저장본의 데이터와 대시보드를 새 ID로 복사합니다.',busy:()=>!storageState.settings||storageState.restoring||(storageState.busy&&!storageState.promise),settle:async()=>{if(storageState.promise)await storageState.promise},
+  A={...base,title:'Insight BI',unit:'데이터 묶음',folderName:'Insight-BI',intro:'대시보드와 연결 데이터는 브라우저에 자동저장됩니다. 다른 위치에 보관하려면 저장소를 선택하고 내용을 확인하세요.',note:'Supabase는 대시보드·카드·데이터 소스·시트·열·행을 관계형 테이블로 저장합니다. 차트 설정은 JSONB로 보관합니다. 연결 관계를 유지하도록 대시보드와 데이터를 한 묶음으로 비교합니다. 둘 다 보관하면 저장본의 데이터와 대시보드를 새 ID로 복사합니다.',busy:()=>!storageState.settings||storageState.restoring||(storageState.busy&&!storageState.promise),settle:async()=>{if(storageState.promise)await storageState.promise},
    capture(){const w=captureWorkspace();if(typeof dashboardHasEdits==='function'&&dashboardHasEdits()){
      const signature=JSON.stringify([dashboardState.id,editSessionSnapshot()]);
      if(!draftCache||draftCache.signature!==signature){const record=createDashboardRecord(dashboardState.id||crypto.randomUUID(),dashboardState.name,dashboardState.description);draftCache={signature,record}}

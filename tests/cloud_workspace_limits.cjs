@@ -6,9 +6,9 @@ const path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const bundle=fs.readFileSync(path.join(root,'login.js'),'utf8');
 const source=bundle.slice(bundle.indexOf('function pn('),bundle.indexOf('var gn=',bundle.indexOf('function pn(')));
-const factory=vm.runInNewContext('const Co=new Set(["markdown","insight","projects"]);'+source+';pn',{Blob,Error});
+const factory=vm.runInNewContext('const Co=new Set(["markdown","insight","projects"]);'+source+';pn',{Blob,Error,PortalContentCloud:{create:client=>({save:async(app,w,expected)=>{const result=await client.rpc("portal_content_workspace_save",{p_app:app,p_workspace:w,p_expected:expected});return result.data}})}});
 let rpcCalls=0;
-const api=factory({rpc:async(name,args)=>{assert.equal(name,'portal_workspace_save');assert.equal(args.p_app,'markdown');rpcCalls++;return {data:{hasWorkspace:true,revision:'test-revision'}};}},()=>true);
+const api=factory({rpc:async(name,args)=>{assert.equal(name,'portal_content_workspace_save');assert.equal(args.p_app,'markdown');rpcCalls++;return {data:{hasWorkspace:true,revision:'test-revision'}};}},()=>true);
 const limit=100*1024*1024;
 async function check(bytes,accepted,character='x'){
  const overhead=Buffer.byteLength(JSON.stringify({data:''}));
