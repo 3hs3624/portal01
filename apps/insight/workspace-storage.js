@@ -77,7 +77,7 @@ async function loadWorkspaceNow(startup=false){
  const returnView=typeof captureViewState==='function'?captureViewState():null;
  const p=activeStorage();if(!p)throw Error('선택한 저장소가 없습니다.');if(!startup&&!window.confirm('저장소의 내용으로 현재 대시보드와 연결 데이터를 교체할까요? 저장하지 않은 내용은 먼저 저장해 주세요.'))return;
  storageState.busy=true;renderStorageList();try{const info=await storageAPI('load',{id:p.id});storageState.infos[p.id]=info;storageState.revision=info.revision;
- if(!info.hasWorkspace){storageState.ready=false;storageStatus('연결 완료 · 아직 저장된 작업공간이 없습니다. 지금 저장을 눌러 시작하세요.');return}
+ if(!info.hasWorkspace){storageState.ready=true;storageStatus('브라우저 자동저장 준비 완료 · 변경 내용을 자동으로 저장합니다.');if(storageState.dirty)storageChanged();return}
  await restoreWorkspaceBundle(info.workspace);if(!startup&&returnView&&typeof restoreViewState==='function')restoreViewState(returnView);storageState.ready=true;storageState.dirty=false;storageStatus('불러오기 완료 · '+p.name+' · '+new Date(info.savedAt).toLocaleString('ko-KR'));
  }catch(e){storageStatus('불러오기 실패 · '+e.message,true);throw e}finally{storageState.busy=false;renderStorageList()}
 }

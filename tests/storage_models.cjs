@@ -1,0 +1,14 @@
+const assert=require('node:assert/strict');
+const {projects,insight,encode,decode,fingerprint}=require('../storage-models.js');
+let seq=0;const uid=()=>('abc'+(++seq).toString(36).padStart(29,'0'));
+function pm(name,value){const id='PRJ20261106120000abc';return {format:'wbs-pm-cloud',version:1,directories:['projects',`projects/${id}/snapshots`],files:[{path:`projects/${id}.meta.json`,data:encode({id,name,createdAt:'2026-01-01',updatedAt:'2026-11-06'})},{path:`projects/${id}.json`,data:encode({projectId:id,current:{project:{name},value},snapshots:[]})},{path:`projects/${id}/snapshots/history.xlsx`,data:'AQID'}]}}
+const a=pm('내 프로젝트',1),b=pm('저장 프로젝트',2),before=JSON.stringify([a,b]);
+assert.equal(projects.compare(a,b)[0].kind,'conflict');
+const merged=projects.merge(a,b,{},uid);assert.equal(merged.files.length,6);const metas=merged.files.filter(f=>f.path.endsWith('.meta.json')).map(f=>decode(f.data));assert.equal(new Set(metas.map(x=>x.id)).size,2);assert.equal(metas[1].name,'저장 프로젝트 (저장본)');assert.equal(merged.files.filter(f=>f.path.endsWith('.xlsx'))[1].data,'AQID');assert.equal(JSON.stringify([a,b]),before);
+assert.deepEqual(projects.merge(a,b,{[metas[0].id]:'remote'},uid).files,b.files);
+const source={id:'src',name:'매출',signature:'same',connectedAt:'2026-01-01',sheets:{Sheet1:{columns:['값'],rows:[['src']]}},links:{Sheet1:[['saved:dash','요약']]}};
+const dash={id:'dash',name:'요약',updatedAt:'2026-11-01',dataSource:{id:'src',name:'매출',sheet:'Sheet1'}};
+const x={format:'insight-bi-workspace',version:1,savedAt:'2026-01-01',dashboards:[dash],sources:[source],detached:[],theme:'light'},y=structuredClone(x);y.sources[0].sheets.Sheet1.rows.push([2]);
+assert.equal(insight.compare(x,y)[0].kind,'conflict');const both=insight.merge(x,y,{},uid);assert.equal(both.dashboards.length,2);assert.equal(both.sources.length,2);assert.equal(both.dashboards[1].dataSource.id,both.sources[1].id);assert.equal(both.sources[1].links.Sheet1[0][0],'saved:'+both.dashboards[1].id);assert.equal(both.sources[1].sheets.Sheet1.rows[0][0],'src','Business data must not be remapped');assert.deepEqual(insight.merge(x,y,{'insight-linked-workspace':'remote'},uid),y);assert.equal(fingerprint(x),fingerprint({...x,savedAt:'2026-11-06'}));assert.equal(insight.compare(x,{...x,savedAt:'2026-11-06'})[0].kind,'same');
+const retained=structuredClone(y);retained.detached=[{...structuredClone(source),id:'retained',originId:'src',retainedDashboards:[structuredClone(dash)]}];const copied=insight.merge(x,retained,{},uid);assert.equal(copied.detached[0].originId,copied.sources[1].id);assert.equal(copied.detached[0].retainedDashboards[0].id,copied.dashboards[1].id);
+console.log('PASS project merge preserves full file groups and Excel bytes; BI copies remap relationships without modifying row values; timestamps do not imply content changes');
