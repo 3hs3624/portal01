@@ -117,7 +117,7 @@ const STUDIO_PAGES=(()=>{
   if((e.ctrlKey||e.metaKey)&&e.shiftKey&&e.key.toLowerCase()==='m'){const d=valid();if(d){e.preventDefault();e.stopImmediatePropagation();const id=d.id;close();openComments(id);}return;}
   if(['ArrowDown','ArrowUp','Home','End'].includes(e.key)){e.preventDefault();e.stopImmediatePropagation();const buttons=[...menu.querySelectorAll('button:not(:disabled)')],i=buttons.indexOf(document.activeElement),n=e.key==='Home'?0:e.key==='End'?buttons.length-1:(i+(e.key==='ArrowDown'?1:-1)+buttons.length)%buttons.length;buttons[n]?.focus();}
  },true);
- document.addEventListener('scroll',e=>{if(!menu.contains(e.target))close();},true);addEventListener('resize',()=>close());document.addEventListener('studio:document-changed',()=>close());
+ document.addEventListener('scroll',e=>{if(!menu.contains(e.target))close();},true);addEventListener('resize',()=>close());document.addEventListener('studio:view-changed',()=>close());document.addEventListener('studio:document-changed',()=>close());
  preview.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;const href=a.getAttribute('href')||'';if(href.startsWith('#doc-')){e.preventDefault();open(href.slice(5),preview.dataset.mode);}else if(/^https?:\/\//i.test(href)){a.target='_blank';a.rel='noopener noreferrer';}});
  const previous=selectDocument;selectDocument=function(id){close();preview.close();comments.close();previous(id);};
  const commentButton=btn('페이지 댓글',()=>openComments(APP.activeId));commentButton.id='openPageComments';$('.doc-actions').append(commentButton);
