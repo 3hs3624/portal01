@@ -23,9 +23,11 @@ Write Studio 문서, Project Management 프로젝트, Insight BI 대시보드 �
 
 ## 서버 적용 상태
 
-2026-11-06 작업에서 Supabase 마이그레이션 도구 요청이 취소되어 운영 서버에는 아직 `portal_sharing.shared_items` 및 `public.portal_item_share`가 생성되지 않았습니다. 기존 데이터에 대한 공유 권한은 부여하지 않았습니다. 서버 적용 전이므로 기능은 운영 배포하지 않고 별도 개발 브랜치에 보관합니다.
+2026-11-07 Supabase에 `portal_sharing.shared_items`, `shared_members`, `shared_versions`와 공개 권한 API `portal_item_share`를 적용했습니다. 실제 마이그레이션 버전은 `20261106233329_item_level_sharing`입니다. 기존 개인 데이터를 자동 공유하거나 실제 사용자에게 권한을 부여하지 않았습니다.
 
-검토할 SQL은 [portal-item-sharing.sql](portal-item-sharing.sql)입니다. 트랜잭션으로 새 비공개 스키마와 테이블·권한 API를 생성합니다. 기존 문서·프로젝트·대시보드 데이터를 자동 이전하거나 공개하지 않습니다. 승인 후 이 SQL을 하나의 마이그레이션으로 적용하고, 실제 생성된 버전으로 마이그레이션 파일을 보관한 뒤 보안 advisor와 익명/권한 거부 검증을 수행합니다. 이어서 웹 배포 및 설치형 브랜치에 반영합니다.
+운영 검증에서 공유 테이블 3개의 RLS, 익명 RPC 실행 차단, 인증 사용자의 직접 테이블 읽기 차단, 공개 RPC의 invoker 실행, 로그인 없는 요청 거부를 확인했습니다. 보안 advisor의 기존 경고 수는 유지됐습니다. 새 비공개 테이블의 정책 없음 정보 알림은 테이블 직접 접근을 의도적으로 차단하고 검증된 API만 사용하는 구성에 해당합니다.
+
+적용 SQL은 [마이그레이션 파일](supabase/migrations/20261106233329_item_level_sharing.sql)에 보관했습니다. 웹 `item-sharing`, 설치형 `desktop-item-sharing` 검토 브랜치를 각각 게시했으며, 운영 반영 시 웹은 `gh-pages`, 설치형 개발 빌드는 `desktop-preview`로 전달합니다.
 
 ## 검증
 
