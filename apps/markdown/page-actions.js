@@ -108,7 +108,7 @@ const STUDIO_PAGES=(()=>{
   if(state.mode!=='slash')return insertExtraNode(state,node);
   closeBlockMenus();historyBoundary();HISTORY.area='preview';let tr=editor.state.tr.delete(state.from,state.to);const $pos=tr.doc.resolve(state.from);let depth=$pos.depth;while(depth>0&&!$pos.node(depth).isTextblock)depth--;
   if(depth>0){const p=$pos.node(depth),pos=$pos.before(depth);tr=p.content.size===0?tr.replaceWith(pos,pos+p.nodeSize,node):tr.insert(pos+p.nodeSize,node);}else tr=tr.insert(state.from,node);
-  tr.setSelection(BlockEngine.TextSelection.near(tr.doc.resolve(Math.min(state.from,tr.doc.content.size))));editor.view.dispatch(tr);editor.commands.focus();historyBoundary();
+  tr.setSelection(BlockEngine.TextSelection.near(tr.doc.resolve(Math.min(state.from,tr.doc.content.size))));editor.view.dispatch(tr);if(state.recommendationCommand)recordBlockRecommendation(state.recommendationCommand);editor.commands.focus();historyBoundary();
  }
  document.addEventListener('pointerdown',e=>{if(!menu.contains(e.target)&&!e.target.closest('.studio-page-handle'))close();});
  document.addEventListener('keydown',e=>{

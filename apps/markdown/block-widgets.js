@@ -357,10 +357,12 @@ function insertExtraNode(state, node) {
     ),
   );
   RICH.editor.view.dispatch(tr);
+  if(state.recommendationCommand)recordBlockRecommendation(state.recommendationCommand);
   RICH.editor.commands.focus();
   historyBoundary();
 }
 function insertExtraInline(state, text, href = null) {
+  if(state.document!==APP.activeId||!RICH.editor?.isEditable)return;
   closeBlockMenus();
   historyBoundary();
   HISTORY.area = "preview";
@@ -372,13 +374,14 @@ function insertExtraInline(state, text, href = null) {
     if (b?.node.isTextblock)
       chain.setTextSelection(b.pos + b.node.nodeSize - 1);
   }
-  chain
+  const inserted=chain
     .insertContent({
       type: "text",
       text,
       marks: href ? [{ type: "link", attrs: { href } }] : [],
     })
     .run();
+  if(inserted&&state.recommendationCommand)recordBlockRecommendation(state.recommendationCommand);
   historyBoundary();
 }
 function safeStudioURL(value) {

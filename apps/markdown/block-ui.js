@@ -664,7 +664,7 @@ function renderInsertItems() {
   if (!slashState) return;
   const list = slashMenu.querySelector(".studio-menu-list");
   const q = slashState.query.toLocaleLowerCase();
-  slashState.items = SLASH.filter((i) =>
+  slashState.items = BlockRecommendations.menu(SLASH,localStorage).filter((i) =>
     (i[0] + " " + i[1]).toLocaleLowerCase().includes(q),
   );
   slashState.index = Math.min(
@@ -677,6 +677,7 @@ function renderInsertItems() {
     if (group !== section) {
       if (section) list.append(el("hr", "studio-menu-section-divider"));
       menuHeading(list, group);
+      if(group==="추천")list.lastElementChild.title="최근 사용과 사용 빈도를 반영합니다.";
       section = group;
     }
     const b = menuButton(label, () => runSlash(cmd), icon, hint);
@@ -790,11 +791,11 @@ function updateSlashMenu() {
   slashMenu.hidden = false;
 }
 function runSlash(command) {
-  if (!slashState || slashState.document !== APP.activeId)
+  if (!slashState || slashState.document !== APP.activeId || !RICH.editor?.isEditable)
     return closeBlockMenus();
   if (STUDIO_EXTRA.has(command))
-    return insertStudioExtra(command, { ...slashState });
-  if (command === "page") return insertStudioPage({ ...slashState });
+    return insertStudioExtra(command, { ...slashState, recommendationCommand: command });
+  if (command === "page") return insertStudioPage({ ...slashState, recommendationCommand: command });
   const state = { ...slashState },
     b = currentStudioBlock(state.id);
   if (!b) return closeBlockMenus();
@@ -936,6 +937,7 @@ function runSlash(command) {
     ),
   );
   RICH.editor.view.dispatch(tr);
+  recordBlockRecommendation(command);
   RICH.editor.commands.focus();
   historyBoundary();
   updateBlockControls();

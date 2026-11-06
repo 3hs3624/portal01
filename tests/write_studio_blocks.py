@@ -86,7 +86,9 @@ def run_browser_suite(base_url, chromium):
         assert '/' not in js('RICH.editor.state.doc.textContent')
         reset()
         js('openInsertMenu(richTopBlocks()[0],340,400)')
-        assert f.locator('#slashMenu [data-command]').evaluate_all('(nodes)=>nodes.slice(0,4).map(n=>n.dataset.command)') == ['note','embed','mermaid','toggle3']
+        recommended = f.locator('#slashMenu [data-command]').evaluate_all('(nodes)=>nodes.slice(0,4).map(n=>n.dataset.command)')
+        assert set(recommended[:2]) == {'heading2', 'heading4'}, recommended
+        assert recommended[2:] == ['note', 'embed'], recommended
         footer_before=f.locator('#slashMenu .studio-menu-footer').bounding_box()
         f.locator('#slashMenu .studio-menu-list').evaluate('(node)=>node.scrollTop=node.scrollHeight')
         footer_after=f.locator('#slashMenu .studio-menu-footer').bounding_box()
