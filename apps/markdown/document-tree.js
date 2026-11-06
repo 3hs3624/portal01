@@ -78,7 +78,7 @@ function renderDocumentTree(){
    const button=el('button','doc-item tree-select'+(d.id===APP.activeId?' active':'')),info=el('span','doc-info');
    button.dataset.docId=d.id;button.style.paddingLeft=(depth*13+9)+'px';button.setAttribute('role','treeitem');button.setAttribute('aria-level',String(depth+1));button.setAttribute('aria-selected',String(TREE.selected?.type==='document'&&TREE.selected.id===d.id));button.setAttribute('aria-current',d.id===APP.activeId?'page':'false');button.title=folderPath(d.folderId||'')+' / '+d.title;
    info.append(el('strong','',d.title),el('small','',new Date(d.updatedAt).toLocaleDateString('ko-KR',{month:'short',day:'numeric'})+' · '+d.content.length.toLocaleString()+'자'));
-   button.append(treeIcon(),info);button.onclick=()=>selectDocument(d.id);button.oncontextmenu=e=>{e.preventDefault();selectDocument(d.id);openTreeItem('edit');};bindTreeDrag(button,'document',d.id);children.push(button);
+   button.append(treeIcon(),info);button.onclick=()=>window.PortalItemSharing?PortalItemSharing.openOrLocal(d.id,()=>selectDocument(d.id)):selectDocument(d.id);button.oncontextmenu=e=>{e.preventDefault();selectDocument(d.id);openTreeItem('edit');};bindTreeDrag(button,'document',d.id);if(!window.PortalShareSession){const row=el('div','portal-share-item-row'),share=el('button','portal-share-button','공유');share.type='button';share.setAttribute('aria-label',d.title+' 공유');share.onclick=()=>window.PortalItemSharing?.share(d.id);row.append(button,share);children.push(row);}else children.push(button);
   }
   return children;
  }

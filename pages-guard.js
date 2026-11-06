@@ -16,7 +16,9 @@
  window.PortalUserId=user;
  if(popup)setInterval(()=>{if(detailHost()?.PortalUserId!==user){document.documentElement.hidden=true;window.stop();nativeRemove.call(sessionStorage,'3hs-auth-session');location.replace(base.href)}},1000);
 
- const prefix='3hs-user:'+user+':',original={};
+ const shared=new URLSearchParams(location.search).get('shared');
+ if(shared&&(!/^[a-f0-9-]{36}$/.test(shared)||parent.PortalShareSession?.id!==shared||parent.PortalShareSession?.app!==location.pathname.split('/apps/')[1]?.split('/')[0])){document.documentElement.hidden=true;window.stop();throw Error('공유 항목을 다시 열어 주세요.')}
+ const prefix='3hs-user:'+user+(shared?':shared:'+shared:'')+':',original={};
  for(const name of ['getItem','setItem','removeItem','key'])original[name]=Storage.prototype[name];
  for(const name of ['getItem','setItem','removeItem'])Storage.prototype[name]=function(key,...args){return original[name].call(this,prefix+key,...args)};
  Storage.prototype.key=function(index){const keys=[];for(let i=0;i<this.length;i++){const k=original.key.call(this,i);if(k?.startsWith(prefix))keys.push(k.slice(prefix.length))}return keys[index]??null};

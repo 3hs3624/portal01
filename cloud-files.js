@@ -14,7 +14,7 @@
   if(new Blob([JSON.stringify(w)]).size>100*1024*1024)throw Error('프로젝트 클라우드 작업공간은 최대 100MB입니다.');return w;
  }
  function hydrate(w){validate(w);files.clear();dirs.clear();dirs.add('');for(const d of w.directories)dirs.add(d);for(const f of w.files)files.set(f.path,f.data);for(const p of [...dirs,...files.keys()]){const a=p.split('/');a.pop();while(a.length){dirs.add(a.join('/'));a.pop()}}}
- const ready=dbPromise.then(db=>new Promise((resolve,reject)=>{const tx=db.transaction('files');const r=tx.objectStore('files').get(key);r.onsuccess=()=>{try{if(r.result)hydrate(r.result);resolve()}catch(e){reject(e)}};r.onerror=()=>reject(r.error)}));
+ const ready=dbPromise.then(db=>new Promise((resolve,reject)=>{const tx=db.transaction('files');const r=tx.objectStore('files').get(key);r.onsuccess=()=>{try{if(window.PortalShareSession)hydrate(window.PortalShareSession.workspace);else if(r.result)hydrate(r.result);resolve()}catch(e){reject(e)}};r.onerror=()=>reject(r.error)}));
  async function persist(){const payload=snapshot();validate(payload);queue=queue.catch(()=>{}).then(async()=>{const db=await dbPromise;await new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').put(payload,key);tx.oncomplete=()=>{window.dispatchEvent(new Event('portal:cloud-working-change'));resolve()};tx.onabort=tx.onerror=()=>reject(tx.error||Error('작업 사본 저장 실패'))})});return queue}
  function join(parent,name){if(typeof name!=='string'||name.includes('/'))throw Error('파일 이름을 확인하세요.');return clean(parent?parent+'/'+name:name)}
  function bytes(data){return Uint8Array.from(atob(data),c=>c.charCodeAt(0))}
