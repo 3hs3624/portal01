@@ -15,7 +15,7 @@ test('asset resolver serves nested routes and rejects escapes and symlinks',asyn
   await fs.writeFile(path.join(root,'web/apps/markdown/index.html'),'ok');
   await fs.writeFile(path.join(root,'secret'),'private');
   await fs.symlink(path.join(root,'secret'),path.join(root,'web/leak'));
-  const web=path.join(root,'web');
+  const web=await fs.realpath(path.join(root,'web'));
   assert.equal(await assetPath(web,'portal01://workspace/portal01/apps/markdown/?v=1'),path.join(web,'apps/markdown/index.html'));
   for(const u of ['portal01://workspace/portal01/%2e%2e%2fsecret','portal01://workspace/portal01/leak','portal01://workspace/other','portal01://workspace/portal01/%5csecret','portal01://workspace/portal01/%00'])await assert.rejects(assetPath(web,u));
  }finally{await fs.rm(root,{recursive:true,force:true});}
