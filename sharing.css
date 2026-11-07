@@ -5,3 +5,8 @@
 .portal-share-host{margin:0;font:13px 'Segoe UI','Malgun Gothic',sans-serif;background:#20242d;color:#d9dde7}.portal-share-host header{height:48px;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:8px 16px}.portal-share-host header span{flex:1}.portal-share-host iframe{display:block;width:100%;height:calc(100dvh - 48px);border:0}.portal-share-host button{padding:6px 12px;cursor:pointer}.portal-share-host #error{white-space:pre-wrap;padding:14px;color:#edaaaa}
 body.portal-shared-readonly .block-controls,body.portal-shared-readonly .studio-table-handle,body.portal-shared-readonly .studio-column-edge{display:none!important}
 body.portal-shared-context #portal-cloud-open,body.portal-shared-context .portal-app-external,body.portal-shared-context .portal-app-home,body.portal-shared-context .portal-workspace-storage{display:none!important}
+
+/* Keep user selection horizontal despite each app's generic label/input rules. */
+.portal-share-dialog .portal-share-user{display:flex;flex-direction:row;justify-content:flex-start;align-items:center;gap:12px}
+.portal-share-dialog .portal-share-user input[type="checkbox"]{flex:0 0 16px;width:16px;height:16px;padding:0;margin:0;align-self:center}
+.portal-share-dialog .portal-share-user>span{flex:1;min-width:0;text-align:left}
