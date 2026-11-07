@@ -11,7 +11,7 @@
  }
  async function init(){
   const session=window.PortalShareSession;
-  if(!session){if(window.PortalItemSharing)await PortalItemSharing.init({capture,note:app==='insight'?'선택한 대시보드와 연결된 시트 데이터가 공유됩니다.':'선택한 항목만 공유됩니다. 원본은 개인 저장소에 남으며, 공유 후에는 공유 항목을 열어 함께 작업하세요.',mount:()=>app==='markdown'?document.querySelector('#docList').parentElement:app==='projects'?document.querySelector('#list').parentElement:document.querySelector('#dashboardListRows').closest('.card')||document.querySelector('#dashboards')});return;}
+  if(!session){if(window.PortalItemSharing)await PortalItemSharing.init({capture,note:app==='insight'?'선택한 대시보드와 연결된 시트 데이터가 공유됩니다.':'선택한 항목만 공유됩니다. 원본은 개인 저장소에 남으며, 공유 후에는 공유 항목을 열어 함께 작업하세요.',mount:()=>app==='markdown'?document.querySelector('#documentSharing'):app==='projects'?document.querySelector('#list').parentElement:document.querySelector('#dashboardListRows').closest('.card')||document.querySelector('#dashboards')});return;}
   const canEdit=()=>session.canEdit;
   const scopeStyle=document.createElement('style');scopeStyle.textContent=app==='markdown'?'#newDoc,#newFolder,#duplicateDoc,#deleteDoc,#moveTreeItem,#deleteTreeItem,#importDoc,#importWorkspace{display:none!important}':app==='projects'?'#btn-new,#empty-new,#del-yes{display:none!important}':'#createDashboard,.dashboard-action-icon[title=삭제]{display:none!important}';document.head.append(scopeStyle);
   if(app==='markdown')await wait(()=>!APP.loading&&ST.ready);

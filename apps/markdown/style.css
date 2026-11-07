@@ -23,3 +23,7 @@
 .block-drop-target{outline:2px dashed var(--accent)!important;outline-offset:4px}
 
 .folder-row>.folder-toggle{display:inline-flex;align-items:center;justify-content:center;align-self:center;width:20px;height:28px;padding:0;margin:0;line-height:1;flex:none}.folder-toggle>svg{display:block;width:14px;height:14px;flex:none;transform-origin:center}.folder-toggle[aria-expanded=true]>svg{transform:rotate(90deg)}
+
+/* Shared documents stay below the personal tree and above storage controls. */
+#documentSharing{flex:0 1 auto;min-height:0;max-height:30vh;overflow:auto;overflow-wrap:anywhere}
+#documentSharing>.portal-share-button{width:100%}
