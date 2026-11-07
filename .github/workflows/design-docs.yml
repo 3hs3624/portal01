@@ -1,0 +1,27 @@
+name: Design documentation
+on:
+  pull_request:
+  push:
+    branches: [gh-pages, desktop-preview, item-sharing, desktop-item-sharing]
+permissions:
+  contents: read
+jobs:
+  design:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify design guard behavior
+        run: python tests/design_docs.py
+      - name: Verify UI inventory matches code
+        run: python scripts/design_inventory.py --check
+      - name: Require related design updates
+        env:
+          DESIGN_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          DESIGN_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: python scripts/check_design_docs.py --base "$DESIGN_BASE" --head "$DESIGN_HEAD"

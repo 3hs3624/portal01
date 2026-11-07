@@ -1,0 +1,5706 @@
+{
+  "schemaVersion": 1,
+  "screens": [
+    {
+      "source": "index.html",
+      "controls": [
+        {
+          "tag": "button",
+          "line": 3,
+          "attributes": {
+            "id": "auth-retry",
+            "type": "button"
+          },
+          "text": "다시 시도",
+          "options": [],
+          "label": "다시 시도"
+        },
+        {
+          "tag": "input",
+          "line": 3,
+          "attributes": {
+            "id": "email",
+            "type": "email",
+            "maxlength": "254",
+            "required": "true",
+            "placeholder": "name@example.com"
+          },
+          "text": "",
+          "options": [],
+          "label": "이메일"
+        },
+        {
+          "tag": "button",
+          "line": 3,
+          "attributes": {
+            "id": "login",
+            "type": "submit"
+          },
+          "text": "인증코드 받기",
+          "options": [],
+          "label": "인증코드 받기"
+        },
+        {
+          "tag": "input",
+          "line": 3,
+          "attributes": {
+            "id": "otp",
+            "maxlength": "10",
+            "required": "true"
+          },
+          "text": "",
+          "options": [],
+          "label": "이메일 인증코드"
+        },
+        {
+          "tag": "button",
+          "line": 3,
+          "attributes": {
+            "id": "verify-code",
+            "type": "submit"
+          },
+          "text": "로그인",
+          "options": [],
+          "label": "로그인"
+        },
+        {
+          "tag": "button",
+          "line": 4,
+          "attributes": {
+            "id": "sidebar-toggle",
+            "type": "button",
+            "aria-label": "사이드바 숨기기"
+          },
+          "text": "",
+          "options": [],
+          "label": "사이드바 숨기기"
+        },
+        {
+          "tag": "button",
+          "line": 4,
+          "attributes": {
+            "id": "open-settings",
+            "type": "button",
+            "aria-label": "포털 설정",
+            "title": "포털 설정"
+          },
+          "text": "",
+          "options": [],
+          "label": "포털 설정"
+        },
+        {
+          "tag": "button",
+          "line": 5,
+          "attributes": {
+            "id": "logout"
+          },
+          "text": "로그아웃",
+          "options": [],
+          "label": "로그아웃"
+        },
+        {
+          "tag": "button",
+          "line": 6,
+          "attributes": {
+            "id": "refresh"
+          },
+          "text": "↻ 요약 새로고침",
+          "options": [],
+          "label": "↻ 요약 새로고침"
+        },
+        {
+          "tag": "input",
+          "line": 8,
+          "attributes": {
+            "id": "search",
+            "placeholder": "애플리케이션 검색",
+            "aria-label": "애플리케이션 검색"
+          },
+          "text": "",
+          "options": [],
+          "label": "애플리케이션 검색"
+        },
+        {
+          "tag": "dialog",
+          "line": 14,
+          "attributes": {
+            "id": "portal-settings",
+            "aria-labelledby": "settings-title"
+          },
+          "text": "",
+          "options": [],
+          "label": "portal-settings"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "id": "close-settings",
+            "type": "button",
+            "aria-label": "설정 닫기"
+          },
+          "text": "×",
+          "options": [],
+          "label": "설정 닫기"
+        },
+        {
+          "tag": "input",
+          "line": 17,
+          "attributes": {
+            "id": "show-favorites",
+            "type": "checkbox"
+          },
+          "text": "",
+          "options": [],
+          "label": "show-favorites"
+        },
+        {
+          "tag": "button",
+          "line": 18,
+          "attributes": {
+            "id": "cancel-settings",
+            "type": "button"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 18,
+          "attributes": {
+            "id": "save-settings",
+            "type": "submit"
+          },
+          "text": "저장",
+          "options": [],
+          "label": "저장"
+        }
+      ]
+    },
+    {
+      "source": "cloud-setup.html",
+      "controls": [
+        {
+          "tag": "textarea",
+          "line": 1,
+          "attributes": {
+            "aria-label": "Supabase 초기 설정 SQL"
+          },
+          "text": "",
+          "options": [],
+          "initialContentLength": 5378,
+          "label": "Supabase 초기 설정 SQL"
+        }
+      ]
+    },
+    {
+      "source": "shared-item.html",
+      "controls": [
+        {
+          "tag": "button",
+          "line": 1,
+          "attributes": {
+            "id": "save"
+          },
+          "text": "변경사항 저장",
+          "options": [],
+          "label": "변경사항 저장"
+        },
+        {
+          "tag": "button",
+          "line": 1,
+          "attributes": {
+            "id": "refresh"
+          },
+          "text": "최신 내용 다시 열기",
+          "options": [],
+          "label": "최신 내용 다시 열기"
+        }
+      ]
+    },
+    {
+      "source": "apps/markdown/index.html",
+      "controls": [
+        {
+          "tag": "button",
+          "line": 4,
+          "attributes": {
+            "id": "theme",
+            "title": "밝은/어두운 테마",
+            "aria-label": "테마 변경"
+          },
+          "text": "◐",
+          "options": [],
+          "label": "테마 변경"
+        },
+        {
+          "tag": "button",
+          "line": 4,
+          "attributes": {
+            "id": "focus",
+            "title": "집중 모드 (Esc로 종료)"
+          },
+          "text": "집중 모드",
+          "options": [],
+          "label": "집중 모드"
+        },
+        {
+          "tag": "button",
+          "line": 4,
+          "attributes": {
+            "id": "openStorage"
+          },
+          "text": "▱ 저장소 연결 ●",
+          "options": [],
+          "label": "▱ 저장소 연결 ●"
+        },
+        {
+          "tag": "button",
+          "line": 6,
+          "attributes": {
+            "id": "newDoc"
+          },
+          "text": "＋ 새 문서",
+          "options": [],
+          "label": "＋ 새 문서"
+        },
+        {
+          "tag": "input",
+          "line": 6,
+          "attributes": {
+            "id": "docSearch",
+            "placeholder": "문서 검색",
+            "aria-label": "문서 검색"
+          },
+          "text": "",
+          "options": [],
+          "label": "문서 검색"
+        },
+        {
+          "tag": "button",
+          "line": 6,
+          "attributes": {
+            "id": "importDoc",
+            "title": "Markdown 파일 가져오기"
+          },
+          "text": "↑ 가져오기",
+          "options": [],
+          "label": "↑ 가져오기"
+        },
+        {
+          "tag": "button",
+          "line": 6,
+          "attributes": {
+            "id": "newFolder",
+            "title": "새 폴더",
+            "aria-label": "새 폴더"
+          },
+          "text": "⊞",
+          "options": [],
+          "label": "새 폴더"
+        },
+        {
+          "tag": "button",
+          "line": 6,
+          "attributes": {
+            "id": "editTreeItem",
+            "title": "선택 항목 이름 변경",
+            "aria-label": "선택 항목 이름 변경"
+          },
+          "text": "✎",
+          "options": [],
+          "label": "선택 항목 이름 변경"
+        },
+        {
+          "tag": "button",
+          "line": 6,
+          "attributes": {
+            "id": "moveTreeItem",
+            "title": "선택 항목 이동",
+            "aria-label": "선택 항목 이동"
+          },
+          "text": "↗",
+          "options": [],
+          "label": "선택 항목 이동"
+        },
+        {
+          "tag": "button",
+          "line": 6,
+          "attributes": {
+            "id": "deleteTreeItem",
+            "title": "선택 항목 삭제",
+            "aria-label": "선택 항목 삭제"
+          },
+          "text": "♲",
+          "options": [],
+          "label": "선택 항목 삭제"
+        },
+        {
+          "tag": "button",
+          "line": 6,
+          "attributes": {
+            "id": "toggleFolders",
+            "title": "모두 펼치기",
+            "aria-label": "모두 펼치기"
+          },
+          "text": "⌄",
+          "options": [],
+          "label": "모두 펼치기"
+        },
+        {
+          "tag": "select",
+          "line": 6,
+          "attributes": {
+            "id": "treeSort"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "updated",
+              "label": "최근 수정순"
+            },
+            {
+              "value": "name",
+              "label": "이름 오름차순"
+            },
+            {
+              "value": "name-desc",
+              "label": "이름 내림차순"
+            },
+            {
+              "value": "created",
+              "label": "생성순"
+            }
+          ],
+          "label": "정렬"
+        },
+        {
+          "tag": "button",
+          "line": 6,
+          "attributes": {
+            "id": "treeRoot",
+            "title": "최상위 위치 선택"
+          },
+          "text": "⌂ 내 문서",
+          "options": [],
+          "label": "⌂ 내 문서"
+        },
+        {
+          "tag": "button",
+          "line": 6,
+          "attributes": {
+            "id": "storageShortcut"
+          },
+          "text": "저장소 관리 ↗",
+          "options": [],
+          "label": "저장소 관리 ↗"
+        },
+        {
+          "tag": "input",
+          "line": 7,
+          "attributes": {
+            "id": "docTitle",
+            "aria-label": "문서 제목",
+            "maxlength": "200",
+            "placeholder": "제목 없는 문서"
+          },
+          "text": "",
+          "options": [],
+          "label": "문서 제목"
+        },
+        {
+          "tag": "button",
+          "line": 7,
+          "attributes": {
+            "id": "duplicateDoc",
+            "title": "문서 복제"
+          },
+          "text": "복제",
+          "options": [],
+          "label": "복제"
+        },
+        {
+          "tag": "button",
+          "line": 7,
+          "attributes": {
+            "id": "deleteDoc",
+            "title": "문서 삭제"
+          },
+          "text": "삭제",
+          "options": [],
+          "label": "삭제"
+        },
+        {
+          "tag": "button",
+          "line": 7,
+          "attributes": {
+            "id": "openExport"
+          },
+          "text": "내보내기 ↓",
+          "options": [],
+          "label": "내보내기 ↓"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "id": "undoEdit",
+            "title": "되돌리기 (Ctrl+Z)",
+            "aria-label": "되돌리기",
+            "disabled": "true"
+          },
+          "text": "↶",
+          "options": [],
+          "label": "되돌리기"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "id": "redoEdit",
+            "title": "다시 실행 (Ctrl+Shift+Z / Ctrl+Y)",
+            "aria-label": "다시 실행",
+            "disabled": "true"
+          },
+          "text": "↷",
+          "options": [],
+          "label": "다시 실행"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "제목 1",
+            "aria-label": "제목 1"
+          },
+          "text": "H 1",
+          "options": [],
+          "label": "제목 1"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "제목 2",
+            "aria-label": "제목 2"
+          },
+          "text": "H 2",
+          "options": [],
+          "label": "제목 2"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "제목 3",
+            "aria-label": "제목 3"
+          },
+          "text": "H 3",
+          "options": [],
+          "label": "제목 3"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "굵게 (Ctrl+B)"
+          },
+          "text": "B",
+          "options": [],
+          "label": "B"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "기울임 (Ctrl+I)"
+          },
+          "text": "I",
+          "options": [],
+          "label": "I"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "밑줄 (Ctrl+U)",
+            "aria-label": "밑줄"
+          },
+          "text": "U",
+          "options": [],
+          "label": "밑줄"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "취소선"
+          },
+          "text": "S",
+          "options": [],
+          "label": "S"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "인용"
+          },
+          "text": "❞",
+          "options": [],
+          "label": "❞"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "글머리 목록"
+          },
+          "text": "☷",
+          "options": [],
+          "label": "☷"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "번호 목록"
+          },
+          "text": "1.",
+          "options": [],
+          "label": "1."
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "할 일"
+          },
+          "text": "☑",
+          "options": [],
+          "label": "☑"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "링크 (Ctrl+K)"
+          },
+          "text": "↗",
+          "options": [],
+          "label": "↗"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "이미지 삽입",
+            "aria-label": "이미지 삽입"
+          },
+          "text": "",
+          "options": [],
+          "label": "이미지 삽입"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "인라인 코드"
+          },
+          "text": "</>",
+          "options": [],
+          "label": "</>"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "코드 블록"
+          },
+          "text": "{ }",
+          "options": [],
+          "label": "{ }"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "표 삽입"
+          },
+          "text": "▦",
+          "options": [],
+          "label": "▦"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "title": "구분선"
+          },
+          "text": "―",
+          "options": [],
+          "label": "―"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "type": "button",
+            "title": "선택한 행 아래에 추가",
+            "disabled": "true"
+          },
+          "text": "행 추가",
+          "options": [],
+          "label": "행 추가"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "type": "button",
+            "title": "선택한 열 오른쪽에 추가",
+            "disabled": "true"
+          },
+          "text": "열 추가",
+          "options": [],
+          "label": "열 추가"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "type": "button",
+            "title": "선택한 행 삭제 · 머리글 삭제 시 다음 행이 머리글이 됩니다",
+            "disabled": "true"
+          },
+          "text": "행 삭제",
+          "options": [],
+          "label": "행 삭제"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "type": "button",
+            "title": "선택한 열 삭제",
+            "disabled": "true"
+          },
+          "text": "열 삭제",
+          "options": [],
+          "label": "열 삭제"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "id": "openFind",
+            "title": "찾기·바꾸기 (Ctrl+F)"
+          },
+          "text": "⌕ 찾기",
+          "options": [],
+          "label": "⌕ 찾기"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "data-view": "edit"
+          },
+          "text": "Markdown",
+          "options": [],
+          "label": "Markdown"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "data-view": "split"
+          },
+          "text": "분할",
+          "options": [],
+          "label": "분할"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "data-view": "preview"
+          },
+          "text": "문서",
+          "options": [],
+          "label": "문서"
+        },
+        {
+          "tag": "button",
+          "line": 8,
+          "attributes": {
+            "id": "toggleOutline",
+            "title": "목차 표시"
+          },
+          "text": "목차",
+          "options": [],
+          "label": "목차"
+        },
+        {
+          "tag": "input",
+          "line": 9,
+          "attributes": {
+            "id": "findText",
+            "placeholder": "찾을 내용",
+            "aria-label": "찾을 내용"
+          },
+          "text": "",
+          "options": [],
+          "label": "찾을 내용"
+        },
+        {
+          "tag": "input",
+          "line": 9,
+          "attributes": {
+            "id": "replaceText",
+            "placeholder": "바꿀 내용",
+            "aria-label": "바꿀 내용"
+          },
+          "text": "",
+          "options": [],
+          "label": "바꿀 내용"
+        },
+        {
+          "tag": "input",
+          "line": 9,
+          "attributes": {
+            "id": "matchCase",
+            "type": "checkbox"
+          },
+          "text": "",
+          "options": [],
+          "label": "matchCase"
+        },
+        {
+          "tag": "button",
+          "line": 9,
+          "attributes": {
+            "id": "findNext"
+          },
+          "text": "다음",
+          "options": [],
+          "label": "다음"
+        },
+        {
+          "tag": "button",
+          "line": 9,
+          "attributes": {
+            "id": "replaceOne"
+          },
+          "text": "바꾸기",
+          "options": [],
+          "label": "바꾸기"
+        },
+        {
+          "tag": "button",
+          "line": 9,
+          "attributes": {
+            "id": "replaceAll"
+          },
+          "text": "모두 바꾸기",
+          "options": [],
+          "label": "모두 바꾸기"
+        },
+        {
+          "tag": "button",
+          "line": 9,
+          "attributes": {
+            "id": "closeFind",
+            "aria-label": "찾기 닫기"
+          },
+          "text": "×",
+          "options": [],
+          "label": "찾기 닫기"
+        },
+        {
+          "tag": "textarea",
+          "line": 10,
+          "attributes": {
+            "id": "editor",
+            "aria-label": "Markdown 원본 편집"
+          },
+          "text": "",
+          "options": [],
+          "initialContentLength": 0,
+          "label": "Markdown 원본 편집"
+        },
+        {
+          "tag": "input",
+          "line": 10,
+          "attributes": {
+            "id": "previewEditable",
+            "type": "checkbox",
+            "checked": "true"
+          },
+          "text": "",
+          "options": [],
+          "label": "previewEditable"
+        },
+        {
+          "tag": "input",
+          "line": 10,
+          "attributes": {
+            "id": "syncScroll",
+            "type": "checkbox",
+            "checked": "true"
+          },
+          "text": "",
+          "options": [],
+          "label": "syncScroll"
+        },
+        {
+          "tag": "input",
+          "line": 10,
+          "attributes": {
+            "id": "syncScrollBoth",
+            "type": "checkbox"
+          },
+          "text": "",
+          "options": [],
+          "label": "syncScrollBoth"
+        },
+        {
+          "tag": "select",
+          "line": 11,
+          "attributes": {
+            "id": "fontSize",
+            "aria-label": "편집 글자 크기"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "",
+              "label": "13"
+            },
+            {
+              "value": "",
+              "label": "15"
+            },
+            {
+              "value": "",
+              "label": "17"
+            },
+            {
+              "value": "",
+              "label": "19"
+            }
+          ],
+          "label": "편집 글자 크기"
+        },
+        {
+          "tag": "button",
+          "line": 11,
+          "attributes": {
+            "id": "help"
+          },
+          "text": "단축키 ?",
+          "options": [],
+          "label": "단축키 ?"
+        },
+        {
+          "tag": "input",
+          "line": 12,
+          "attributes": {
+            "type": "file",
+            "id": "fileInput",
+            "accept": ".md,.markdown,.txt,text/plain,text/markdown",
+            "multiple": "true"
+          },
+          "text": "",
+          "options": [],
+          "label": "fileInput"
+        },
+        {
+          "tag": "dialog",
+          "line": 13,
+          "attributes": {
+            "id": "storageDialog",
+            "aria-labelledby": "storageTitle"
+          },
+          "text": "",
+          "options": [],
+          "label": "storageDialog"
+        },
+        {
+          "tag": "button",
+          "line": 13,
+          "attributes": {
+            "aria-label": "저장소 닫기"
+          },
+          "text": "×",
+          "options": [],
+          "label": "저장소 닫기"
+        },
+        {
+          "tag": "input",
+          "line": 13,
+          "attributes": {
+            "id": "storageAutoSave",
+            "type": "checkbox"
+          },
+          "text": "",
+          "options": [],
+          "label": "storageAutoSave"
+        },
+        {
+          "tag": "input",
+          "line": 13,
+          "attributes": {
+            "id": "storageAutoRestore",
+            "type": "checkbox"
+          },
+          "text": "",
+          "options": [],
+          "label": "storageAutoRestore"
+        },
+        {
+          "tag": "button",
+          "line": 13,
+          "attributes": {
+            "id": "storageLoadNow"
+          },
+          "text": "불러오기",
+          "options": [],
+          "label": "불러오기"
+        },
+        {
+          "tag": "button",
+          "line": 13,
+          "attributes": {
+            "id": "storageSaveNow"
+          },
+          "text": "지금 저장",
+          "options": [],
+          "label": "지금 저장"
+        },
+        {
+          "tag": "button",
+          "line": 13,
+          "attributes": {
+            "id": "newStorageProfile"
+          },
+          "text": "＋ 새 연결",
+          "options": [],
+          "label": "＋ 새 연결"
+        },
+        {
+          "tag": "dialog",
+          "line": 14,
+          "attributes": {
+            "id": "profileDialog",
+            "aria-labelledby": "profileTitle"
+          },
+          "text": "",
+          "options": [],
+          "label": "profileDialog"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "aria-label": "연결 설정 닫기"
+          },
+          "text": "×",
+          "options": [],
+          "label": "연결 설정 닫기"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "profileId",
+            "type": "hidden"
+          },
+          "text": "",
+          "options": [],
+          "label": "profileId"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "profileName",
+            "required": "true",
+            "maxlength": "80",
+            "placeholder": "예: 업무용 OneDrive"
+          },
+          "text": "",
+          "options": [],
+          "label": "예: 업무용 OneDrive"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "provider"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "local",
+              "label": "로컬 폴더"
+            },
+            {
+              "value": "google",
+              "label": "Google Drive"
+            },
+            {
+              "value": "onedrive",
+              "label": "MS OneDrive"
+            },
+            {
+              "value": "sqlite",
+              "label": "SQLite DB"
+            },
+            {
+              "value": "odbc",
+              "label": "외부 DB (ODBC)"
+            }
+          ],
+          "label": "provider"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "mode"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "folder",
+              "label": "PC 동기화 폴더"
+            },
+            {
+              "value": "api",
+              "label": "클라우드 API 토큰"
+            }
+          ],
+          "label": "mode"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "path",
+            "placeholder": "D:\\Documents\\MD-Storage"
+          },
+          "text": "",
+          "options": [],
+          "label": "D:\\Documents\\MD-Storage"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "folderId"
+          },
+          "text": "",
+          "options": [],
+          "label": "folderId"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "remotePath"
+          },
+          "text": "",
+          "options": [],
+          "label": "remotePath"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "dialect"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "sqlserver",
+              "label": "SQL Server"
+            },
+            {
+              "value": "postgres",
+              "label": "PostgreSQL"
+            },
+            {
+              "value": "mysql",
+              "label": "MySQL"
+            }
+          ],
+          "label": "dialect"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "workspaceKey",
+            "maxlength": "120"
+          },
+          "text": "",
+          "options": [],
+          "label": "workspaceKey"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "credential",
+            "type": "password"
+          },
+          "text": "",
+          "options": [],
+          "label": "credential"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "type": "button"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "type": "submit"
+          },
+          "text": "연결 확인 및 저장",
+          "options": [],
+          "label": "연결 확인 및 저장"
+        },
+        {
+          "tag": "dialog",
+          "line": 15,
+          "attributes": {
+            "id": "exportDialog",
+            "aria-labelledby": "exportTitle"
+          },
+          "text": "",
+          "options": [],
+          "label": "exportDialog"
+        },
+        {
+          "tag": "button",
+          "line": 15,
+          "attributes": {
+            "aria-label": "내보내기 닫기"
+          },
+          "text": "×",
+          "options": [],
+          "label": "내보내기 닫기"
+        },
+        {
+          "tag": "button",
+          "line": 15,
+          "attributes": {
+            "id": "exportMd"
+          },
+          "text": "↓ Markdown 편집 가능한 .md 원본",
+          "options": [],
+          "label": "↓ Markdown 편집 가능한 .md 원본"
+        },
+        {
+          "tag": "button",
+          "line": 15,
+          "attributes": {
+            "id": "exportHtml"
+          },
+          "text": "↓ HTML 서식이 포함된 독립 문서",
+          "options": [],
+          "label": "↓ HTML 서식이 포함된 독립 문서"
+        },
+        {
+          "tag": "button",
+          "line": 15,
+          "attributes": {
+            "id": "printDoc"
+          },
+          "text": "⎙ 인쇄 / PDF 브라우저 인쇄에서 PDF로 저장",
+          "options": [],
+          "label": "⎙ 인쇄 / PDF 브라우저 인쇄에서 PDF로 저장"
+        },
+        {
+          "tag": "button",
+          "line": 15,
+          "attributes": {
+            "id": "exportWorkspace"
+          },
+          "text": "↓ 작업공간 백업 모든 문서를 JSON으로 보관",
+          "options": [],
+          "label": "↓ 작업공간 백업 모든 문서를 JSON으로 보관"
+        },
+        {
+          "tag": "button",
+          "line": 15,
+          "attributes": {
+            "id": "importWorkspace"
+          },
+          "text": "↑ 작업공간 복원 백업 JSON에서 문서 전체 복원",
+          "options": [],
+          "label": "↑ 작업공간 복원 백업 JSON에서 문서 전체 복원"
+        },
+        {
+          "tag": "input",
+          "line": 15,
+          "attributes": {
+            "type": "file",
+            "id": "backupInput",
+            "accept": ".json,application/json"
+          },
+          "text": "",
+          "options": [],
+          "label": "backupInput"
+        },
+        {
+          "tag": "dialog",
+          "line": 16,
+          "attributes": {
+            "id": "treeItemDialog",
+            "aria-labelledby": "treeItemDialogTitle"
+          },
+          "text": "",
+          "options": [],
+          "label": "treeItemDialog"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "aria-label": "닫기"
+          },
+          "text": "×",
+          "options": [],
+          "label": "닫기"
+        },
+        {
+          "tag": "input",
+          "line": 16,
+          "attributes": {
+            "id": "treeItemName",
+            "required": "true",
+            "maxlength": "80"
+          },
+          "text": "",
+          "options": [],
+          "label": "treeItemName"
+        },
+        {
+          "tag": "select",
+          "line": 16,
+          "attributes": {
+            "id": "treeItemParent",
+            "aria-label": "대상 폴더"
+          },
+          "text": "",
+          "options": [],
+          "label": "대상 폴더"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "type": "button"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "type": "submit"
+          },
+          "text": "적용",
+          "options": [],
+          "label": "적용"
+        },
+        {
+          "tag": "dialog",
+          "line": 16,
+          "attributes": {
+            "id": "helpDialog",
+            "aria-labelledby": "helpTitle"
+          },
+          "text": "",
+          "options": [],
+          "label": "helpDialog"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "aria-label": "도움말 닫기"
+          },
+          "text": "×",
+          "options": [],
+          "label": "도움말 닫기"
+        }
+      ]
+    },
+    {
+      "source": "apps/projects/index.html",
+      "controls": [
+        {
+          "tag": "button",
+          "line": 185,
+          "attributes": {
+            "type": "button",
+            "title": "라이트",
+            "aria-label": "라이트 테마"
+          },
+          "text": "",
+          "options": [],
+          "label": "라이트 테마"
+        },
+        {
+          "tag": "button",
+          "line": 186,
+          "attributes": {
+            "type": "button",
+            "title": "다크",
+            "aria-label": "다크 테마"
+          },
+          "text": "",
+          "options": [],
+          "label": "다크 테마"
+        },
+        {
+          "tag": "button",
+          "line": 187,
+          "attributes": {
+            "type": "button",
+            "title": "시스템 설정 따르기",
+            "aria-label": "시스템 테마"
+          },
+          "text": "",
+          "options": [],
+          "label": "시스템 테마"
+        },
+        {
+          "tag": "button",
+          "line": 196,
+          "attributes": {
+            "id": "btn-xlsx"
+          },
+          "text": "목록 엑셀 다운로드",
+          "options": [],
+          "label": "목록 엑셀 다운로드"
+        },
+        {
+          "tag": "button",
+          "line": 197,
+          "attributes": {
+            "id": "btn-new"
+          },
+          "text": "등록",
+          "options": [],
+          "label": "등록"
+        },
+        {
+          "tag": "button",
+          "line": 198,
+          "attributes": {
+            "id": "btn-reload"
+          },
+          "text": "새로고침",
+          "options": [],
+          "label": "새로고침"
+        },
+        {
+          "tag": "button",
+          "line": 203,
+          "attributes": {
+            "role": "tab",
+            "data-tab": "list"
+          },
+          "text": "프로젝트 목록",
+          "options": [],
+          "label": "프로젝트 목록"
+        },
+        {
+          "tag": "button",
+          "line": 204,
+          "attributes": {
+            "role": "tab",
+            "data-tab": "store"
+          },
+          "text": "저장소 설정",
+          "options": [],
+          "label": "저장소 설정"
+        },
+        {
+          "tag": "input",
+          "line": 209,
+          "attributes": {
+            "id": "f-kw",
+            "placeholder": "사업명, 발주기관, PM, PL, 팀원, 설명, 비고",
+            "aria-label": "검색어"
+          },
+          "text": "",
+          "options": [],
+          "label": "검색어"
+        },
+        {
+          "tag": "select",
+          "line": 210,
+          "attributes": {
+            "id": "f-year",
+            "aria-label": "사업연도"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "",
+              "label": "사업연도 전체"
+            }
+          ],
+          "label": "사업연도"
+        },
+        {
+          "tag": "select",
+          "line": 211,
+          "attributes": {
+            "id": "f-pstat",
+            "aria-label": "진행 상태"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "",
+              "label": "진행 상태 전체"
+            },
+            {
+              "value": "",
+              "label": "제안"
+            },
+            {
+              "value": "",
+              "label": "착수 준비"
+            },
+            {
+              "value": "",
+              "label": "진행 중"
+            },
+            {
+              "value": "",
+              "label": "검수"
+            },
+            {
+              "value": "",
+              "label": "완료"
+            },
+            {
+              "value": "",
+              "label": "보류"
+            }
+          ],
+          "label": "진행 상태"
+        },
+        {
+          "tag": "select",
+          "line": 212,
+          "attributes": {
+            "id": "f-status",
+            "aria-label": "일정 상태"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "",
+              "label": "일정 상태 전체"
+            },
+            {
+              "value": "todo",
+              "label": "예정"
+            },
+            {
+              "value": "prog",
+              "label": "진행"
+            },
+            {
+              "value": "bad",
+              "label": "지연"
+            },
+            {
+              "value": "done",
+              "label": "완료"
+            }
+          ],
+          "label": "일정 상태"
+        },
+        {
+          "tag": "button",
+          "line": 213,
+          "attributes": {
+            "id": "btn-search"
+          },
+          "text": "조회",
+          "options": [],
+          "label": "조회"
+        },
+        {
+          "tag": "button",
+          "line": 224,
+          "attributes": {
+            "id": "btn-backup"
+          },
+          "text": "전체 백업 내려받기 (JSON)",
+          "options": [],
+          "label": "전체 백업 내려받기 (JSON)"
+        },
+        {
+          "tag": "input",
+          "line": 225,
+          "attributes": {
+            "type": "file",
+            "id": "restore-file",
+            "accept": ".json,application/json"
+          },
+          "text": "",
+          "options": [],
+          "label": "백업 불러오기"
+        },
+        {
+          "tag": "input",
+          "line": 238,
+          "attributes": {
+            "id": "p-name",
+            "maxlength": "120",
+            "required": "true"
+          },
+          "text": "",
+          "options": [],
+          "label": "사업명 *"
+        },
+        {
+          "tag": "input",
+          "line": 239,
+          "attributes": {
+            "id": "p-client",
+            "maxlength": "80",
+            "required": "true"
+          },
+          "text": "",
+          "options": [],
+          "label": "발주기관 *"
+        },
+        {
+          "tag": "select",
+          "line": 240,
+          "attributes": {
+            "id": "p-pstat"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "",
+              "label": "제안"
+            },
+            {
+              "value": "",
+              "label": "착수 준비"
+            },
+            {
+              "value": "",
+              "label": "진행 중"
+            },
+            {
+              "value": "",
+              "label": "검수"
+            },
+            {
+              "value": "",
+              "label": "완료"
+            },
+            {
+              "value": "",
+              "label": "보류"
+            }
+          ],
+          "label": "진행 상태"
+        },
+        {
+          "tag": "input",
+          "line": 241,
+          "attributes": {
+            "type": "date",
+            "id": "p-start",
+            "required": "true"
+          },
+          "text": "",
+          "options": [],
+          "label": "사업 시작일 *"
+        },
+        {
+          "tag": "input",
+          "line": 242,
+          "attributes": {
+            "type": "date",
+            "id": "p-end",
+            "required": "true"
+          },
+          "text": "",
+          "options": [],
+          "label": "사업 종료일 *"
+        },
+        {
+          "tag": "input",
+          "line": 243,
+          "attributes": {
+            "id": "p-pm",
+            "maxlength": "40",
+            "placeholder": "이름"
+          },
+          "text": "",
+          "options": [],
+          "label": "PM"
+        },
+        {
+          "tag": "input",
+          "line": 244,
+          "attributes": {
+            "id": "p-pl",
+            "maxlength": "40",
+            "placeholder": "이름"
+          },
+          "text": "",
+          "options": [],
+          "label": "PL"
+        },
+        {
+          "tag": "input",
+          "line": 245,
+          "attributes": {
+            "id": "p-members",
+            "maxlength": "300",
+            "placeholder": "쉼표로 구분 (예: 홍길동, 김철수, 이영희)"
+          },
+          "text": "",
+          "options": [],
+          "label": "팀원"
+        },
+        {
+          "tag": "textarea",
+          "line": 247,
+          "attributes": {
+            "id": "p-desc",
+            "maxlength": "2000",
+            "placeholder": "사업 개요, 주요 범위"
+          },
+          "text": "",
+          "options": [],
+          "initialContentLength": 0,
+          "label": "설명"
+        },
+        {
+          "tag": "textarea",
+          "line": 248,
+          "attributes": {
+            "id": "p-note",
+            "maxlength": "1000"
+          },
+          "text": "",
+          "options": [],
+          "initialContentLength": 0,
+          "label": "비고"
+        },
+        {
+          "tag": "button",
+          "line": 252,
+          "attributes": {
+            "id": "pm-del"
+          },
+          "text": "삭제",
+          "options": [],
+          "label": "삭제"
+        },
+        {
+          "tag": "button",
+          "line": 253,
+          "attributes": {
+            "id": "pm-cancel"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 254,
+          "attributes": {
+            "id": "pm-ok"
+          },
+          "text": "등록",
+          "options": [],
+          "label": "등록"
+        },
+        {
+          "tag": "button",
+          "line": 263,
+          "attributes": {
+            "id": "c-pick",
+            "type": "button"
+          },
+          "text": "폴더 선택",
+          "options": [],
+          "label": "폴더 선택"
+        },
+        {
+          "tag": "input",
+          "line": 267,
+          "attributes": {
+            "id": "c-name",
+            "maxlength": "40",
+            "placeholder": "예: 팀 공유"
+          },
+          "text": "",
+          "options": [],
+          "label": "저장소 이름 *"
+        },
+        {
+          "tag": "select",
+          "line": 268,
+          "attributes": {
+            "id": "c-type"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "local",
+              "label": "로컬 폴더"
+            },
+            {
+              "value": "onedrive",
+              "label": "OneDrive 동기화"
+            },
+            {
+              "value": "gdrive",
+              "label": "Google Drive 동기화"
+            }
+          ],
+          "label": "유형"
+        },
+        {
+          "tag": "button",
+          "line": 271,
+          "attributes": {
+            "id": "c-cancel"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 271,
+          "attributes": {
+            "id": "c-ok"
+          },
+          "text": "연결",
+          "options": [],
+          "label": "연결"
+        }
+      ]
+    },
+    {
+      "source": "apps/projects/index.html#dash-tpl",
+      "controls": [
+        {
+          "tag": "button",
+          "line": 457,
+          "attributes": {
+            "data-view": "status"
+          },
+          "text": "현황 대시보드",
+          "options": [],
+          "label": "현황 대시보드"
+        },
+        {
+          "tag": "button",
+          "line": 458,
+          "attributes": {
+            "data-view": "baseline"
+          },
+          "text": "기준정보 설정",
+          "options": [],
+          "label": "기준정보 설정"
+        },
+        {
+          "tag": "button",
+          "line": 459,
+          "attributes": {
+            "data-view": "excel"
+          },
+          "text": "엑셀 연동",
+          "options": [],
+          "label": "엑셀 연동"
+        },
+        {
+          "tag": "button",
+          "line": 460,
+          "attributes": {
+            "data-view": "versions"
+          },
+          "text": "저장 이력",
+          "options": [],
+          "label": "저장 이력"
+        },
+        {
+          "tag": "button",
+          "line": 461,
+          "attributes": {
+            "data-view": "compare"
+          },
+          "text": "스냅샷 비교",
+          "options": [],
+          "label": "스냅샷 비교"
+        },
+        {
+          "tag": "button",
+          "line": 462,
+          "attributes": {
+            "data-view": "guide"
+          },
+          "text": "가이드",
+          "options": [],
+          "label": "가이드"
+        },
+        {
+          "tag": "button",
+          "line": 467,
+          "attributes": {
+            "type": "button",
+            "id": "sample-chip"
+          },
+          "text": "sample 유지 또는 빈 WBS",
+          "options": [],
+          "label": "sample 유지 또는 빈 WBS"
+        },
+        {
+          "tag": "button",
+          "line": 471,
+          "attributes": {
+            "type": "button",
+            "title": "라이트",
+            "aria-label": "라이트 테마"
+          },
+          "text": "",
+          "options": [],
+          "label": "라이트 테마"
+        },
+        {
+          "tag": "button",
+          "line": 472,
+          "attributes": {
+            "type": "button",
+            "title": "다크",
+            "aria-label": "다크 테마"
+          },
+          "text": "",
+          "options": [],
+          "label": "다크 테마"
+        },
+        {
+          "tag": "button",
+          "line": 473,
+          "attributes": {
+            "type": "button",
+            "title": "시스템 설정 따르기",
+            "aria-label": "시스템 테마"
+          },
+          "text": "",
+          "options": [],
+          "label": "시스템 테마"
+        },
+        {
+          "tag": "button",
+          "line": 490,
+          "attributes": {
+            "id": "base-prev",
+            "type": "button",
+            "aria-label": "이전 작업일",
+            "title": "이전 작업일"
+          },
+          "text": "◀",
+          "options": [],
+          "label": "이전 작업일"
+        },
+        {
+          "tag": "input",
+          "line": 491,
+          "attributes": {
+            "type": "date",
+            "id": "base-input"
+          },
+          "text": "",
+          "options": [],
+          "label": "진척 기준일"
+        },
+        {
+          "tag": "button",
+          "line": 492,
+          "attributes": {
+            "id": "base-next",
+            "type": "button",
+            "aria-label": "다음 작업일",
+            "title": "다음 작업일"
+          },
+          "text": "▶",
+          "options": [],
+          "label": "다음 작업일"
+        },
+        {
+          "tag": "button",
+          "line": 495,
+          "attributes": {
+            "id": "base-today2",
+            "type": "button"
+          },
+          "text": "오늘",
+          "options": [],
+          "label": "오늘"
+        },
+        {
+          "tag": "button",
+          "line": 495,
+          "attributes": {
+            "id": "base-src2",
+            "type": "button"
+          },
+          "text": "엑셀 기준일",
+          "options": [],
+          "label": "엑셀 기준일"
+        },
+        {
+          "tag": "input",
+          "line": 511,
+          "attributes": {
+            "type": "checkbox",
+            "id": "edit-toggle"
+          },
+          "text": "",
+          "options": [],
+          "label": "일정·진척 입력"
+        },
+        {
+          "tag": "button",
+          "line": 514,
+          "attributes": {},
+          "text": "단계",
+          "options": [],
+          "label": "단계"
+        },
+        {
+          "tag": "button",
+          "line": 514,
+          "attributes": {},
+          "text": "Activity",
+          "options": [],
+          "label": "Activity"
+        },
+        {
+          "tag": "button",
+          "line": 514,
+          "attributes": {},
+          "text": "그룹",
+          "options": [],
+          "label": "그룹"
+        },
+        {
+          "tag": "button",
+          "line": 514,
+          "attributes": {},
+          "text": "전체",
+          "options": [],
+          "label": "전체"
+        },
+        {
+          "tag": "select",
+          "line": 515,
+          "attributes": {
+            "id": "f-phase",
+            "aria-label": "단계 필터"
+          },
+          "text": "",
+          "options": [],
+          "label": "단계 필터"
+        },
+        {
+          "tag": "button",
+          "line": 516,
+          "attributes": {},
+          "text": "전체",
+          "options": [],
+          "label": "전체"
+        },
+        {
+          "tag": "button",
+          "line": 516,
+          "attributes": {},
+          "text": "지연",
+          "options": [],
+          "label": "지연"
+        },
+        {
+          "tag": "button",
+          "line": 516,
+          "attributes": {},
+          "text": "진행",
+          "options": [],
+          "label": "진행"
+        },
+        {
+          "tag": "button",
+          "line": 516,
+          "attributes": {},
+          "text": "미착수",
+          "options": [],
+          "label": "미착수"
+        },
+        {
+          "tag": "button",
+          "line": 516,
+          "attributes": {},
+          "text": "완료",
+          "options": [],
+          "label": "완료"
+        },
+        {
+          "tag": "button",
+          "line": 517,
+          "attributes": {},
+          "text": "주",
+          "options": [],
+          "label": "주"
+        },
+        {
+          "tag": "button",
+          "line": 517,
+          "attributes": {},
+          "text": "일",
+          "options": [],
+          "label": "일"
+        },
+        {
+          "tag": "button",
+          "line": 518,
+          "attributes": {
+            "id": "to-base"
+          },
+          "text": "기준일로 이동",
+          "options": [],
+          "label": "기준일로 이동"
+        },
+        {
+          "tag": "button",
+          "line": 544,
+          "attributes": {},
+          "text": "WBS 구조",
+          "options": [],
+          "label": "WBS 구조"
+        },
+        {
+          "tag": "button",
+          "line": 545,
+          "attributes": {},
+          "text": "프로젝트·진척 기준",
+          "options": [],
+          "label": "프로젝트·진척 기준"
+        },
+        {
+          "tag": "button",
+          "line": 546,
+          "attributes": {},
+          "text": "공휴일·마일스톤",
+          "options": [],
+          "label": "공휴일·마일스톤"
+        },
+        {
+          "tag": "button",
+          "line": 565,
+          "attributes": {
+            "id": "btn-xlsx"
+          },
+          "text": "WBS 엑셀 내려받기 (수식 포함)",
+          "options": [],
+          "label": "WBS 엑셀 내려받기 (수식 포함)"
+        },
+        {
+          "tag": "button",
+          "line": 580,
+          "attributes": {
+            "id": "btn-load2"
+          },
+          "text": "JSON 불러오기",
+          "options": [],
+          "label": "JSON 불러오기"
+        },
+        {
+          "tag": "button",
+          "line": 580,
+          "attributes": {
+            "id": "btn-json"
+          },
+          "text": "JSON 내려받기",
+          "options": [],
+          "label": "JSON 내려받기"
+        },
+        {
+          "tag": "button",
+          "line": 580,
+          "attributes": {
+            "id": "btn-html"
+          },
+          "text": "HTML 내보내기",
+          "options": [],
+          "label": "HTML 내보내기"
+        },
+        {
+          "tag": "button",
+          "line": 584,
+          "attributes": {
+            "id": "diff-close"
+          },
+          "text": "닫기",
+          "options": [],
+          "label": "닫기"
+        },
+        {
+          "tag": "select",
+          "line": 594,
+          "attributes": {
+            "id": "cmp-a"
+          },
+          "text": "",
+          "options": [],
+          "label": "기준 (A)"
+        },
+        {
+          "tag": "button",
+          "line": 595,
+          "attributes": {
+            "id": "cmp-swap",
+            "type": "button",
+            "aria-label": "A와 B 바꾸기",
+            "title": "A와 B 바꾸기"
+          },
+          "text": "⇄",
+          "options": [],
+          "label": "A와 B 바꾸기"
+        },
+        {
+          "tag": "select",
+          "line": 596,
+          "attributes": {
+            "id": "cmp-b"
+          },
+          "text": "",
+          "options": [],
+          "label": "비교 대상 (B)"
+        },
+        {
+          "tag": "input",
+          "line": 599,
+          "attributes": {
+            "type": "file",
+            "id": "cmp-file",
+            "accept": ".json,.html,.htm,.xlsx",
+            "multiple": "true"
+          },
+          "text": "",
+          "options": [],
+          "label": "스냅샷 파일 불러오기"
+        },
+        {
+          "tag": "button",
+          "line": 600,
+          "attributes": {
+            "id": "cmp-folder",
+            "type": "button"
+          },
+          "text": "저장소 스냅샷에서 불러오기",
+          "options": [],
+          "label": "저장소 스냅샷에서 불러오기"
+        },
+        {
+          "tag": "input",
+          "line": 954,
+          "attributes": {
+            "id": "save-name",
+            "maxlength": "80",
+            "placeholder": "예: 10월 4주차 주간보고",
+            "required": "true"
+          },
+          "text": "",
+          "options": [],
+          "label": "저장 명칭 *"
+        },
+        {
+          "tag": "input",
+          "line": 956,
+          "attributes": {
+            "id": "save-note",
+            "maxlength": "200",
+            "placeholder": "예: 개발 지연분 실적 반영"
+          },
+          "text": "",
+          "options": [],
+          "label": "설명 (선택)"
+        },
+        {
+          "tag": "input",
+          "line": 957,
+          "attributes": {
+            "id": "save-author",
+            "maxlength": "40",
+            "placeholder": "이름"
+          },
+          "text": "",
+          "options": [],
+          "label": "작성자 (선택)"
+        },
+        {
+          "tag": "button",
+          "line": 962,
+          "attributes": {
+            "id": "save-cancel"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 962,
+          "attributes": {
+            "id": "save-ok"
+          },
+          "text": "저장",
+          "options": [],
+          "label": "저장"
+        },
+        {
+          "tag": "button",
+          "line": 969,
+          "attributes": {
+            "id": "cf-cancel"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 969,
+          "attributes": {
+            "id": "cf-reload"
+          },
+          "text": "최신본 불러오기",
+          "options": [],
+          "label": "최신본 불러오기"
+        },
+        {
+          "tag": "button",
+          "line": 969,
+          "attributes": {
+            "id": "cf-force"
+          },
+          "text": "내 변경으로 덮어쓰기",
+          "options": [],
+          "label": "내 변경으로 덮어쓰기"
+        }
+      ]
+    },
+    {
+      "source": "apps/insight/index.html",
+      "controls": [
+        {
+          "tag": "button",
+          "line": 2,
+          "attributes": {
+            "id": "theme",
+            "aria-label": "테마 변경"
+          },
+          "text": "◐ 테마",
+          "options": [],
+          "label": "테마 변경"
+        },
+        {
+          "tag": "button",
+          "line": 3,
+          "attributes": {
+            "data-page": "dashboards"
+          },
+          "text": "▦ 분석 대시보드",
+          "options": [],
+          "label": "▦ 분석 대시보드"
+        },
+        {
+          "tag": "button",
+          "line": 3,
+          "attributes": {
+            "data-page": "data"
+          },
+          "text": "▤ 데이터 탐색",
+          "options": [],
+          "label": "▤ 데이터 탐색"
+        },
+        {
+          "tag": "button",
+          "line": 3,
+          "attributes": {
+            "data-page": "settings"
+          },
+          "text": "⚙ 설정",
+          "options": [],
+          "label": "⚙ 설정"
+        },
+        {
+          "tag": "button",
+          "line": 4,
+          "attributes": {
+            "id": "createDashboard"
+          },
+          "text": "＋ 대시보드 만들기",
+          "options": [],
+          "label": "＋ 대시보드 만들기"
+        },
+        {
+          "tag": "button",
+          "line": 4,
+          "attributes": {
+            "id": "openConnections"
+          },
+          "text": "＋ 데이터 연결",
+          "options": [],
+          "label": "＋ 데이터 연결"
+        },
+        {
+          "tag": "button",
+          "line": 4,
+          "attributes": {
+            "id": "editDashboard"
+          },
+          "text": "edit",
+          "options": [],
+          "label": "edit"
+        },
+        {
+          "tag": "input",
+          "line": 5,
+          "attributes": {
+            "id": "dashboardListSearch",
+            "placeholder": "대시보드·데이터 이름 검색",
+            "aria-label": "대시보드 검색"
+          },
+          "text": "",
+          "options": [],
+          "label": "대시보드 검색"
+        },
+        {
+          "tag": "select",
+          "line": 5,
+          "attributes": {
+            "id": "dashboardListStatus",
+            "aria-label": "연결 상태"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "all",
+              "label": "모든 상태"
+            },
+            {
+              "value": "connected",
+              "label": "연결됨"
+            },
+            {
+              "value": "readonly",
+              "label": "연결 해제 · 조회 전용"
+            },
+            {
+              "value": "missing",
+              "label": "데이터 연결 필요"
+            }
+          ],
+          "label": "연결 상태"
+        },
+        {
+          "tag": "select",
+          "line": 5,
+          "attributes": {
+            "id": "dashboardListSort",
+            "aria-label": "대시보드 정렬"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "updated",
+              "label": "최근 수정순"
+            },
+            {
+              "value": "name",
+              "label": "이름순"
+            }
+          ],
+          "label": "대시보드 정렬"
+        },
+        {
+          "tag": "button",
+          "line": 5,
+          "attributes": {
+            "id": "backToDashboards"
+          },
+          "text": "← 대시보드 목록",
+          "options": [],
+          "label": "← 대시보드 목록"
+        },
+        {
+          "tag": "select",
+          "line": 7,
+          "attributes": {
+            "id": "slicerColumn",
+            "aria-label": "슬라이서 추가할 열"
+          },
+          "text": "",
+          "options": [],
+          "label": "슬라이서 추가할 열"
+        },
+        {
+          "tag": "button",
+          "line": 7,
+          "attributes": {
+            "id": "addSlicer",
+            "type": "button"
+          },
+          "text": "＋ 슬라이서",
+          "options": [],
+          "label": "＋ 슬라이서"
+        },
+        {
+          "tag": "button",
+          "line": 7,
+          "attributes": {
+            "id": "clearSlicers",
+            "type": "button"
+          },
+          "text": "전체 선택 초기화",
+          "options": [],
+          "label": "전체 선택 초기화"
+        },
+        {
+          "tag": "select",
+          "line": 7,
+          "attributes": {
+            "id": "boardLayout"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "grid",
+              "label": "균등 2열"
+            },
+            {
+              "value": "focus",
+              "label": "첫 차트 강조"
+            },
+            {
+              "value": "compact",
+              "label": "촘촘한 3열"
+            }
+          ],
+          "label": "boardLayout"
+        },
+        {
+          "tag": "button",
+          "line": 7,
+          "attributes": {
+            "id": "undoBoard",
+            "title": "Ctrl+Z",
+            "disabled": "true"
+          },
+          "text": "↶ 되돌리기",
+          "options": [],
+          "label": "↶ 되돌리기"
+        },
+        {
+          "tag": "button",
+          "line": 7,
+          "attributes": {
+            "id": "save"
+          },
+          "text": "대시보드 저장",
+          "options": [],
+          "label": "대시보드 저장"
+        },
+        {
+          "tag": "button",
+          "line": 7,
+          "attributes": {
+            "id": "openStudio"
+          },
+          "text": "＋ CHART STUDIO",
+          "options": [],
+          "label": "＋ CHART STUDIO"
+        },
+        {
+          "tag": "button",
+          "line": 7,
+          "attributes": {
+            "id": "openKpiCreator"
+          },
+          "text": "＋ 카드",
+          "options": [],
+          "label": "＋ 카드"
+        },
+        {
+          "tag": "select",
+          "line": 7,
+          "attributes": {
+            "id": "boardExportFormat",
+            "aria-label": "대시보드 저장 형식"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "png",
+              "label": "PNG 이미지"
+            },
+            {
+              "value": "pdf",
+              "label": "PDF 문서"
+            }
+          ],
+          "label": "대시보드 저장 형식"
+        },
+        {
+          "tag": "button",
+          "line": 7,
+          "attributes": {
+            "id": "exportBoard"
+          },
+          "text": "대시보드 전체 저장 ↓",
+          "options": [],
+          "label": "대시보드 전체 저장 ↓"
+        },
+        {
+          "tag": "select",
+          "line": 7,
+          "attributes": {
+            "id": "interactionMode"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "none",
+              "label": "사용 안 함"
+            },
+            {
+              "value": "cross",
+              "label": "교차 필터"
+            },
+            {
+              "value": "drill",
+              "label": "드릴다운"
+            }
+          ],
+          "label": "interactionMode"
+        },
+        {
+          "tag": "button",
+          "line": 11,
+          "attributes": {
+            "id": "storageLoadNow"
+          },
+          "text": "저장소에서 불러오기",
+          "options": [],
+          "label": "저장소에서 불러오기"
+        },
+        {
+          "tag": "button",
+          "line": 11,
+          "attributes": {
+            "id": "storageSaveNow"
+          },
+          "text": "지금 저장",
+          "options": [],
+          "label": "지금 저장"
+        },
+        {
+          "tag": "input",
+          "line": 11,
+          "attributes": {
+            "id": "storageAutoSave",
+            "type": "checkbox"
+          },
+          "text": "",
+          "options": [],
+          "label": "storageAutoSave"
+        },
+        {
+          "tag": "input",
+          "line": 11,
+          "attributes": {
+            "id": "storageAutoRestore",
+            "type": "checkbox"
+          },
+          "text": "",
+          "options": [],
+          "label": "storageAutoRestore"
+        },
+        {
+          "tag": "button",
+          "line": 12,
+          "attributes": {
+            "id": "newStorageProfile",
+            "disabled": "true"
+          },
+          "text": "＋ 새 연결",
+          "options": [],
+          "label": "＋ 새 연결"
+        },
+        {
+          "tag": "dialog",
+          "line": 14,
+          "attributes": {
+            "id": "storageProfileDialog",
+            "aria-labelledby": "storageProfileDialogTitle"
+          },
+          "text": "",
+          "options": [],
+          "label": "storageProfileDialog"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "id": "closeStorageProfile",
+            "type": "button",
+            "aria-label": "저장소 연결 닫기"
+          },
+          "text": "×",
+          "options": [],
+          "label": "저장소 연결 닫기"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "type": "hidden",
+            "id": "storageProfileId"
+          },
+          "text": "",
+          "options": [],
+          "label": "storageProfileId"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "storageProfileName",
+            "required": "true",
+            "maxlength": "80",
+            "placeholder": "예: 업무용 OneDrive"
+          },
+          "text": "",
+          "options": [],
+          "label": "예: 업무용 OneDrive"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "storageProvider"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "local",
+              "label": "로컬 폴더"
+            },
+            {
+              "value": "google",
+              "label": "Google Drive"
+            },
+            {
+              "value": "onedrive",
+              "label": "MS OneDrive"
+            },
+            {
+              "value": "sqlite",
+              "label": "SQLite DB"
+            },
+            {
+              "value": "odbc",
+              "label": "외부 DB (ODBC)"
+            }
+          ],
+          "label": "storageProvider"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "storageMode"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "folder",
+              "label": "PC 동기화 폴더"
+            },
+            {
+              "value": "api",
+              "label": "클라우드 API 토큰"
+            }
+          ],
+          "label": "storageMode"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "storagePath",
+            "placeholder": "D:\\BI-Storage"
+          },
+          "text": "",
+          "options": [],
+          "label": "D:\\BI-Storage"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "storageFolder",
+            "placeholder": "root 또는 폴더 URL의 ID"
+          },
+          "text": "",
+          "options": [],
+          "label": "root 또는 폴더 URL의 ID"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "storageRemote",
+            "placeholder": "insight-bi-workspace.json"
+          },
+          "text": "",
+          "options": [],
+          "label": "insight-bi-workspace.json"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "storageDialect"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "sqlserver",
+              "label": "SQL Server"
+            },
+            {
+              "value": "postgres",
+              "label": "PostgreSQL"
+            },
+            {
+              "value": "mysql",
+              "label": "MySQL"
+            }
+          ],
+          "label": "storageDialect"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "storageKey",
+            "maxlength": "120"
+          },
+          "text": "",
+          "options": [],
+          "label": "storageKey"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "storageCredential",
+            "type": "password",
+            "placeholder": "서버 실행 중에만 사용 · 저장 파일에 미포함"
+          },
+          "text": "",
+          "options": [],
+          "label": "서버 실행 중에만 사용 · 저장 파일에 미포함"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "id": "cancelStorageProfile",
+            "type": "button"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "id": "connectStorage",
+            "type": "submit"
+          },
+          "text": "연결 확인 및 저장",
+          "options": [],
+          "label": "연결 확인 및 저장"
+        },
+        {
+          "tag": "dialog",
+          "line": 14,
+          "attributes": {
+            "id": "connectionsDialog",
+            "aria-labelledby": "connectionsHeading"
+          },
+          "text": "",
+          "options": [],
+          "label": "connectionsDialog"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "file",
+            "type": "file",
+            "accept": ".xlsx,.xlsm,.csv,.tsv,.xls"
+          },
+          "text": "",
+          "options": [],
+          "label": "file"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "id": "closeConnections",
+            "aria-label": "데이터 연결 닫기"
+          },
+          "text": "×",
+          "options": [],
+          "label": "데이터 연결 닫기"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "type": "submit"
+          },
+          "text": "연결 및 데이터 불러오기 →",
+          "options": [],
+          "label": "연결 및 데이터 불러오기 →"
+        },
+        {
+          "tag": "dialog",
+          "line": 14,
+          "attributes": {
+            "id": "dataLookupDialog",
+            "aria-labelledby": "lookupHeading"
+          },
+          "text": "",
+          "options": [],
+          "label": "dataLookupDialog"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "id": "closeDataLookup",
+            "aria-label": "데이터 조회 닫기"
+          },
+          "text": "×",
+          "options": [],
+          "label": "데이터 조회 닫기"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "dataLookupSearch",
+            "placeholder": "데이터 이름·시트·대시보드 검색",
+            "aria-label": "데이터 조회 검색"
+          },
+          "text": "",
+          "options": [],
+          "label": "데이터 조회 검색"
+        },
+        {
+          "tag": "dialog",
+          "line": 14,
+          "attributes": {
+            "id": "deleteDataDialog",
+            "aria-labelledby": "deleteDataTitle"
+          },
+          "text": "",
+          "options": [],
+          "label": "deleteDataDialog"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "id": "cancelDataDelete"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "id": "keepDataDashboards"
+          },
+          "text": "대시보드 유지 · 조회 전용",
+          "options": [],
+          "label": "대시보드 유지 · 조회 전용"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "id": "confirmDataDelete"
+          },
+          "text": "데이터와 대시보드 삭제",
+          "options": [],
+          "label": "데이터와 대시보드 삭제"
+        },
+        {
+          "tag": "dialog",
+          "line": 14,
+          "attributes": {
+            "id": "studioDialog",
+            "aria-labelledby": "studioTitle"
+          },
+          "text": "",
+          "options": [],
+          "label": "studioDialog"
+        },
+        {
+          "tag": "input",
+          "line": 14,
+          "attributes": {
+            "id": "chartEditName",
+            "maxlength": "100",
+            "placeholder": "비워 두면 기본 제목"
+          },
+          "text": "",
+          "options": [],
+          "label": "비워 두면 기본 제목"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "id": "closeStudio",
+            "aria-label": "차트 스튜디오 닫기"
+          },
+          "text": "×",
+          "options": [],
+          "label": "차트 스튜디오 닫기"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "id": "applySelected"
+          },
+          "text": "선택 차트에 적용",
+          "options": [],
+          "label": "선택 차트에 적용"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "id": "pin"
+          },
+          "text": "＋ 새 차트 추가",
+          "options": [],
+          "label": "＋ 새 차트 추가"
+        },
+        {
+          "tag": "button",
+          "line": 14,
+          "attributes": {
+            "id": "image"
+          },
+          "text": "PNG 저장 ↓",
+          "options": [],
+          "label": "PNG 저장 ↓"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "dimension"
+          },
+          "text": "",
+          "options": [],
+          "label": "dimension"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "measure"
+          },
+          "text": "",
+          "options": [],
+          "label": "measure"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "aggregate"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "sum",
+              "label": "합계"
+            },
+            {
+              "value": "avg",
+              "label": "평균"
+            },
+            {
+              "value": "count",
+              "label": "건수"
+            },
+            {
+              "value": "min",
+              "label": "최솟값"
+            },
+            {
+              "value": "max",
+              "label": "최댓값"
+            }
+          ],
+          "label": "aggregate"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "sort"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "natural",
+              "label": "기준순"
+            },
+            {
+              "value": "desc",
+              "label": "값 내림차순"
+            },
+            {
+              "value": "asc",
+              "label": "값 오름차순"
+            }
+          ],
+          "label": "sort"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "dateGrain"
+          },
+          "text": "",
+          "options": [],
+          "label": "dateGrain"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "extraMeasures",
+            "multiple": "true"
+          },
+          "text": "",
+          "options": [],
+          "label": "extraMeasures"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "splitBy"
+          },
+          "text": "",
+          "options": [],
+          "label": "splitBy"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "drillDimension0"
+          },
+          "text": "",
+          "options": [],
+          "label": "drillDimension0"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "drillDimension1"
+          },
+          "text": "",
+          "options": [],
+          "label": "drillDimension1"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "drillDimension2"
+          },
+          "text": "",
+          "options": [],
+          "label": "drillDimension2"
+        },
+        {
+          "tag": "select",
+          "line": 14,
+          "attributes": {
+            "id": "drillDimension3"
+          },
+          "text": "",
+          "options": [],
+          "label": "drillDimension3"
+        },
+        {
+          "tag": "dialog",
+          "line": 16,
+          "attributes": {
+            "id": "kpiEditDialog",
+            "aria-labelledby": "kpiEditTitle"
+          },
+          "text": "",
+          "options": [],
+          "label": "kpiEditDialog"
+        },
+        {
+          "tag": "input",
+          "line": 16,
+          "attributes": {
+            "id": "kpiEditName",
+            "maxlength": "100",
+            "placeholder": "비워 두면 기본 제목"
+          },
+          "text": "",
+          "options": [],
+          "label": "비워 두면 기본 제목"
+        },
+        {
+          "tag": "select",
+          "line": 16,
+          "attributes": {
+            "id": "kpiEditMetric"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "rows",
+              "label": "분석 대상"
+            },
+            {
+              "value": "sum",
+              "label": "합계"
+            },
+            {
+              "value": "avg",
+              "label": "평균"
+            },
+            {
+              "value": "fields",
+              "label": "데이터 필드"
+            }
+          ],
+          "label": "kpiEditMetric"
+        },
+        {
+          "tag": "select",
+          "line": 16,
+          "attributes": {
+            "id": "kpiEditMeasure"
+          },
+          "text": "",
+          "options": [],
+          "label": "kpiEditMeasure"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "type": "button",
+            "id": "cancelKpiEdit"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "type": "submit",
+            "id": "kpiSubmit"
+          },
+          "text": "이 카드에 적용",
+          "options": [],
+          "label": "이 카드에 적용"
+        },
+        {
+          "tag": "dialog",
+          "line": 16,
+          "attributes": {
+            "id": "relinkDashboardDialog"
+          },
+          "text": "",
+          "options": [],
+          "label": "relinkDashboardDialog"
+        },
+        {
+          "tag": "select",
+          "line": 16,
+          "attributes": {
+            "id": "relinkDashboardSource",
+            "required": "true"
+          },
+          "text": "",
+          "options": [],
+          "label": "relinkDashboardSource"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "id": "cancelRelinkDashboard",
+            "type": "button"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "type": "submit"
+          },
+          "text": "연결하여 열기",
+          "options": [],
+          "label": "연결하여 열기"
+        },
+        {
+          "tag": "dialog",
+          "line": 16,
+          "attributes": {
+            "id": "createSourceLookupDialog",
+            "aria-labelledby": "createSourceLookupTitle"
+          },
+          "text": "",
+          "options": [],
+          "label": "createSourceLookupDialog"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "id": "closeCreateSourceLookup",
+            "type": "button",
+            "aria-label": "연결 데이터 조회 닫기"
+          },
+          "text": "×",
+          "options": [],
+          "label": "연결 데이터 조회 닫기"
+        },
+        {
+          "tag": "input",
+          "line": 16,
+          "attributes": {
+            "id": "createSourceSearch",
+            "aria-label": "연결 데이터 검색",
+            "placeholder": "데이터 이름·시트 검색"
+          },
+          "text": "",
+          "options": [],
+          "label": "연결 데이터 검색"
+        },
+        {
+          "tag": "dialog",
+          "line": 16,
+          "attributes": {
+            "id": "createDashboardDialog"
+          },
+          "text": "",
+          "options": [],
+          "label": "createDashboardDialog"
+        },
+        {
+          "tag": "input",
+          "line": 16,
+          "attributes": {
+            "id": "newDashboardName",
+            "required": "true",
+            "maxlength": "60",
+            "placeholder": "예: 월간 실적"
+          },
+          "text": "",
+          "options": [],
+          "label": "예: 월간 실적"
+        },
+        {
+          "tag": "input",
+          "line": 16,
+          "attributes": {
+            "id": "newDashboardSource",
+            "type": "hidden"
+          },
+          "text": "",
+          "options": [],
+          "label": "newDashboardSource"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "id": "lookupNewDashboardSource",
+            "type": "button",
+            "aria-label": "연결 데이터 조회"
+          },
+          "text": "데이터를 조회하여 선택하세요",
+          "options": [],
+          "label": "연결 데이터 조회"
+        },
+        {
+          "tag": "select",
+          "line": 16,
+          "attributes": {
+            "id": "newDashboardTemplate"
+          },
+          "text": "",
+          "options": [
+            {
+              "value": "basic1",
+              "label": "기본1 · 종합 현황"
+            },
+            {
+              "value": "basic2",
+              "label": "기본2 · 추이·비교"
+            },
+            {
+              "value": "basic3",
+              "label": "기본3 · 분포·상세"
+            }
+          ],
+          "label": "newDashboardTemplate"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "type": "button",
+            "id": "cancelCreateDashboard"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "type": "submit"
+          },
+          "text": "만들기",
+          "options": [],
+          "label": "만들기"
+        },
+        {
+          "tag": "dialog",
+          "line": 16,
+          "attributes": {
+            "id": "manageDashboardDialog"
+          },
+          "text": "",
+          "options": [],
+          "label": "manageDashboardDialog"
+        },
+        {
+          "tag": "input",
+          "line": 16,
+          "attributes": {
+            "id": "renameDashboardName",
+            "required": "true",
+            "maxlength": "60"
+          },
+          "text": "",
+          "options": [],
+          "label": "renameDashboardName"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "id": "cancelManageDashboard",
+            "type": "button"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "id": "commitManageDashboard",
+            "type": "submit"
+          },
+          "text": "적용",
+          "options": [],
+          "label": "적용"
+        },
+        {
+          "tag": "dialog",
+          "line": 16,
+          "attributes": {
+            "id": "dashboardDialog"
+          },
+          "text": "",
+          "options": [],
+          "label": "dashboardDialog"
+        },
+        {
+          "tag": "input",
+          "line": 16,
+          "attributes": {
+            "id": "dashboardTitleInput",
+            "maxlength": "60",
+            "required": "true",
+            "placeholder": "예: 월간 영업 실적"
+          },
+          "text": "",
+          "options": [],
+          "label": "예: 월간 영업 실적"
+        },
+        {
+          "tag": "textarea",
+          "line": 16,
+          "attributes": {
+            "id": "dashboardDescriptionInput",
+            "maxlength": "240",
+            "placeholder": "이 대시보드의 용도를 적어 주세요."
+          },
+          "text": "",
+          "options": [],
+          "initialContentLength": 0,
+          "label": "이 대시보드의 용도를 적어 주세요."
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "type": "button",
+            "id": "cancelDashboardSave"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "type": "submit",
+            "id": "copyDashboard"
+          },
+          "text": "새 대시보드로 저장",
+          "options": [],
+          "label": "새 대시보드로 저장"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "type": "submit",
+            "id": "updateDashboard"
+          },
+          "text": "현재 대시보드 업데이트",
+          "options": [],
+          "label": "현재 대시보드 업데이트"
+        },
+        {
+          "tag": "dialog",
+          "line": 16,
+          "attributes": {
+            "id": "deleteDashboardDialog"
+          },
+          "text": "",
+          "options": [],
+          "label": "deleteDashboardDialog"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "id": "cancelDashboardDelete"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 16,
+          "attributes": {
+            "id": "confirmDashboardDelete"
+          },
+          "text": "삭제",
+          "options": [],
+          "label": "삭제"
+        }
+      ]
+    },
+    {
+      "source": "apps/insight/data-detail.html",
+      "controls": [
+        {
+          "tag": "button",
+          "line": 1,
+          "attributes": {
+            "id": "closeDetail"
+          },
+          "text": "창 닫기",
+          "options": [],
+          "label": "창 닫기"
+        },
+        {
+          "tag": "button",
+          "line": 1,
+          "attributes": {
+            "id": "editData"
+          },
+          "text": "편집",
+          "options": [],
+          "label": "편집"
+        },
+        {
+          "tag": "button",
+          "line": 1,
+          "attributes": {
+            "id": "saveData"
+          },
+          "text": "저장",
+          "options": [],
+          "label": "저장"
+        },
+        {
+          "tag": "button",
+          "line": 1,
+          "attributes": {
+            "id": "cancelData"
+          },
+          "text": "취소",
+          "options": [],
+          "label": "취소"
+        },
+        {
+          "tag": "button",
+          "line": 1,
+          "attributes": {
+            "id": "uploadCsv"
+          },
+          "text": "CSV 업로드 ↑",
+          "options": [],
+          "label": "CSV 업로드 ↑"
+        },
+        {
+          "tag": "input",
+          "line": 1,
+          "attributes": {
+            "id": "csvFile",
+            "type": "file",
+            "accept": ".csv,text/csv"
+          },
+          "text": "",
+          "options": [],
+          "label": "csvFile"
+        },
+        {
+          "tag": "button",
+          "line": 1,
+          "attributes": {
+            "id": "csvAll"
+          },
+          "text": "전체 CSV ↓",
+          "options": [],
+          "label": "전체 CSV ↓"
+        },
+        {
+          "tag": "button",
+          "line": 1,
+          "attributes": {
+            "id": "csv"
+          },
+          "text": "필터 결과 CSV ↓",
+          "options": [],
+          "label": "필터 결과 CSV ↓"
+        },
+        {
+          "tag": "input",
+          "line": 1,
+          "attributes": {
+            "id": "search",
+            "placeholder": "모든 열에서 검색…",
+            "aria-label": "데이터 검색"
+          },
+          "text": "",
+          "options": [],
+          "label": "데이터 검색"
+        },
+        {
+          "tag": "select",
+          "line": 1,
+          "attributes": {
+            "id": "filterColumn"
+          },
+          "text": "",
+          "options": [],
+          "label": "filterColumn"
+        },
+        {
+          "tag": "select",
+          "line": 1,
+          "attributes": {
+            "id": "filterValue"
+          },
+          "text": "",
+          "options": [],
+          "label": "filterValue"
+        },
+        {
+          "tag": "button",
+          "line": 1,
+          "attributes": {
+            "id": "clear"
+          },
+          "text": "필터 초기화",
+          "options": [],
+          "label": "필터 초기화"
+        },
+        {
+          "tag": "button",
+          "line": 1,
+          "attributes": {
+            "id": "addRow"
+          },
+          "text": "＋ 행 추가",
+          "options": [],
+          "label": "＋ 행 추가"
+        },
+        {
+          "tag": "button",
+          "line": 1,
+          "attributes": {
+            "id": "addColumn"
+          },
+          "text": "＋ 열 추가",
+          "options": [],
+          "label": "＋ 열 추가"
+        },
+        {
+          "tag": "button",
+          "line": 1,
+          "attributes": {
+            "id": "prev"
+          },
+          "text": "← 이전",
+          "options": [],
+          "label": "← 이전"
+        },
+        {
+          "tag": "button",
+          "line": 1,
+          "attributes": {
+            "id": "next"
+          },
+          "text": "다음 →",
+          "options": [],
+          "label": "다음 →"
+        }
+      ]
+    }
+  ],
+  "blockCommands": [
+    {
+      "id": "ai",
+      "label": "AI 블록",
+      "group": "고급 블록",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "breadcrumb",
+      "label": "이동 경로",
+      "group": "고급 블록",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "button",
+      "label": "버튼",
+      "group": "고급 블록",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "columns2",
+      "label": "2개의 열",
+      "group": "고급 블록",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "columns3",
+      "label": "3개의 열",
+      "group": "고급 블록",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "columns4",
+      "label": "4개의 열",
+      "group": "고급 블록",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "columns5",
+      "label": "5개의 열",
+      "group": "고급 블록",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "equation",
+      "label": "수학 공식 블록",
+      "group": "고급 블록",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "sync",
+      "label": "동기화 블록",
+      "group": "고급 블록",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "tabs",
+      "label": "탭",
+      "group": "고급 블록",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "toc",
+      "label": "목차",
+      "group": "고급 블록",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "toggle1",
+      "label": "토글 제목1",
+      "group": "고급 블록",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "toggle2",
+      "label": "토글 제목2",
+      "group": "고급 블록",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "bullet",
+      "label": "글머리 기호 목록",
+      "group": "기본 블록",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "callout",
+      "label": "콜아웃",
+      "group": "기본 블록",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "heading1",
+      "label": "제목1",
+      "group": "기본 블록",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "heading2",
+      "label": "제목2",
+      "group": "기본 블록",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "heading3",
+      "label": "제목3",
+      "group": "기본 블록",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "heading4",
+      "label": "제목4",
+      "group": "기본 블록",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "number",
+      "label": "번호 매기기 목록",
+      "group": "기본 블록",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "page",
+      "label": "페이지",
+      "group": "기본 블록",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "pageLink",
+      "label": "페이지 링크",
+      "group": "기본 블록",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "paragraph",
+      "label": "텍스트",
+      "group": "기본 블록",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "quote",
+      "label": "인용",
+      "group": "기본 블록",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "rule",
+      "label": "구분선",
+      "group": "기본 블록",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "table",
+      "label": "표",
+      "group": "기본 블록",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "task",
+      "label": "할 일 목록",
+      "group": "기본 블록",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "toggle",
+      "label": "토글 목록",
+      "group": "기본 블록",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "chart-bar",
+      "label": "세로 막대 차트",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "chart-donut",
+      "label": "도넛 차트",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "chart-horizontal",
+      "label": "가로 막대 차트",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "chart-line",
+      "label": "꺾은선 차트",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "chart-number",
+      "label": "숫자 차트",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "db-board",
+      "label": "보드 보기",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "db-calendar",
+      "label": "캘린더 보기",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "db-dashboard",
+      "label": "대시보드 보기",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "db-feed",
+      "label": "피드 보기",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "db-form",
+      "label": "폼",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "db-gallery",
+      "label": "갤러리 보기",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "db-inline",
+      "label": "데이터베이스 - 인라인",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "db-list",
+      "label": "리스트 보기",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "db-map",
+      "label": "지도 보기",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "db-page",
+      "label": "데이터베이스 - 전체 페이지",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "db-source",
+      "label": "데이터 소스 보기 연결",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "db-table",
+      "label": "표 보기",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "db-timeline",
+      "label": "타임라인 보기",
+      "group": "데이터베이스",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "audio",
+      "label": "오디오",
+      "group": "미디어",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "bookmark",
+      "label": "웹 북마크",
+      "group": "미디어",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "fence",
+      "label": "코드 블록",
+      "group": "미디어",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "file",
+      "label": "파일",
+      "group": "미디어",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "image",
+      "label": "이미지",
+      "group": "미디어",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "link",
+      "label": "링크",
+      "group": "미디어",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "video",
+      "label": "동영상",
+      "group": "미디어",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioBackground-blue",
+      "label": "파란색 배경",
+      "group": "배경 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioBackground-brown",
+      "label": "갈색 배경",
+      "group": "배경 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioBackground-default",
+      "label": "기본 배경",
+      "group": "배경 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioBackground-gray",
+      "label": "회색 배경",
+      "group": "배경 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioBackground-green",
+      "label": "초록색 배경",
+      "group": "배경 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioBackground-orange",
+      "label": "주황색 배경",
+      "group": "배경 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioBackground-pink",
+      "label": "분홍색 배경",
+      "group": "배경 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioBackground-purple",
+      "label": "보라색 배경",
+      "group": "배경 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioBackground-red",
+      "label": "빨간색 배경",
+      "group": "배경 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioBackground-yellow",
+      "label": "노란색 배경",
+      "group": "배경 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "date",
+      "label": "날짜 또는 리마인더",
+      "group": "인라인",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "emoji",
+      "label": "이모지",
+      "group": "인라인",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "inlineEquation",
+      "label": "인라인 수학 공식",
+      "group": "인라인",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "mention",
+      "label": "사용자 멘션하기",
+      "group": "인라인",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "pageMention",
+      "label": "페이지나 데이터 소스 멘션",
+      "group": "인라인",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "html",
+      "label": "HTML",
+      "group": "임베드",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "service-Abstract",
+      "label": "Abstract",
+      "group": "임베드",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "service-Figma",
+      "label": "Figma",
+      "group": "임베드",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "service-Framer",
+      "label": "Framer",
+      "group": "임베드",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "service-GitHub Gist",
+      "label": "GitHub Gist",
+      "group": "임베드",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "service-Google Drive",
+      "label": "Google Drive",
+      "group": "임베드",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "service-Google Maps",
+      "label": "Google Maps",
+      "group": "임베드",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "service-Invision",
+      "label": "Invision",
+      "group": "임베드",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "service-Miro",
+      "label": "Miro",
+      "group": "임베드",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "service-Mixpanel",
+      "label": "Mixpanel",
+      "group": "임베드",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "service-Sketch",
+      "label": "Sketch",
+      "group": "임베드",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "service-Whimsical",
+      "label": "Whimsical",
+      "group": "임베드",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "urlEmbed",
+      "label": "임베드",
+      "group": "임베드",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "action-ai",
+      "label": "AI에게 질문하기",
+      "group": "작업",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "action-copy",
+      "label": "블록 링크 복사",
+      "group": "작업",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "action-delete",
+      "label": "삭제",
+      "group": "작업",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "action-duplicate",
+      "label": "복제",
+      "group": "작업",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "action-move",
+      "label": "옮기기",
+      "group": "작업",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "action-present",
+      "label": "여기에서 발표",
+      "group": "작업",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "embed",
+      "label": "HTML · 임베드",
+      "group": "추천",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "mermaid",
+      "label": "코드 - Mermaid",
+      "group": "추천",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "note",
+      "label": "AI 노트",
+      "group": "추천",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "toggle3",
+      "label": "토글 제목3",
+      "group": "추천",
+      "source": "apps/markdown/block-ui.js"
+    },
+    {
+      "id": "color-studioColor-blue",
+      "label": "파란색 텍스트",
+      "group": "텍스트 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioColor-brown",
+      "label": "갈색 텍스트",
+      "group": "텍스트 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioColor-default",
+      "label": "기본 텍스트",
+      "group": "텍스트 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioColor-gray",
+      "label": "회색 텍스트",
+      "group": "텍스트 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioColor-green",
+      "label": "초록색 텍스트",
+      "group": "텍스트 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioColor-orange",
+      "label": "주황색 텍스트",
+      "group": "텍스트 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioColor-pink",
+      "label": "분홍색 텍스트",
+      "group": "텍스트 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioColor-purple",
+      "label": "보라색 텍스트",
+      "group": "텍스트 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioColor-red",
+      "label": "빨간색 텍스트",
+      "group": "텍스트 색상",
+      "source": "apps/markdown/block-widgets.js"
+    },
+    {
+      "id": "color-studioColor-yellow",
+      "label": "노란색 텍스트",
+      "group": "텍스트 색상",
+      "source": "apps/markdown/block-widgets.js"
+    }
+  ],
+  "modules": [
+    {
+      "source": "admin.js",
+      "functions": [
+        "actions",
+        "all",
+        "button",
+        "checkboxList",
+        "cleanupLogs",
+        "clear",
+        "create",
+        "deleteLog",
+        "dialog",
+        "editLogSettings",
+        "editRecord",
+        "field",
+        "load",
+        "mutate",
+        "removeRecord",
+        "row",
+        "status",
+        "table",
+        "toggleUser"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "app-shell.js",
+      "functions": [
+        "apply",
+        "current",
+        "icon",
+        "init",
+        "paint",
+        "setCollapsed",
+        "setupWorkspace"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "app.js",
+      "functions": [
+        "allowedApp",
+        "appFrameSource",
+        "appIcon",
+        "date",
+        "menuLink",
+        "node",
+        "openSettings",
+        "orderedModules",
+        "preferenceRecord",
+        "render",
+        "renderNavigation",
+        "route",
+        "setSidebarCollapsed",
+        "starIcon",
+        "syncAccess",
+        "toggleFavorite",
+        "updateOrderButtons",
+        "visibleModules"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/insight/analysis-controls.js",
+      "functions": [
+        "refreshAnalysisControls",
+        "renderAnalysisStatus",
+        "renderTableCard"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/insight/app.js",
+      "functions": [
+        "actionIcon",
+        "analysisCardConfig",
+        "analysisTable",
+        "api",
+        "applyAnalysisFilters",
+        "applySlicerRows",
+        "bindAnalysisClick",
+        "cardFiltered",
+        "changeSheet",
+        "connection",
+        "currentConfig",
+        "dateBucket",
+        "demo",
+        "download",
+        "draw",
+        "field",
+        "filterComparable",
+        "filtered",
+        "grouped",
+        "init",
+        "isDate",
+        "listActionButton",
+        "multiSeriesData",
+        "multiSeriesOption",
+        "notify",
+        "numeric",
+        "optionFor",
+        "profile",
+        "recommendations",
+        "refreshControls",
+        "renderAll",
+        "renderBoard",
+        "renderChart",
+        "resetAnalysisView",
+        "safeAnalysisConfig",
+        "safeCardFilters",
+        "safeSlicers",
+        "selectOptions",
+        "setData",
+        "showPage",
+        "tableChartOption",
+        "upload"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/insight/board-studio.js",
+      "functions": [
+        "applyStudioSelection",
+        "canvasText",
+        "exportDashboard",
+        "initBoardStudio",
+        "initKpiEditor",
+        "kpiContent",
+        "kpiEditDraft",
+        "loadExportImage",
+        "makeBoardCanvas",
+        "openCardStudio",
+        "openKpiCreator",
+        "openKpiEditor",
+        "renderKpiEditPreview",
+        "withDefaultKpis"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/insight/card-filters.js",
+      "functions": [
+        "cardFilterRules",
+        "changeSlicer",
+        "initCardAndSlicerFilters",
+        "previewCardFilters",
+        "renderCardFilterEditor",
+        "renderDashboardSlicers",
+        "setCardFilterRules"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/insight/dashboard-library.js",
+      "functions": [
+        "commitDashboardMetadata",
+        "creationSourceEntry",
+        "dashboardLibraryEntries",
+        "filteredDashboardLibrary",
+        "initCreateSourceLookup",
+        "initDashboardLibrary",
+        "initRelinkDashboard",
+        "openCreateDashboard",
+        "openDashboardManagement",
+        "openLibraryDashboard",
+        "openRelinkDashboard",
+        "renderCreateSourceLookup",
+        "renderDashboardList"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/insight/dashboards.js",
+      "functions": [
+        "applyPreset",
+        "applySavedDashboard",
+        "applyTileStyles",
+        "bindTileGesture",
+        "boardHistorySnapshot",
+        "buildPreset",
+        "createDashboardRecord",
+        "dashboardCompatibility",
+        "dashboardSnapshot",
+        "ensureBoardPositions",
+        "initBoardUndo",
+        "initDashboardEditor",
+        "initDashboards",
+        "openDashboardSave",
+        "overlaps",
+        "previewTilePosition",
+        "proposeTilePositions",
+        "readDashboards",
+        "renderDashboardBoard",
+        "renderTemplatePicker",
+        "resetBoardHistory",
+        "safeConfig",
+        "saveDashboard",
+        "selectDashboardTemplate",
+        "setDashboardEditing",
+        "settlePositions",
+        "shouldUndoBoardEvent",
+        "snapshotSignature",
+        "syncEditMode",
+        "trackBoardHistory",
+        "undoBoardEdit",
+        "updateDashboardUI",
+        "updateUndoButton",
+        "validPosition",
+        "writeDashboards"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/insight/data-catalog.js",
+      "functions": [
+        "cacheDatabase",
+        "catalogEntries",
+        "clearSelectedData",
+        "dashboardsForSelectedData",
+        "findDataRecord",
+        "findLinkedDashboard",
+        "initDataManagement",
+        "linkedDashboardNames",
+        "loadDetachedSnapshots",
+        "openDataDetail",
+        "openDeleteData",
+        "registerConnectedData",
+        "removeConnectedData",
+        "renderConnectedDataPicker",
+        "renderDataCatalog",
+        "renderDataLookup",
+        "retainedEntries",
+        "saveDetachedSnapshot",
+        "savedForSource",
+        "selectConnectedData",
+        "sourceMatches",
+        "trackDataDashboard"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/insight/data-detail.js",
+      "functions": [
+        "button",
+        "cancelEditing",
+        "detailRows",
+        "downloadTableCSV",
+        "moveColumn",
+        "options",
+        "receive",
+        "refreshFilters",
+        "refreshValues",
+        "render",
+        "request",
+        "saveTable",
+        "syncEditing",
+        "tableChanged",
+        "tableDirty"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/insight/data-editor-bridge.js",
+      "functions": [
+        "applyDetailTable",
+        "detailRevision",
+        "remapTableConfig"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/insight/edit-session.js",
+      "functions": [
+        "beginDashboardSession",
+        "dashboardHasEdits",
+        "discardDashboardDraft",
+        "editSessionKey",
+        "editSessionSnapshot",
+        "finishDashboardExit",
+        "guardDashboardExit",
+        "persistDashboardDraft",
+        "restoreEditSnapshot"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/insight/navigation-state.js",
+      "functions": [
+        "captureViewState",
+        "dashboardCompatibilityForView",
+        "rememberViewState",
+        "restoreViewState"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/insight/storage-worker.js",
+      "functions": [],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/insight/table-model.js",
+      "functions": [],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/insight/workspace-storage.js",
+      "functions": [
+        "activeStorage",
+        "captureWorkspace",
+        "closeStorageProfile",
+        "editStorageProfile",
+        "hydrateStorageSource",
+        "initWorkspaceStorage",
+        "loadWorkspaceNow",
+        "openStorageProfile",
+        "renderStorageFields",
+        "renderStorageList",
+        "replaceDetachedStorage",
+        "restoreWorkspaceBundle",
+        "saveWorkspaceInWorker",
+        "saveWorkspaceNow",
+        "setStorageFormBusy",
+        "storageAPI",
+        "storageAction",
+        "storageChanged",
+        "storageSourceRecord",
+        "storageStatus",
+        "validateWorkspaceBundle"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/app.js",
+      "functions": [
+        "applyEdit",
+        "captureWorkspace",
+        "changed",
+        "command",
+        "currentDoc",
+        "download",
+        "fileName",
+        "findMatches",
+        "findNext",
+        "importFiles",
+        "init",
+        "newRecord",
+        "onEditorInput",
+        "onError",
+        "openDraftDB",
+        "openFind",
+        "readDraft",
+        "renderDocList",
+        "renderEditor",
+        "renderMetadata",
+        "restoreWorkspace",
+        "safeAction",
+        "saveDraft",
+        "selectDocument",
+        "setFont",
+        "setView",
+        "toast",
+        "updateCursor",
+        "updateFindCount"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/axis-drag.js",
+      "functions": [
+        "bind",
+        "clear",
+        "draw",
+        "locate",
+        "parts",
+        "preview",
+        "rows",
+        "studioTableViewport",
+        "tick"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/block-recommendations.js",
+      "functions": [
+        "menu",
+        "read",
+        "recommend",
+        "record",
+        "recordBlockRecommendation"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/block-ui.js",
+      "functions": [
+        "activateBlock",
+        "blockUIValid",
+        "closeBlockMenus",
+        "convertStudioBlock",
+        "copyBlockLink",
+        "currentStudioBlock",
+        "handleRichKey",
+        "menuButton",
+        "menuHeading",
+        "menuSearch",
+        "openAnnotations",
+        "openBlockMenu",
+        "openInsertMenu",
+        "openStudioAI",
+        "openStudioDialog",
+        "placeStudioMenu",
+        "renderInsertItems",
+        "restoreBlockLink",
+        "runSlash",
+        "selectBlockText",
+        "showColorMenu",
+        "showConvertMenu",
+        "showListMenu",
+        "showMoveMenu",
+        "showSkillsMenu",
+        "startBlockPresentation",
+        "studioDecodeAttribute",
+        "studioExtensions",
+        "studioNeedsHTML",
+        "studioNotes",
+        "studioParagraph",
+        "studioPatch",
+        "studioReplace",
+        "studioSerialize",
+        "submenu",
+        "updateBlockControls",
+        "updateSlashMenu"
+      ],
+      "dynamicLabels": [
+        "거절",
+        "다음",
+        "닫기",
+        "뒤로",
+        "메뉴 닫기",
+        "문서 맨 아래로",
+        "문서 맨 위로",
+        "발표 종료",
+        "삭제",
+        "상위 수준으로 내어쓰기",
+        "이전",
+        "이전 토글 아래로 들여쓰기",
+        "질문과 블록 내용 복사"
+      ]
+    },
+    {
+      "source": "apps/markdown/block-widgets.js",
+      "functions": [
+        "chooseStudioDocument",
+        "chooseStudioSource",
+        "databaseFieldInput",
+        "editDatabaseRow",
+        "insertExtraInline",
+        "insertExtraNode",
+        "insertStudioExtra",
+        "newStudioDatabase",
+        "openStudioMediaPicker",
+        "renderStudioChart",
+        "renderStudioDatabase",
+        "renderStudioMath",
+        "renderStudioMedia",
+        "renderStudioMermaid",
+        "renderStudioWidget",
+        "safeStudioURL",
+        "studioEmbedURL",
+        "studioInlineEquationExtension",
+        "studioLoadScript",
+        "studioSVG",
+        "studioSourceOptions",
+        "studioWidgetExtensions",
+        "studioWidgetNode",
+        "updateStudioSource",
+        "widgetButton",
+        "widgetSummary"
+      ],
+      "dynamicLabels": [
+        "+",
+        "+ 새 항목",
+        "+ 속성",
+        "URL 삽입",
+        "공식 편집",
+        "버튼 설정",
+        "삭제",
+        "삽입",
+        "속성 삭제",
+        "원본 편집",
+        "이름 변경",
+        "저장",
+        "주소 변경",
+        "질문 복사",
+        "추가",
+        "코드 편집",
+        "편집",
+        "항목 삭제"
+      ]
+    },
+    {
+      "source": "apps/markdown/column-resize.js",
+      "functions": [
+        "finish",
+        "hide",
+        "position"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/database-charts.js",
+      "functions": [
+        "aggregate",
+        "config",
+        "controls",
+        "dateKey",
+        "download",
+        "render"
+      ],
+      "dynamicLabels": [
+        "PNG 다운로드",
+        "SVG 다운로드"
+      ]
+    },
+    {
+      "source": "apps/markdown/database-layout.js",
+      "functions": [
+        "clearRecordMark",
+        "controls",
+        "copyView",
+        "editField",
+        "icon",
+        "inlineCell",
+        "modeRecord",
+        "openRecord",
+        "refresh",
+        "render"
+      ],
+      "dynamicLabels": [
+        "calendarUnit",
+        "cardLayout",
+        "cardPreview",
+        "cardSize",
+        "conditionColor",
+        "conditionField",
+        "dateField",
+        "endField",
+        "equalColumns",
+        "fitMedia",
+        "freezeFirstColumn",
+        "freezeFirstRow",
+        "groupField",
+        "initialLoad",
+        "latField",
+        "lngField",
+        "locationField",
+        "openMode",
+        "pageIcons",
+        "propertyWrap",
+        "showAuthor",
+        "showTitle",
+        "subItems",
+        "tableGroupField",
+        "titleWrap",
+        "verticalLines",
+        "weekends",
+        "wrap",
+        "↓ 더 불러오기",
+        "속성 삭제",
+        "속성 저장",
+        "열기",
+        "＋ 새 페이지"
+      ]
+    },
+    {
+      "source": "apps/markdown/database-ui.js",
+      "functions": [
+        "addProperty",
+        "anchorFor",
+        "apply",
+        "button",
+        "close",
+        "decorateTable",
+        "enhance",
+        "guard",
+        "heading",
+        "icon",
+        "item",
+        "label",
+        "newRow",
+        "open",
+        "patch",
+        "position",
+        "resizeColumn",
+        "show",
+        "syncTitle"
+      ],
+      "dynamicLabels": [
+        "고급 보기 추가",
+        "그룹화",
+        "레이아웃",
+        "모든 보기 설정",
+        "보기 링크 복사",
+        "보기 이름 변경",
+        "복제",
+        "빈 페이지 추가",
+        "삭제",
+        "새 페이지 상세 입력",
+        "속성 추가",
+        "속성 편집",
+        "속성 표시",
+        "속성까지 입력해서 추가",
+        "아래로 이동",
+        "위로 이동",
+        "정렬",
+        "정렬 지우기",
+        "조건부 색상",
+        "차트 편집",
+        "페이지 열기",
+        "필터",
+        "필터 지우기",
+        "＋ 새 속성"
+      ]
+    },
+    {
+      "source": "apps/markdown/database-views.js",
+      "functions": [
+        "applyRoute",
+        "configure",
+        "fields",
+        "filter",
+        "layout",
+        "normalize",
+        "render"
+      ],
+      "dynamicLabels": [
+        "보기 링크 복사",
+        "보기 삭제",
+        "보기 설정",
+        "차트 편집",
+        "취소",
+        "＋ 보기 추가"
+      ]
+    },
+    {
+      "source": "apps/markdown/document-library.js",
+      "functions": [
+        "allTags",
+        "close",
+        "color",
+        "date",
+        "draw",
+        "editTags",
+        "editView",
+        "fileCount",
+        "label",
+        "modal",
+        "open",
+        "rows",
+        "sync",
+        "tagCell",
+        "titleCell"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/document-tree.js",
+      "functions": [
+        "bindTreeDrag",
+        "bindTreeDrop",
+        "branch",
+        "folderPath",
+        "moveTreeRecord",
+        "openTreeItem",
+        "parentChoices",
+        "persistTreeUI",
+        "renderDocumentTree",
+        "selectFolder",
+        "selectTreeDocument",
+        "treeCompare",
+        "treeIcon",
+        "treeSelection",
+        "updateFolderToggle"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/edit-history.js",
+      "functions": [
+        "historyBoundary",
+        "historyRecord",
+        "historySnapshot",
+        "recordEditHistory",
+        "resetEditHistory",
+        "restorePreviewSelection",
+        "runEditHistory",
+        "syncEditHistory",
+        "trimEditHistory"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/editor-core.js",
+      "functions": [
+        "edit",
+        "matches",
+        "validate"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/file-sync.js",
+      "functions": [
+        "applyFileMerge",
+        "bodyHash",
+        "checkFileChanges",
+        "createRecoveryBase",
+        "openFileConflicts",
+        "reconcileExternal",
+        "rememberFileBaseline",
+        "resolveFileConflicts",
+        "restoreRecoveryBase",
+        "showExternal"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/folder-model.js",
+      "functions": [
+        "descendants",
+        "validate"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/knowledge.js",
+      "functions": [
+        "openDocumentLink",
+        "references",
+        "renderDocumentChoices",
+        "renderKnowledge"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/page-actions.js",
+      "functions": [
+        "close",
+        "commentLock",
+        "copy",
+        "drawMenu",
+        "insert",
+        "insertStudioPage",
+        "item",
+        "notify",
+        "open",
+        "openComments",
+        "pageURL",
+        "place",
+        "promote",
+        "render",
+        "show",
+        "syncComments",
+        "valid"
+      ],
+      "dynamicLabels": [
+        "← 페이지 메뉴",
+        "↗ 다음에서 열기",
+        "↗ 링크 복사",
+        "▣ 댓글"
+      ]
+    },
+    {
+      "source": "apps/markdown/rich-editor.js",
+      "functions": [
+        "codeText",
+        "flushSourcePreview",
+        "onPreviewInput",
+        "previewCommand",
+        "previewHasFocus",
+        "previewMarkdown",
+        "syncPreviewEditable"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/rich-v2.js",
+      "functions": [
+        "activeRichBlock",
+        "cloneRichBlock",
+        "engineRoot",
+        "ensureRichEditor",
+        "flushSourcePreview",
+        "focusRichEditor",
+        "indentRichBlock",
+        "moveRichBlock",
+        "mutateRichBlocks",
+        "onPreviewInput",
+        "previewCommand",
+        "previewHasFocus",
+        "previewMarkdown",
+        "renderRichDocument",
+        "richBlockAt",
+        "richBlockRect",
+        "richBlocks",
+        "richEngineActive",
+        "richExportHTML",
+        "richSanitize",
+        "richSiblingBlocks",
+        "richTopBlocks",
+        "serializeRichNode",
+        "signature",
+        "syncPreviewEditable",
+        "updateSelectionBubble",
+        "visit"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/scroll-sync.js",
+      "functions": [
+        "applyDocumentViewOptions",
+        "defaultDocumentViewOptions",
+        "saveDocumentViewOptions",
+        "syncEditorScroll",
+        "updateScrollOptions"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/storage-compare.js",
+      "functions": [
+        "compare",
+        "fingerprint",
+        "merge",
+        "path",
+        "summary"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/storage-flow.js",
+      "functions": [
+        "busyEditor",
+        "capture",
+        "restore"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/storage.js",
+      "functions": [
+        "activeStorage",
+        "initStorage",
+        "loadRemote",
+        "openProfile",
+        "profileFields",
+        "renderStorage",
+        "saveRemote",
+        "saveWorkspace",
+        "storageAPI",
+        "storageChanged",
+        "storageStatus"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/table-grid.js",
+      "functions": [
+        "alignTableColumn",
+        "editEngineTable",
+        "engineTableContext",
+        "gridTSV",
+        "handleGridCopy",
+        "handleGridPaste",
+        "moveTableRow",
+        "parseTSV",
+        "replaceEngineTable",
+        "tableSort"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/table-menu.js",
+      "functions": [
+        "cloneCell",
+        "close",
+        "commit",
+        "context",
+        "gridBounds",
+        "headerFlags",
+        "hideHandles",
+        "item",
+        "mutate",
+        "offsets",
+        "open",
+        "openPalette",
+        "place",
+        "refresh",
+        "render",
+        "resizeAxis",
+        "select",
+        "show",
+        "stopDrag",
+        "toggleHeader",
+        "valid"
+      ],
+      "dynamicLabels": [
+        "작업 메뉴로 돌아가기"
+      ]
+    },
+    {
+      "source": "apps/markdown/table-tools.js",
+      "functions": [
+        "currentTableContext",
+        "editPreviewTable",
+        "editSelectedTable",
+        "editSourceTable",
+        "queueTableTools",
+        "selectedPreviewCell",
+        "sourceTableContext",
+        "tableLineCells",
+        "tableMarkdown",
+        "updateTableTools"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/markdown/workspace-merge.js",
+      "functions": [
+        "items",
+        "merge"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/projects/workbook-preserve.js",
+      "functions": [
+        "patchCell",
+        "patchSheet",
+        "path",
+        "preserve",
+        "strings",
+        "unpack"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "auth-link.js",
+      "functions": [],
+      "dynamicLabels": []
+    },
+    {
+      "source": "auth-session.js",
+      "functions": [],
+      "dynamicLabels": []
+    },
+    {
+      "source": "bridge.js",
+      "functions": [],
+      "dynamicLabels": []
+    },
+    {
+      "source": "cloud-files.js",
+      "functions": [
+        "bytes",
+        "capture",
+        "clean",
+        "directory",
+        "encode",
+        "fileHandle",
+        "hydrate",
+        "join",
+        "persist",
+        "validate",
+        "walk"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "cloud-ui.js",
+      "functions": [],
+      "dynamicLabels": []
+    },
+    {
+      "source": "content-cloud.js",
+      "functions": [
+        "call",
+        "create",
+        "failure",
+        "user",
+        "validate"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "excel.js",
+      "functions": [],
+      "dynamicLabels": []
+    },
+    {
+      "source": "folder-storage.js",
+      "functions": [
+        "directory",
+        "read",
+        "record",
+        "writeFile"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "item-sharing-adapters.js",
+      "functions": [
+        "capture",
+        "init",
+        "protect",
+        "wait"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "item-sharing.js",
+      "functions": [
+        "members",
+        "message",
+        "openItem",
+        "refresh",
+        "share",
+        "users"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "login.js",
+      "functions": [],
+      "dynamicLabels": []
+    },
+    {
+      "source": "pages-guard.js",
+      "functions": [
+        "detailHost"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "pages-runtime.js",
+      "functions": [
+        "csv",
+        "table",
+        "transact"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "project-cloud.js",
+      "functions": [
+        "asset",
+        "base64",
+        "bytes",
+        "check",
+        "create",
+        "error",
+        "hash",
+        "load",
+        "pack",
+        "path",
+        "rpc",
+        "templates",
+        "unpack",
+        "user",
+        "validate"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "shared-item.js",
+      "functions": [
+        "fail",
+        "itemTitle"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "sharing-cloud.js",
+      "functions": [
+        "create"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "sharing-frame.js",
+      "functions": [],
+      "dynamicLabels": []
+    },
+    {
+      "source": "sidebar-resize.js",
+      "functions": [
+        "apply",
+        "finish",
+        "notify",
+        "position",
+        "restore",
+        "save"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "storage-adapters.js",
+      "functions": [],
+      "dynamicLabels": []
+    },
+    {
+      "source": "storage-flow.js",
+      "functions": [
+        "api",
+        "apply",
+        "backupPair",
+        "backupView",
+        "backups",
+        "begin",
+        "busyEditor",
+        "capture",
+        "comparison",
+        "db",
+        "download",
+        "downloadBackup",
+        "field",
+        "freshTarget",
+        "header",
+        "importLegacy",
+        "main",
+        "markPending",
+        "open",
+        "putBackups",
+        "refresh",
+        "render",
+        "renderRows",
+        "restore",
+        "review",
+        "run",
+        "say",
+        "showBackups",
+        "summaryCard"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "storage-models.js",
+      "functions": [
+        "compare",
+        "encode",
+        "insightItems",
+        "projectItems",
+        "projectKey",
+        "semanticFile",
+        "summary"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/projects/index.html (inline)",
+      "functions": [
+        "applyTheme",
+        "checkStore",
+        "closeForm",
+        "countStores",
+        "deleteProject",
+        "deleteStore",
+        "download",
+        "fileExists",
+        "fillWindow",
+        "filtered",
+        "getTemplate",
+        "init",
+        "legacyBackup",
+        "listMetas",
+        "load",
+        "loadExcel",
+        "metaFor",
+        "newId",
+        "noticeHTML",
+        "openConnect",
+        "openDashboard",
+        "openForm",
+        "openImport",
+        "openWindow",
+        "portalActivateCloudStore",
+        "readForm",
+        "readJSON",
+        "readProject",
+        "reconnect",
+        "relinkStore",
+        "render",
+        "renderAll",
+        "renderImport",
+        "renderStoreBox",
+        "renderStoreTab",
+        "rootOf",
+        "runImport",
+        "selectStore",
+        "setTab",
+        "showBlocked",
+        "snapDir",
+        "snapFile",
+        "status",
+        "storeErr",
+        "submitForm",
+        "unlinkStore",
+        "winFeatures",
+        "writeFile",
+        "writeMeta",
+        "writeProject"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "apps/projects/index.html#dash-tpl (inline)",
+      "functions": [
+        "addLoaded",
+        "agg",
+        "applyCellEdit",
+        "applySaved",
+        "applyStaged",
+        "applyTheme",
+        "bindCal",
+        "bindCompare",
+        "bindGantt",
+        "bindGuide",
+        "bindProj",
+        "bindStatic",
+        "bindVersions",
+        "bindWBS",
+        "boot",
+        "buildDocument",
+        "buildImport",
+        "buildWorkbook",
+        "changed",
+        "closeConflict",
+        "closeLoad",
+        "closeSamplePop",
+        "closeSave",
+        "commitExt",
+        "compareSources",
+        "compute",
+        "confirmHTML",
+        "conflictForce",
+        "conflictReload",
+        "cv",
+        "diffStates",
+        "diffTable",
+        "doDelete",
+        "doSave",
+        "downloadHTML",
+        "downloadJSON",
+        "exitExt",
+        "exitPreview",
+        "exportXlsx",
+        "findNode",
+        "findTask",
+        "flatTasks",
+        "gapState",
+        "gotoTask",
+        "hostInfo",
+        "hostNotify",
+        "keepFocus",
+        "leafCalc",
+        "leavesOf",
+        "listSnapFolder",
+        "loadExcel",
+        "loadFolderList",
+        "loadPicked",
+        "lockBasic",
+        "makeCal",
+        "move",
+        "normalize",
+        "offerFile",
+        "openConflict",
+        "openLoad",
+        "openSamplePop",
+        "openSave",
+        "parentArr",
+        "parseWorkbook",
+        "preservedBytes",
+        "readFile",
+        "readSnapFile",
+        "recompute",
+        "regroup",
+        "renderAll",
+        "renderBanner",
+        "renderCal",
+        "renderCompare",
+        "renderDashboard",
+        "renderDiff",
+        "renderGantt",
+        "renderImport",
+        "renderLoad",
+        "renderLoc",
+        "renderPreview",
+        "renderProj",
+        "renderSample",
+        "renderSaveTargets",
+        "renderSavebox",
+        "renderStoreChip",
+        "renderVersions",
+        "renderWBS",
+        "restoreVersion",
+        "rollup",
+        "rowHTML",
+        "safeJSON",
+        "savedTask",
+        "scrollToBase",
+        "setDepth",
+        "setSub",
+        "setView",
+        "snapFileName",
+        "storeInfo",
+        "storeSave",
+        "storeSnapList",
+        "summarize",
+        "syncBasicFromHost",
+        "taskPanelHTML",
+        "tipHTML",
+        "toDateStr",
+        "toPct",
+        "toPkg",
+        "toast",
+        "visibleRows"
+      ],
+      "dynamicLabels": []
+    }
+  ]
+}
