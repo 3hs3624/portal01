@@ -27,3 +27,4 @@
 /* Shared documents stay below the personal tree and above storage controls. */
 #documentSharing{flex:0 1 auto;min-height:0;max-height:30vh;overflow:auto;overflow-wrap:anywhere}
 #documentSharing>.portal-share-button{width:100%}
+.doc-item .doc-search-excerpt{white-space:normal;line-height:1.5;overflow-wrap:anywhere}.doc-search-excerpt mark{color:inherit;background:var(--soft);font-weight:700}

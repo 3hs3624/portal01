@@ -67,3 +67,4 @@
 .dashboard-action-icon svg{display:block;pointer-events:none}
 
 .catalog-row-actions{display:flex;gap:7px;align-items:center}
+.data-freshness{font-size:11px;color:var(--muted);overflow-wrap:anywhere}.chart-source-button{font-size:10px;padding:4px 7px;white-space:nowrap}.chart-source-dialog{width:min(1100px,94vw)}.chart-source-table{overflow:auto;max-height:55vh}.chart-source-table table{width:100%;border-collapse:collapse}.chart-source-table th,.chart-source-table td{padding:7px;border:1px solid var(--line);text-align:left;overflow-wrap:anywhere;max-width:350px}.chart-source-table th{position:sticky;top:0;background:var(--surface)}html:not(.dashboard-editing) .chart-source-dialog .board-actions{display:flex}

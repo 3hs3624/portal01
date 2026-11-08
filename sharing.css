@@ -10,3 +10,4 @@ body.portal-shared-context #portal-cloud-open,body.portal-shared-context .portal
 .portal-share-dialog .portal-share-user{display:flex;flex-direction:row;justify-content:flex-start;align-items:center;gap:12px}
 .portal-share-dialog .portal-share-user input[type="checkbox"]{flex:0 0 16px;width:16px;height:16px;padding:0;margin:0;align-self:center}
 .portal-share-dialog .portal-share-user>span{flex:1;min-width:0;text-align:left}
+.portal-share-origin{display:inline-block;font-size:10px;color:var(--accent,#7367c7);padding:3px 5px;white-space:normal;overflow-wrap:anywhere}.portal-share-item-row{flex-wrap:wrap}.portal-share-list-row{flex-wrap:wrap}.portal-share-list-row small{flex-basis:100%;overflow-wrap:anywhere}

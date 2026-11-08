@@ -51,9 +51,9 @@ async function restoreWorkspaceBundle(w){
  document.documentElement.dataset.theme=w.theme==='dark'?'dark':'light';localStorage.setItem('insight-theme',document.documentElement.dataset.theme);renderDataCatalog();renderDashboardList();syncEditMode();
  }finally{storageState.restoring=false}
 }
-function storageStatus(message,error=false){const node=$('#storageStatus');if(node){node.textContent=message;node.classList.toggle('storage-error',error)}const badge=$('#storageBadge');if(badge){badge.textContent=message;badge.classList.toggle('storage-error',error)}}
+function storageStatus(message,error=false){if(error)window.PortalStorageStatus?.failure(message);else if(/불러오기 완료|자동저장 사용 중/.test(message))window.PortalStorageStatus?.saved();else if(/자동저장 준비 완료|브라우저 자동저장 준비/.test(message))window.PortalStorageStatus?.ready();const node=$('#storageStatus');if(node){node.textContent=message;node.classList.toggle('storage-error',error)}const badge=$('#storageBadge');if(badge){badge.textContent=message;badge.classList.toggle('storage-error',error)}}
 function storageChanged(){
- if(storageState.restoring||!storageState.settings)return;storageState.generation++;storageState.dirty=true;
+ if(storageState.restoring||!storageState.settings)return;storageState.generation++;storageState.dirty=true;window.PortalStorageStatus?.pending();
  if(!activeStorage()){storageStatus('저장소 미연결 · 현재 데이터는 브라우저 작업 사본입니다.');return}
  storageStatus('저장하지 않은 작업공간 변경이 있습니다.');
  if(storageState.ready&&storageState.settings.autoSave){clearTimeout(storageState.timer);storageState.timer=setTimeout(()=>saveWorkspaceNow(false).catch(()=>{}),900)}

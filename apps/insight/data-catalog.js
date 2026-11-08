@@ -11,7 +11,7 @@ function sourceMatches(d,record,sheet){
 function registerConnectedData(name,sheets,identity=''){
 
  const signature=identity||(['REST API','SQLite','Microsoft Access','데이터베이스 / ERP','Google Drive / Sheets'].includes(name)?'connection:'+crypto.randomUUID():'')||JSON.stringify([name,Object.entries(sheets).map(([sheet,d])=>[sheet,d.columns])]);let record=connectedData.find(r=>r.signature===signature);
- if(record){record.revisions||={};for(const sheet of Object.keys(sheets))record.revisions[sheet]=(record.revisions[sheet]||0)+1;record.sheets=sheets;record.connectedAt=new Date().toISOString()}else{record={id:identity?.startsWith('file:')?identity:crypto.randomUUID(),signature,name,sheets,connectedAt:new Date().toISOString(),links:{}};connectedData.push(record)}
+ if(record){const missing=[];for(const d of readDashboards()){if(d.dataSource?.id!==(record.originId||record.id))continue;const sheet=d.dataSource.sheet,next=sheets[sheet];for(const col of d.schema||[])if(!next?.columns.includes(col.name))missing.push(d.name+' / '+sheet+' / '+col.name);}if(missing.length)throw Error('데이터를 교체하지 않았습니다. 연결된 대시보드에 필요한 열이 없습니다: '+[...new Set(missing)].join(', ')+'. 데이터 상세에서 열 연결을 수정하거나 대시보드를 다시 연결하세요.');record.revisions||={};for(const sheet of Object.keys(sheets))record.revisions[sheet]=(record.revisions[sheet]||0)+1;record.sheets=sheets;record.connectedAt=new Date().toISOString()}else{record={id:identity?.startsWith('file:')?identity:crypto.randomUUID(),signature,name,sheets,connectedAt:new Date().toISOString(),links:{}};connectedData.push(record)}
  return record.id;
 }
 function trackDataDashboard(){

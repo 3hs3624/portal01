@@ -42,7 +42,7 @@
  }
  const editable=()=>RICH.editor?.isEditable&&RICH.enabled&&!APP.loading&&!RICH.loading&&APP.view!=='edit'&&RICH.markdown===currentDoc()?.content;
  function hideHandles(){state.visible=false;handles.row.hidden=handles.column.hidden=addRow.hidden=addColumn.hidden=true;}
- function close(focus=false){state.menu=null;menu.hidden=palette.hidden=true;handles.row.setAttribute('aria-expanded','false');handles.column.setAttribute('aria-expanded','false');if(focus&&editable())RICH.editor.commands.focus();}
+ function close(focus=false){state.menu=null;menu.hidden=palette.hidden=true;handles.row.setAttribute('aria-expanded','false');handles.column.setAttribute('aria-expanded','false');if(focus&&editable())RICH.editor.view.focus();}
  function context(cell){
   if(!editable()||!cell||!root.contains(cell))return null;
   const editor=RICH.editor;let resolved;
@@ -144,6 +144,7 @@
  document.addEventListener('pointerdown',event=>{if(!event.target.closest('.studio-table-menu,.studio-table-handle,.studio-table-add-row,.studio-table-add-column'))close();});
  document.addEventListener('keydown',event=>{
   if(state.drag&&event.key==='Escape'){state.suppressClick=state.drag.axis;stopDrag();event.preventDefault();return;}
+  if(!state.menu&&event.altKey&&event.key==='F10'&&!event.isComposing&&(root.contains(document.activeElement)||Object.values(handles).includes(document.activeElement))&&editable()){const c=engineTableContext(),cell=c?RICH.editor.view.nodeDOM(c.pos+1+c.map.map[c.row*c.width+c.column]):state.hover?.cell;if(cell){show(cell);open(event.shiftKey?'column':'row');event.preventDefault();event.stopImmediatePropagation();}return;}
   if(!state.menu)return;
   if(event.key==='Escape'){event.preventDefault();event.stopImmediatePropagation();if(!palette.hidden){palette.hidden=true;menu.querySelector('[data-table-menu-action=color]')?.focus();}else close(true);return;}
   if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='d'){event.preventDefault();event.stopImmediatePropagation();menu.querySelector('[data-table-menu-action=duplicate]:not(:disabled)')?.click();return;}

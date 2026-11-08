@@ -4558,11 +4558,13 @@
         "initBoardUndo",
         "initDashboardEditor",
         "initDashboards",
+        "openChartSourceRows",
         "openDashboardSave",
         "overlaps",
         "previewTilePosition",
         "proposeTilePositions",
         "readDashboards",
+        "render",
         "renderDashboardBoard",
         "renderTemplatePicker",
         "resetBoardHistory",
@@ -5310,6 +5312,7 @@
     {
       "source": "apps/projects/workbook-preserve.js",
       "functions": [
+        "inspect",
         "patchCell",
         "patchSheet",
         "path",
@@ -5395,11 +5398,13 @@
     {
       "source": "item-sharing.js",
       "functions": [
+        "decorate",
         "members",
         "message",
         "openItem",
         "refresh",
         "share",
+        "stamp",
         "users"
       ],
       "dynamicLabels": []
@@ -5528,6 +5533,13 @@
         "projectKey",
         "semanticFile",
         "summary"
+      ],
+      "dynamicLabels": []
+    },
+    {
+      "source": "storage-status.js",
+      "functions": [
+        "paint"
       ],
       "dynamicLabels": []
     },

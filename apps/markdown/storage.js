@@ -10,10 +10,10 @@ async function storageAPI(action,payload={}){
   const data=await r.json();if(!r.ok){const error=Error(data.error||'저장소 요청 실패');error.external=data.external;throw error;}return data;
  }
 }
-function storageStatus(message,error=false){const status=$('#saveWorkspace');if(status){status.textContent=error?'자동저장 실패':message.includes('저장 완료')?(ST.dirty?'자동저장 대기 중…':'✓ 자동저장 완료'):ST.saving||message==='저장 중…'?'자동저장 중…':ST.dirty?'자동저장 대기 중…':ST.ready?'✓ 자동저장 사용 중':'자동저장 준비 중…';status.classList.toggle('error',error);status.title=message;}for(const id of ['storageStatus','storageMessage']){$('#'+id).textContent=message;$('#'+id).classList.toggle('error',error)}}
+function storageStatus(message,error=false){if(error)window.PortalStorageStatus?.failure(message);else if(/불러오기 완료|자동저장 사용 중/.test(message))window.PortalStorageStatus?.saved();else if(/자동저장 준비 완료|브라우저 자동저장 준비/.test(message))window.PortalStorageStatus?.ready();const status=$('#saveWorkspace');if(status){status.textContent=error?'자동저장 실패':message.includes('저장 완료')?(ST.dirty?'자동저장 대기 중…':'✓ 자동저장 완료'):ST.saving||message==='저장 중…'?'자동저장 중…':ST.dirty?'자동저장 대기 중…':ST.ready?'✓ 자동저장 사용 중':'자동저장 준비 중…';status.classList.toggle('error',error);status.title=message;}for(const id of ['storageStatus','storageMessage']){$('#'+id).textContent=message;$('#'+id).classList.toggle('error',error)}}
 function storageChanged(){
  if(APP.loading)return;
- ST.dirty=true;clearTimeout(ST.timer);
+ ST.dirty=true;clearTimeout(ST.timer);window.PortalStorageStatus?.pending();
  if(!activeStorage()){storageStatus('브라우저 임시 보관 · 저장소 미연결');return}
  storageStatus(ST.blocked?'저장 오류 또는 외부 변경 확인이 필요합니다.':!ST.ready?'처음 저장 또는 불러오기가 필요합니다.':ST.settings.autoSave?'자동 저장 대기 중…':'자동 저장 꺼짐 · 변경을 반영하려면 저장을 눌러 주세요.');
  if(ST.ready&&ST.settings.autoSave&&!ST.blocked)ST.timer=setTimeout(()=>saveRemote(false).catch(()=>{}),1600);

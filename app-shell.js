@@ -71,7 +71,7 @@
    paint();
   }
   theme.onclick=()=>{selected=current()==='dark'?'light':'dark';localStorage.setItem(key,selected);apply(selected,true)};
-  const cloud=document.createElement('button');cloud.type='button';cloud.className='portal-app-action';cloud.id='portal-cloud-open';cloud.title='저장소';cloud.setAttribute('aria-label','저장소');cloud.append(icon('cloud'));const cloudLabel=document.createElement('span');cloudLabel.textContent='저장소';cloud.append(cloudLabel);cloud.onclick=()=>window.PortalCloudUI.open();tools.append(cloud);
+  const cloud=document.createElement('button');cloud.type='button';cloud.className='portal-app-action';cloud.id='portal-cloud-open';cloud.title='저장소';cloud.setAttribute('aria-label','저장소');cloud.append(icon('cloud'));const cloudLabel=document.createElement('span');cloudLabel.textContent='저장소';cloud.append(cloudLabel);cloud.onclick=()=>window.PortalCloudUI.open();tools.append(cloud);window.PortalStorageStatus?.mount(tools);
   if(id==='markdown'){
    const legacy=document.querySelector('#openStorage');if(legacy)legacy.hidden=true;
    document.addEventListener('click',event=>{if(event.target.closest('#storageShortcut')){event.preventDefault();event.stopImmediatePropagation();window.PortalCloudUI.open()}},true);

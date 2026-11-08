@@ -12,7 +12,7 @@ function applyDetailTable(request,payload){
  if(!sourceMatches(d,record,request.sheet))return d;
  return {...d,slicers:safeSlicers(d.slicers).map(s=>({...s,column:mapping[s.column]||s.column})),explorer:remapTableConfig(d.explorer,mapping),board:d.board.map(c=>remapTableConfig(c,mapping)),filters:{...d.filters,filterColumn:mapping[d.filters.filterColumn]||d.filters.filterColumn},schema:d.schema.map(c=>({...c,name:mapping[c.name]||c.name}))};
  });
- writeDashboards(records);record.sheets[request.sheet]=next;(record.revisions||={})[request.sheet]=payload.revision+1;
+ writeDashboards(records);record.connectedAt=new Date().toISOString();record.sheets[request.sheet]=next;(record.revisions||={})[request.sheet]=payload.revision+1;
  if(state.connectionId===record.id&&state.sheet===request.sheet){
  Object.assign(state,remapTableConfig(currentConfig(),mapping));state.slicers=safeSlicers(state.slicers).map(s=>({...s,column:mapping[s.column]||s.column}));state.board=state.board.map(c=>remapTableConfig(c,mapping));state.filterColumn=mapping[state.filterColumn]||state.filterColumn;
  if(!next.columns.includes(state.filterColumn)){state.filterColumn='';state.filterValue=''}
