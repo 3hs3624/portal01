@@ -2,6 +2,7 @@
 
 | 일자(KST) | 변경·상태 | 영향 설계서 | 근거/검증 |
 |---|---|---|---|
+| 2026-11-08 | 세 앱 작업 사본/외부 반영 상태 분리, 공유 연결·권한/소유자 표시, 변경 이력·복원 진입 개선; WS 검색 문맥·표 키보드 메뉴·초안 복구 안내, PM 엑셀 보존 검사·지연 근거, BI 열 연결 보호·갱신 시각·차트 원본 행 | common 및 세 앱 | storage_feedback.py, item_sharing_ui.py, shared_storage_flow.py, write_studio_storage_flow.py, projects_excel.py --format-fixture |
 | 2026-11-07 | Write Studio 공유 목록·새로고침을 내 문서 트리 바로 아래, 저장소 안내 위로 이동 | common, write-studio | item_sharing_ui.py: 위치·문서 목록 재렌더 후 유지 및 기존 세 앱 공유 회귀 검증 |
 | 2026-11-07 | 현재까지 구현된 포털·세 앱·설치형 범위의 최초 기능/UI/UX 설계 기준선 작성 | 전체 | 웹 ed3905f, 설치형 공통 화면 3119d85 및 기존 기술 문서/검증 코드 대조 |
 | 2026-11-07 | 공유 사용자 체크박스를 맨 왼쪽에, 이름·이메일을 오른쪽에 수평 정렬 | common, UI 인벤토리 | item-sharing.js, sharing.css, item_sharing_ui.py: 세 앱 정렬·라벨 선택·권한 흐름 검증 |

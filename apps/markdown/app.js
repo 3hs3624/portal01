@@ -66,9 +66,10 @@ function saveDraft(){
   if(APP.db)await new Promise((resolve,reject)=>{const tx=APP.db.transaction('drafts','readwrite');tx.objectStore('drafts').put(w,DRAFT_KEY);tx.oncomplete=resolve;tx.onabort=tx.onerror=()=>reject(Error('브라우저 임시 보관 실패 · 파일로 내보내 주세요.'));});
   else{try{localStorage.setItem(DRAFT_KEY,JSON.stringify(w));}catch(e){throw Error('브라우저 저장 공간이 부족합니다. 파일로 내보내 주세요.');}}
   APP.localGeneration=generation;
+  if(APP.generation===generation&&!window.PortalShareSession)window.PortalStorageStatus?.saved();
   $('#localStatus').textContent=APP.generation===generation?'✓ 브라우저에 임시 보관됨':'임시 보관 중…';
   if(APP.channel)APP.channel.postMessage({type:'saved'});
- }).catch(e=>{$('#localStatus').textContent='임시 보관 실패';onError(e);throw e});
+ }).catch(e=>{window.PortalStorageStatus?.failure(e.message);$('#localStatus').textContent='임시 보관 실패';onError(e);throw e});
  return APP.draftPromise;
 }
 function changed(updateDocument=true){
@@ -153,6 +154,7 @@ async function init(){
  $('#editor').disabled=$('#docTitle').disabled=true;
  try{APP.db=await openDraftDB()}catch(e){toast('브라우저 임시 보관을 제한된 localStorage로 사용합니다. 저장소 연결을 권장합니다.');}
  let w;try{w=APP.db?await readDraft():JSON.parse(localStorage.getItem(DRAFT_KEY)||'null');if(w)EditorCore.validate(w);}catch(e){toast('임시 보관본을 읽지 못했습니다. 백업 JSON으로 복원할 수 있습니다.',true);w=null;}
+ if(w?.recovery?.pending)setTimeout(()=>toast('이전 작업의 미저장 초안을 브라우저에서 복구했습니다. 저장 상태를 확인해 주세요.'),500);
  if(w){APP.documents=w.documents;APP.folders=w.folders||[];APP.activeId=w.activeId;APP.theme=w.theme==='dark'?'dark':'light';APP.recovery=w.recovery;}
  else{const d=newRecord('Write Studio 시작하기',STARTER);APP.documents=[d];APP.activeId=d.id;}
  document.body.dataset.theme=APP.theme;selectDocument(APP.activeId);

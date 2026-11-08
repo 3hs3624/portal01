@@ -498,7 +498,7 @@
 | apps/insight/board-studio.js | applyStudioSelection, canvasText, exportDashboard, initBoardStudio, initKpiEditor, kpiContent, kpiEditDraft, loadExportImage, makeBoardCanvas, openCardStudio, openKpiCreator, openKpiEditor, renderKpiEditPreview, withDefaultKpis | 해당 소스의 생성 로직 참조 |
 | apps/insight/card-filters.js | cardFilterRules, changeSlicer, initCardAndSlicerFilters, previewCardFilters, renderCardFilterEditor, renderDashboardSlicers, setCardFilterRules | 해당 소스의 생성 로직 참조 |
 | apps/insight/dashboard-library.js | commitDashboardMetadata, creationSourceEntry, dashboardLibraryEntries, filteredDashboardLibrary, initCreateSourceLookup, initDashboardLibrary, initRelinkDashboard, openCreateDashboard, openDashboardManagement, openLibraryDashboard, openRelinkDashboard, renderCreateSourceLookup, renderDashboardList | 해당 소스의 생성 로직 참조 |
-| apps/insight/dashboards.js | applyPreset, applySavedDashboard, applyTileStyles, bindTileGesture, boardHistorySnapshot, buildPreset, createDashboardRecord, dashboardCompatibility, dashboardSnapshot, ensureBoardPositions, initBoardUndo, initDashboardEditor, initDashboards, openDashboardSave, overlaps, previewTilePosition, proposeTilePositions, readDashboards, renderDashboardBoard, renderTemplatePicker, resetBoardHistory, safeConfig, saveDashboard, selectDashboardTemplate, setDashboardEditing, settlePositions, shouldUndoBoardEvent, snapshotSignature, syncEditMode, trackBoardHistory, undoBoardEdit, updateDashboardUI, updateUndoButton, validPosition, writeDashboards | 해당 소스의 생성 로직 참조 |
+| apps/insight/dashboards.js | applyPreset, applySavedDashboard, applyTileStyles, bindTileGesture, boardHistorySnapshot, buildPreset, createDashboardRecord, dashboardCompatibility, dashboardSnapshot, ensureBoardPositions, initBoardUndo, initDashboardEditor, initDashboards, openChartSourceRows, openDashboardSave, overlaps, previewTilePosition, proposeTilePositions, readDashboards, render, renderDashboardBoard, renderTemplatePicker, resetBoardHistory, safeConfig, saveDashboard, selectDashboardTemplate, setDashboardEditing, settlePositions, shouldUndoBoardEvent, snapshotSignature, syncEditMode, trackBoardHistory, undoBoardEdit, updateDashboardUI, updateUndoButton, validPosition, writeDashboards | 해당 소스의 생성 로직 참조 |
 | apps/insight/data-catalog.js | cacheDatabase, catalogEntries, clearSelectedData, dashboardsForSelectedData, findDataRecord, findLinkedDashboard, initDataManagement, linkedDashboardNames, loadDetachedSnapshots, openDataDetail, openDeleteData, registerConnectedData, removeConnectedData, renderConnectedDataPicker, renderDataCatalog, renderDataLookup, retainedEntries, saveDetachedSnapshot, savedForSource, selectConnectedData, sourceMatches, trackDataDashboard | 해당 소스의 생성 로직 참조 |
 | apps/insight/data-detail.js | button, cancelEditing, detailRows, downloadTableCSV, moveColumn, options, receive, refreshFilters, refreshValues, render, request, saveTable, syncEditing, tableChanged, tableDirty | 해당 소스의 생성 로직 참조 |
 | apps/insight/data-editor-bridge.js | applyDetailTable, detailRevision, remapTableConfig | 해당 소스의 생성 로직 참조 |
@@ -535,7 +535,7 @@
 | apps/markdown/table-menu.js | cloneCell, close, commit, context, gridBounds, headerFlags, hideHandles, item, mutate, offsets, open, openPalette, place, refresh, render, resizeAxis, select, show, stopDrag, toggleHeader, valid | 작업 메뉴로 돌아가기 |
 | apps/markdown/table-tools.js | currentTableContext, editPreviewTable, editSelectedTable, editSourceTable, queueTableTools, selectedPreviewCell, sourceTableContext, tableLineCells, tableMarkdown, updateTableTools | 해당 소스의 생성 로직 참조 |
 | apps/markdown/workspace-merge.js | items, merge | 해당 소스의 생성 로직 참조 |
-| apps/projects/workbook-preserve.js | patchCell, patchSheet, path, preserve, strings, unpack | 해당 소스의 생성 로직 참조 |
+| apps/projects/workbook-preserve.js | inspect, patchCell, patchSheet, path, preserve, strings, unpack | 해당 소스의 생성 로직 참조 |
 | auth-link.js | IIFE/객체/콜백 참조 | 해당 소스의 생성 로직 참조 |
 | auth-session.js | IIFE/객체/콜백 참조 | 해당 소스의 생성 로직 참조 |
 | bridge.js | IIFE/객체/콜백 참조 | 해당 소스의 생성 로직 참조 |
@@ -545,7 +545,7 @@
 | excel.js | IIFE/객체/콜백 참조 | 해당 소스의 생성 로직 참조 |
 | folder-storage.js | directory, read, record, writeFile | 해당 소스의 생성 로직 참조 |
 | item-sharing-adapters.js | capture, init, protect, wait | 해당 소스의 생성 로직 참조 |
-| item-sharing.js | members, message, openItem, refresh, share, users | 해당 소스의 생성 로직 참조 |
+| item-sharing.js | decorate, members, message, openItem, refresh, share, stamp, users | 해당 소스의 생성 로직 참조 |
 | login.js | IIFE/객체/콜백 참조 | 해당 소스의 생성 로직 참조 |
 | pages-guard.js | detailHost | 해당 소스의 생성 로직 참조 |
 | pages-runtime.js | csv, table, transact | 해당 소스의 생성 로직 참조 |
@@ -557,7 +557,8 @@
 | storage-adapters.js | IIFE/객체/콜백 참조 | 해당 소스의 생성 로직 참조 |
 | storage-flow.js | api, apply, backupPair, backupView, backups, begin, busyEditor, capture, comparison, db, download, downloadBackup, field, freshTarget, header, importLegacy, main, markPending, open, putBackups, refresh, render, renderRows, restore, review, run, say, showBackups, summaryCard | 해당 소스의 생성 로직 참조 |
 | storage-models.js | compare, encode, insightItems, projectItems, projectKey, semanticFile, summary | 해당 소스의 생성 로직 참조 |
+| storage-status.js | paint | 해당 소스의 생성 로직 참조 |
 | apps/projects/index.html (inline) | applyTheme, checkStore, closeForm, countStores, deleteProject, deleteStore, download, fileExists, fillWindow, filtered, getTemplate, init, legacyBackup, listMetas, load, loadExcel, metaFor, newId, noticeHTML, openConnect, openDashboard, openForm, openImport, openWindow, portalActivateCloudStore, readForm, readJSON, readProject, reconnect, relinkStore, render, renderAll, renderImport, renderStoreBox, renderStoreTab, rootOf, runImport, selectStore, setTab, showBlocked, snapDir, snapFile, status, storeErr, submitForm, unlinkStore, winFeatures, writeFile, writeMeta, writeProject | 해당 소스의 생성 로직 참조 |
 | apps/projects/index.html#dash-tpl (inline) | addLoaded, agg, applyCellEdit, applySaved, applyStaged, applyTheme, bindCal, bindCompare, bindGantt, bindGuide, bindProj, bindStatic, bindVersions, bindWBS, boot, buildDocument, buildImport, buildWorkbook, changed, closeConflict, closeLoad, closeSamplePop, closeSave, commitExt, compareSources, compute, confirmHTML, conflictForce, conflictReload, cv, diffStates, diffTable, doDelete, doSave, downloadHTML, downloadJSON, exitExt, exitPreview, exportXlsx, findNode, findTask, flatTasks, gapState, gotoTask, hostInfo, hostNotify, keepFocus, leafCalc, leavesOf, listSnapFolder, loadExcel, loadFolderList, loadPicked, lockBasic, makeCal, move, normalize, offerFile, openConflict, openLoad, openSamplePop, openSave, parentArr, parseWorkbook, preservedBytes, readFile, readSnapFile, recompute, regroup, renderAll, renderBanner, renderCal, renderCompare, renderDashboard, renderDiff, renderGantt, renderImport, renderLoad, renderLoc, renderPreview, renderProj, renderSample, renderSaveTargets, renderSavebox, renderStoreChip, renderVersions, renderWBS, restoreVersion, rollup, rowHTML, safeJSON, savedTask, scrollToBase, setDepth, setSub, setView, snapFileName, storeInfo, storeSave, storeSnapList, summarize, syncBasicFromHost, taskPanelHTML, tipHTML, toDateStr, toPct, toPkg, toast, visibleRows | 해당 소스의 생성 로직 참조 |
 
-정적 컨트롤 합계: 316 / 블록 명령: 101 / 모듈: 69
+정적 컨트롤 합계: 316 / 블록 명령: 101 / 모듈: 70

@@ -14,7 +14,7 @@
   function itemTitle(w){if(record.app==='markdown')return w.documents[0].title;if(record.app==='insight')return w.dashboards[0].name;return record.title;}
   window.PortalShareSession={id,app:record.app,get canEdit(){return record.canEdit},get workspace(){return structuredClone(record.workspace)},get revision(){return record.revision},async commit(workspace,revision=record.revision){
    if(!record.canEdit)throw Error('조회 권한으로는 저장할 수 없습니다.');
-   const result=await request('save',{id,revision,workspace,title:itemTitle(workspace)});record={...record,title:itemTitle(workspace),workspace:structuredClone(workspace),revision:result.revision};title.textContent=record.title;status.textContent='공유 항목 저장 완료';return result;
+   const result=await request('save',{id,revision,workspace,title:itemTitle(workspace)});record={...record,title:itemTitle(workspace),workspace:structuredClone(workspace),revision:result.revision,updatedAt:result.savedAt};frame?.contentWindow.PortalStorageStatus?.saved(result.savedAt);title.textContent=record.title;status.textContent='공유 항목 저장 완료';return result;
   },async storage(action,payload={}){
    const settings={profiles:[{id:'browser',name:'공유 작업공간',provider:'browser'}],activeId:'browser',autoSave:true,autoRestore:true};
    if(action==='status')return {settings,features:{},defaultPath:''};if(action==='preferences')return {settings};
