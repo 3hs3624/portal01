@@ -20,6 +20,10 @@ jobs:
         run: python tests/design_docs.py
       - name: Verify UI inventory matches code
         run: python scripts/design_inventory.py --check
+      - name: Verify reproducible specification catalog
+        run: |
+          python scripts/spec_catalog.py --check
+          python tests/spec_catalog.py
       - name: Require related design updates
         env:
           DESIGN_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
