@@ -9,3 +9,7 @@ Write Studio, Project Management, Insight BI를 제공하는 포털입니다.
 - [설치형 현재 설계](docs/design/desktop.md): 개발 빌드 범위와 정식 설치형까지 남은 항목.
 
 기능 추가·수정·삭제 시 관련 설계서와 변경 이력을 같은 작업에서 갱신합니다. 작업 규칙은 [AGENTS.md](AGENTS.md), 생성/검증 절차는 [설계서 안내](docs/design/README.md#변경-시-갱신-절차)를 따릅니다.
+
+## 재구현 설계 산출물
+
+다른 개발자를 위한 [화면·기능·코드·테이블정의서와 인수인계](docs/design/handoff.md)를 참조합니다. SQL 컬럼·API·코드/화면 부록은 `python scripts/spec_catalog.py --check`로 확인합니다.
