@@ -2,6 +2,7 @@
 
 | 일자(KST) | 변경·상태 | 영향 설계서 | 근거/검증 |
 |---|---|---|---|
+| 2026-11-14 | 개선 백로그·단계별 공수/선행·복구/공유/설치형/앱별 완료 기준과 첫10근무일 계획 작성(제안, 미구현) | improvement-roadmap | 코드/기존 설계 정적 검토; 운영 변경·성능 실측 없음 |
 | 2026-11-13 | 재구현용 화면/기능/코드/테이블정의서, 인수인계, 40테이블·223컬럼·39DB함수·316컨트롤·101블록 명령 부록·소스 SHA 및 자동 검증 작성 | 4개 재구현 명세 및 부록 | spec_catalog.py/tests/spec_catalog.py, 기존 문서 테스트·인벤토리·링크 검증; 운영 DB 변경 없음 |
 | 2026-11-08 | 세 앱 작업 사본/외부 반영 상태 분리, 공유 연결·권한/소유자 표시, 변경 이력·복원 진입 개선; WS 검색 문맥·표 키보드 메뉴·초안 복구 안내, PM 엑셀 보존 검사·지연 근거, BI 열 연결 보호·갱신 시각·차트 원본 행 | common 및 세 앱 | storage_feedback.py, item_sharing_ui.py, shared_storage_flow.py, write_studio_storage_flow.py, projects_excel.py --format-fixture |
 | 2026-11-07 | Write Studio 공유 목록·새로고침을 내 문서 트리 바로 아래, 저장소 안내 위로 이동 | common, write-studio | item_sharing_ui.py: 위치·문서 목록 재렌더 후 유지 및 기존 세 앱 공유 회귀 검증 |
