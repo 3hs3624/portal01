@@ -27,3 +27,7 @@
 ## 재구현 설계 패키지
 
 `docs/design/screen-design.md`, `functional-design.md`, `code-definition.md`, `table-definition.md`는 재구현 계약이다. 화면/기능/코드값·API·형식/DB 구조 변경 시 해당 계약도 같은 작업에서 갱신한다. `python scripts/spec_catalog.py`로 컬럼·RPC·코드/컨트롤 부록을 재생성하고 `--check`로 검증한다. 원형/DDL 제약과 요약이 다르면 원문을 확인해 정정한다. Google Drive 게시본 갱신을 요청받으면 문서 ID를 확인하여 해당 파일을 갱신하며 중복 파일을 임의 생성하지 않는다.
+
+## Google Drive 문서 관리 위치
+
+2026-11-13 사용자 지시에 따라 문서 관리 경로는 **내 드라이브 > ChatGPT > Portal**이다. 이전 Studio 폴더가 Portal로 이름 변경된 것을 확인했다. 앞으로 네 설계서와 정의 부록은 이 경로의 기존 파일을 ID로 확인해 갱신한다. 동명 폴더가 있으므로 ChatGPT 부모 경로까지 확인하고, 기존 문서/ZIP을 중복 생성하거나 Studio 폴더를 다시 만들지 않는다. 폴더명 변경으로 기존 문서 링크를 바꾸지 않는다.
