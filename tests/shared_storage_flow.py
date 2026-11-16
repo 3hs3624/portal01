@@ -44,7 +44,7 @@ def run(base):
     fr.evaluate("()=>{window.__realStorage=PortalFolderStorage;PortalFolderStorage={...__realStorage,info:async p=>{const x=await __realStorage.info(p);return {...x,workspace:{...x.workspace,theme:'dark'}}}}}")
     action('apply').click();expect(status).to_contain_text('덮어쓰지 않았습니다');fr.evaluate('PortalFolderStorage=__realStorage')
     print('PASS BI linked-workspace merge, current/payload conflict detection and shared backups',flush=True)
-   d.get_by_role('button',name='백업·복구 목록',exact=True).click();assert d.locator('.studio-storage-backup').count()>=2
+   d.get_by_role('button',name='백업·복구 목록',exact=True).click();expect(d.locator('.studio-storage-backup').nth(1)).to_be_visible()
    with page.expect_download() as e:d.get_by_role('button',name='현재 작업 JSON 내려받기',exact=True).click()
    backup=json.loads(Path(e.value.path()).read_text());assert backup['format']==('wbs-pm-cloud' if app=='projects' else 'insight-bi-workspace')
    d.get_by_role('button',name='← 저장소 화면으로 돌아가기').click();page.set_viewport_size({'width':390,'height':900});assert d.bounding_box()['width']<390;page.screenshot(path=str(Path('work/shared-storage-'+app+'-mobile.png').resolve()));d.get_by_role('button',name='저장소 닫기').click();assert not errors,errors;c.close()
