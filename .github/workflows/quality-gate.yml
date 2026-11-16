@@ -87,7 +87,13 @@ jobs:
           script: |
             const {data} = await github.rest.repos.getPages(context.repo);
             if (data.build_type !== 'workflow') {
-              await github.request('PUT /repos/{owner}/{repo}/pages', {...context.repo, build_type:'workflow'});
+              try {
+                await github.request('PUT /repos/{owner}/{repo}/pages', {...context.repo, build_type:'workflow'});
+              } catch (error) {
+                if (error.status !== 403) throw error;
+                core.setFailed('Pages source setup requires repository owner access: Settings > Pages > Build and deployment > Source > GitHub Actions. Then re-run this workflow. No gated deployment was performed.');
+                return;
+              }
             }
             const verified = await github.rest.repos.getPages(context.repo);
             if (verified.data.build_type !== 'workflow') throw Error('Pages must use workflow deployment');
