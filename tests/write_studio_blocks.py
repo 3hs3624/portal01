@@ -32,9 +32,8 @@ class StudioHandler(SimpleHTTPRequestHandler):
             super().copyfile(source, outputfile)
         except (BrokenPipeError, ConnectionResetError):
             pass  # A browser refresh may cancel an in-flight static resource.
-from playwright.sync_api import sync_playwright
-
 def run_browser_suite(base_url, chromium):
+    from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
         b = p.chromium.launch(executable_path=chromium, headless=True, args=['--no-sandbox', '--disable-dev-shm-usage'])
         page = b.new_page(viewport={'width': 1500, 'height': 1100})
