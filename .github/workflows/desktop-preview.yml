@@ -2,12 +2,15 @@ name: Desktop preview
 on:
   push:
     branches: [desktop-preview]
-    paths: ['desktop/**', 'apps/**', '*.js', '*.css', '*.html', '*.json', '.github/workflows/desktop-preview.yml']
+    paths: ['desktop/**', 'apps/**', '*.js', '*.css', '*.html', '*.json', '.github/workflows/desktop-preview.yml', '.github/workflows/business-regression.yml', 'ci/**', 'scripts/regression.py', 'tests/**']
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
+  regression:
+    uses: ./.github/workflows/business-regression.yml
   preview:
+    needs: regression
     strategy:
       fail-fast: false
       matrix:
