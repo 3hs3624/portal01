@@ -31,7 +31,7 @@ def content(ref,path):
     if ref is None:
         p=ROOT/path
         return p.read_text(errors='replace') if p.is_file() else ''
-    result=subprocess.run(['git','show',ref+':'+path],cwd=ROOT,text=True,capture_output=True)
+    result=subprocess.run(['git','show',ref+':'+path],cwd=ROOT,text=True,encoding='utf-8',errors='replace',capture_output=True)
     return result.stdout if result.returncode==0 else ''
 def missing_documents(changed,required):
     if not required:return set()
