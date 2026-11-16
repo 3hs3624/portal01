@@ -1,0 +1,1 @@
+{"name":"portal01-regression-tools","version":"1.0.0","private":true,"description":"Local-only PostgreSQL engine for isolated regression fixtures","devDependencies":{"@electric-sql/pglite":"0.5.14"}}

@@ -53,3 +53,7 @@
 - [사용자 관리](../../USER-MANAGEMENT.md), [동일 브라우저 로그인](../../AUTH-SESSION.md)
 - [문서·BI 관계형 저장](../../CONTENT-RELATIONAL-STORAGE.md), [프로젝트 관계형 저장](../../PROJECT-RELATIONAL-STORAGE.md)
 - [항목 공유](../../ITEM-SHARING.md), [작업공간 용량](../../SUPABASE-100MB.md)
+
+## 계획 대비 실행 이력
+
+[개선 실행 이력](execution-history.md)에서 계획 항목의 착수/완료/남은 범위와 [E01 상세 기록](executions/2026-11-16-e01.md)을 확인합니다. 완료는 실제 CI·배포·실패 검증 근거로 판정합니다.

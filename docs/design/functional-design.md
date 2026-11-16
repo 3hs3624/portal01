@@ -206,3 +206,7 @@ KPI rows는 필터 후 행 수, fields는 열 수, sum/avg는 선택 measure 숫
 | 공통 레이아웃 | 모든 앱 | UI 설정 | sidebar_layout.py, editor_view_transition.py, table_overlay_clip.py |
 
 테스트 파일명만으로 테스트를 수행했다고 판정하지 않습니다. 새 환경에서 로컬 테스트용 고정 계정/데이터로 재실행하고 결과를 남깁니다. 운영 데이터 변경·메일 발송·정식 설치판 검증은 별도 승인/검수입니다. 설치형 현재 범위와 남은 네이티브 저장·WBS 팝업·서명/업데이트는 desktop.md를 기준으로 완료와 계획을 구분합니다.
+
+## 업무 회귀와 배포 관문 (2026-11-16)
+
+현재 실행 결과와 계획 대비 차이는 [E01 실행 기록](executions/2026-11-16-e01.md)에서 관리합니다. reusable business-regression은 unit/SQL/브라우저 6개 suite·24개 명령을 고정된 도구로 실행합니다. case 실패·시간초과·증거 누락/중복·대상 SHA 불일치는 릴리스 staging을 거부합니다. 웹은 성공 보고서와 SHA-256 공개 자산 manifest를 포함한 artifact만 배포하고, 수동 정적 복원도 원래 production run과 자산을 검증합니다. DB/사용자 자료 롤백이나 실제 단말 전체 업무 검증을 뜻하지 않습니다.

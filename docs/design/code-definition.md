@@ -229,3 +229,7 @@ ensure가 기존 공유본을 반환할 때 workspace를 새 개인본으로 덮
 기타 UI 키(보기·폰트·추천·폴더 펼침·폭·theme·BI 라이브러리)는 해당 모듈의 storage 호출이 원전입니다. 실제 OS SQLite/키링은 현재 미구현입니다. 설치형 profile은 Portal01-Preview로 브라우저와 독립합니다.
 
 웹은 정적 /portal01/ 경로와 동일 Origin iframe 구조로 제공합니다. 테스트는 Python3/Playwright/Chromium 및 SQL용 PGlite가 필요합니다. 설치형은 Node/npm lock 기반 `npm --prefix desktop ci`, test, stage, pack 순서이며 OS별 네이티브 빌드/스모크를 실행합니다. signed installer/자동 업데이트를 현재 완료로 간주하지 않습니다. 모든 정확한 실행 명령·검수는 재구현 인수인계 안내를 따릅니다.
+
+## 업무 회귀와 배포 관문 (2026-11-16)
+
+현재 실행 결과와 계획 대비 차이는 [E01 실행 기록](executions/2026-11-16-e01.md)에서 관리합니다. reusable business-regression은 unit/SQL/브라우저 6개 suite·24개 명령을 고정된 도구로 실행합니다. case 실패·시간초과·증거 누락/중복·대상 SHA 불일치는 릴리스 staging을 거부합니다. 웹은 성공 보고서와 SHA-256 공개 자산 manifest를 포함한 artifact만 배포하고, 수동 정적 복원도 원래 production run과 자산을 검증합니다. DB/사용자 자료 롤백이나 실제 단말 전체 업무 검증을 뜻하지 않습니다.

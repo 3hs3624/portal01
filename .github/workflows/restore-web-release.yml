@@ -1,0 +1,84 @@
+name: Restore verified web release
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Successful gh-pages quality-gate run ID (artifact retained 30 days)
+        required: true
+        type: string
+      acknowledge_static_only:
+        description: Confirm DB/schema compatibility was checked; this restores static files only
+        required: true
+        default: false
+        type: boolean
+permissions:
+  contents: read
+jobs:
+  validate:
+    if: inputs.acknowledge_static_only && github.ref == 'refs/heads/gh-pages'
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      source_sha: ${{ steps.provenance.outputs.source_sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Accept only a successful production release from this repository
+        id: provenance
+        uses: actions/github-script@v7
+        env:
+          RESTORE_RUN_ID: ${{ inputs.run_id }}
+        with:
+          script: |
+            if (!/^[1-9][0-9]*$/.test(process.env.RESTORE_RUN_ID)) throw Error('Invalid run ID');
+            const {data:r} = await github.rest.actions.getWorkflowRun({...context.repo,run_id:Number(process.env.RESTORE_RUN_ID)});
+            if (r.conclusion !== 'success' || r.head_branch !== 'gh-pages' || r.event === 'pull_request' || r.path.split('@')[0] !== '.github/workflows/quality-gate.yml') throw Error('Not a verified production release');
+            core.setOutput('source_sha',r.head_sha);
+      - uses: actions/download-artifact@v4
+        with:
+          name: verified-web-release
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ github.token }}
+          path: work/restore
+      - name: Verify reports and every static asset
+        env:
+          SOURCE_SHA: ${{ steps.provenance.outputs.source_sha }}
+        run: |
+          python scripts/regression.py --verify work/restore/reports --sha "$SOURCE_SHA"
+          python scripts/stage_release.py --verify work/restore/site --sha "$SOURCE_SHA"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: restored-static-site
+          path: work/restore/site
+          retention-days: 7
+          if-no-files-found: error
+  deploy:
+    needs: validate
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages-production
+      cancel-in-progress: false
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: restored-static-site
+          path: work/restore/site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: work/restore/site
+      - id: deployment
+        uses: actions/deploy-pages@v4

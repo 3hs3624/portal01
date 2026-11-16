@@ -47,3 +47,7 @@ renderer는 Node 통합을 끄고 sandbox/contextIsolation/webSecurity를 켭니
 ## 5. 후속 설계 항목
 
 HostBridge 분리, 네이티브 파일/SQLite 작업공간, 계정별 보안 키링, 개인/조직 오프라인 정책, 데이터 이전·복구, Windows 서명·Mac 공증, 안전한 업데이트와 마이그레이션, 실제 OS 단말 베타가 남아 있습니다. 이 항목들은 코드·검증이 추가될 때 현재 사양으로 이동합니다.
+
+## 업무 회귀를 통과한 개발 패키징 (2026-11-16)
+
+설치형 preview packaging은 reusable business-regression 성공에 의존하도록 전환합니다. fixture 웹 회귀와 네 OS의 기존 Electron 셸/정책/스모크·개발 아카이브를 각각 실행하며 전체 실제 사용자 인증/WBS·파일·IME 업무(E04)를 완료로 간주하지 않습니다. 배포 대상 SHA와 결과는 [E01 실행 기록](executions/2026-11-16-e01.md)에 기록합니다.

@@ -8,7 +8,7 @@ from io import BytesIO
 from copy import copy
 from openpyxl import load_workbook
 from playwright.sync_api import sync_playwright, expect
-from write_studio_blocks import StudioHandler
+from write_studio_blocks import StudioHandler,chromium_executable
 
 
 def run(base,probe=False):
@@ -18,7 +18,7 @@ def run(base,probe=False):
  rows[0]['name']='=1+1';rows[0]['summary']=None
  workspace={'format':'wbs-pm-cloud','version':1,'directories':['projects'],'files':[{'path':'projects/'+r['id']+'.meta.json','data':base64.b64encode(json.dumps({'format':'wbs-pm-meta','version':1,**r},ensure_ascii=False).encode()).decode()} for r in rows]}
  with sync_playwright() as p:
-  browser=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-dev-shm-usage']);c=browser.new_context(viewport={'width':1500,'height':1000},accept_downloads=True);page=c.new_page();errors=[];violations=[];external=[];page.on('pageerror',lambda e:errors.append(str(e)));page.on('console',lambda m:violations.append(m.text) if 'Content Security Policy' in m.text else None)
+  browser=p.chromium.launch(executable_path=chromium_executable(),args=['--no-sandbox','--disable-dev-shm-usage']);c=browser.new_context(viewport={'width':1500,'height':1000},accept_downloads=True);page=c.new_page();errors=[];violations=[];external=[];page.on('pageerror',lambda e:errors.append(str(e)));page.on('console',lambda m:violations.append(m.text) if 'Content Security Policy' in m.text else None)
   def route(r):
    if not r.request.url.startswith(base):external.append(r.request.url);return r.abort()
    if '/exceljs.min.js' in r.request.url and not probe and not getattr(route,'failed',False):route.failed=True;return r.fulfill(status=503,content_type='text/plain',body='fixture retry')

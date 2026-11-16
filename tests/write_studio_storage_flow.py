@@ -4,11 +4,11 @@ from http.server import ThreadingHTTPServer
 from pathlib import Path
 import json
 from playwright.sync_api import sync_playwright,expect
-from write_studio_blocks import StudioHandler
+from write_studio_blocks import StudioHandler,chromium_executable
 
 def run(base):
  with sync_playwright() as p:
-  b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-dev-shm-usage']);c=b.new_context(viewport={'width':1500,'height':1100},accept_downloads=True);page=c.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)));c.route('**/storage-flow-host',lambda r:r.fulfill(content_type='text/html',body='<script>window.__portalAuthenticated=true;window.PortalUserId="storage-flow-test"</script><iframe src="/portal01/apps/markdown/" style="position:fixed;inset:0;width:100%;height:100%;border:0"></iframe>'));page.goto(base+'/storage-flow-host');f=page.frame_locator('iframe');f.locator('.block-editor-content').wait_for();fr=page.frames[1];fr.wait_for_function('()=>!APP.loading')
+  b=p.chromium.launch(executable_path=chromium_executable(),args=['--no-sandbox','--disable-dev-shm-usage']);c=b.new_context(viewport={'width':1500,'height':1100},accept_downloads=True);page=c.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)));c.route('**/storage-flow-host',lambda r:r.fulfill(content_type='text/html',body='<script>window.__portalAuthenticated=true;window.PortalUserId="storage-flow-test"</script><iframe src="/portal01/apps/markdown/" style="position:fixed;inset:0;width:100%;height:100%;border:0"></iframe>'));page.goto(base+'/storage-flow-host');f=page.frame_locator('iframe');f.locator('.block-editor-content').wait_for();fr=page.frames[1];fr.wait_for_function('()=>!APP.loading')
   def open_storage():f.locator('#portal-cloud-open').click();expect(f.locator('.studio-storage-dialog')).to_be_visible()
   dialog=f.locator('.studio-storage-dialog');status=dialog.locator('.portal-cloud-status')
   def action(name):return dialog.locator('[data-storage-action='+name+']')

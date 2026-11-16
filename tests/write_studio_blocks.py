@@ -7,6 +7,15 @@ import os
 import shutil
 ROOT = Path(__file__).resolve().parents[1]
 
+def chromium_executable():
+    configured=os.environ.get('CHROMIUM_BIN')
+    if configured:
+        if not Path(configured).is_file():raise RuntimeError('CHROMIUM_BIN does not point to a browser executable')
+        return configured
+    for candidate in ['/usr/bin/chromium','/usr/lib/chromium/chromium',shutil.which('chromium')]:
+        if candidate and Path(candidate).is_file():return candidate
+    raise RuntimeError('Set CHROMIUM_BIN to the installed Playwright Chromium executable')
+
 class StudioHandler(SimpleHTTPRequestHandler):
 
     def translate_path(self, path):

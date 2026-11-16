@@ -2,7 +2,7 @@
 from threading import Thread
 from http.server import ThreadingHTTPServer
 from playwright.sync_api import sync_playwright, expect
-from write_studio_blocks import StudioHandler
+from write_studio_blocks import StudioHandler,chromium_executable
 import json,uuid
 
 def run(base):
@@ -41,7 +41,7 @@ def run(base):
  def host(actor,app='markdown'):
   return '<script>window.__portalAuthenticated=true;window.PortalUserId='+json.dumps(actor)+';window.PortalSharingAPI={async request(action,args){const r=await fetch("/share-api",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action,args,actor:'+json.dumps(actor)+'})});const data=await r.json();if(!r.ok)throw Error(data.error);return data}};</script><iframe src="/portal01/apps/'+app+'/" style="position:fixed;inset:0;width:100%;height:100%;border:0"></iframe>'
  with sync_playwright() as p:
-  browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--disable-dev-shm-usage']);context=browser.new_context(viewport={'width':1700,'height':1100});context.route('**/share-api',api);context.route('**/owner-host',lambda r:r.fulfill(content_type='text/html',body=host('owner')));context.route('**/recipient-host',lambda r:r.fulfill(content_type='text/html',body=host('recipient')))
+  browser=p.chromium.launch(executable_path=chromium_executable(),headless=True,args=['--no-sandbox','--disable-dev-shm-usage']);context=browser.new_context(viewport={'width':1700,'height':1100});context.route('**/share-api',api);context.route('**/owner-host',lambda r:r.fulfill(content_type='text/html',body=host('owner')));context.route('**/recipient-host',lambda r:r.fulfill(content_type='text/html',body=host('recipient')))
   page=context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.goto(base+'/owner-host');f=page.frame_locator('iframe');f.locator('.portal-share-item-row').first.wait_for();page.frames[1].wait_for_function('()=>!APP.loading&&ST.ready');original=page.frames[1].evaluate('APP.documents.length')
   f.locator('#documentSharing .portal-share-list').wait_for();assert page.frames[1].evaluate("()=>{const tree=document.querySelector('#docList'),slot=document.querySelector('#documentSharing'),storage=document.querySelector('.sidebar-bottom');return tree.nextElementSibling===slot&&slot.nextElementSibling===storage&&slot.closest('.sidebar')!==null}");page.frames[1].evaluate('renderDocList()');expect(f.locator('#documentSharing .portal-share-list')).to_have_count(1);expect(f.locator('#documentSharing > button')).to_have_text('공유 목록 새로고침')
   f.locator('.portal-share-item-row .portal-share-button').first.click();dialog=f.locator('.portal-share-dialog');expect(dialog).to_be_visible();check_checkbox_layout(dialog);dialog.get_by_role('checkbox',name='공유 사용자 선택').check();dialog.get_by_label('선택한 사용자의 권한').select_option('view');dialog.get_by_role('button',name='선택한 사용자에게 공유',exact=True).click();expect(dialog.get_by_role('button',name='공유 사용자 공유 해제')).to_be_visible();item=next(iter(records));assert members[item]['recipient']=='view'

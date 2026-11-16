@@ -2,11 +2,11 @@
 from threading import Thread
 from http.server import ThreadingHTTPServer
 from playwright.sync_api import sync_playwright,expect
-from write_studio_blocks import StudioHandler
+from write_studio_blocks import StudioHandler,chromium_executable
 
 def run(base):
  with sync_playwright() as p:
-  browser=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-dev-shm-usage'])
+  browser=p.chromium.launch(executable_path=chromium_executable(),args=['--no-sandbox','--disable-dev-shm-usage'])
   for app in ['markdown','insight','projects']:
    c=browser.new_context(viewport={'width':1600,'height':1100});page=c.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
    c.route('**/feedback-host',lambda r:r.fulfill(content_type='text/html',body='<meta charset=utf-8><script>window.__portalAuthenticated=true;window.PortalUserId="feedback-test"</script><iframe src="/portal01/apps/'+app+'/" style="position:fixed;inset:0;width:100%;height:100%;border:0"></iframe>'))
