@@ -63,7 +63,7 @@ class ReleaseGate(unittest.TestCase):
   quality=yaml.safe_load((ROOT/'.github/workflows/quality-gate.yml').read_text())['jobs'];reuse=yaml.safe_load((ROOT/'.github/workflows/business-regression.yml').read_text())['jobs']
   self.assertEqual(quality['release-ready']['needs'],['regression','design']);self.assertEqual(quality['deploy']['needs'],'release-ready');self.assertNotIn('always()',quality['deploy'].get('if',''));self.assertIn("refs/heads/gh-pages",quality['deploy']['if']);self.assertIn("pull_request",quality['deploy']['if']);self.assertEqual(set(reuse['suite']['strategy']['matrix']['suite']),set(SUITES))
  def test_restore_requires_trusted_provenance_and_validation(self):
-  raw=(ROOT/'.github/workflows/restore-web-release.yml').read_text();jobs=yaml.safe_load(raw)['jobs'];self.assertEqual(jobs['deploy']['needs'],'validate');self.assertIn('acknowledge_static_only',jobs['validate']['if']);self.assertIn("r.conclusion !== 'success'",raw);self.assertIn("r.head_branch !== 'gh-pages'",raw);self.assertIn('stage_release.py --verify',raw)
+  raw=(ROOT/'.github/workflows/restore-web-release.yml').read_text();jobs=yaml.safe_load(raw)['jobs'];self.assertEqual(jobs['deploy']['needs'],'validate');self.assertIn("workflow_dispatch",jobs['deploy']['if']);self.assertIn('acknowledge_static_only',jobs['validate']['if']);self.assertIn("r.conclusion !== 'success'",raw);self.assertIn("r.head_branch !== 'gh-pages'",raw);self.assertIn('stage_release.py --verify',raw)
  def test_browser_override_is_required_to_exist(self):
   import os
   from unittest.mock import patch
