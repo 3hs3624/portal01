@@ -1,7 +1,7 @@
 """All app sidebars share width, placement and the portal's actual toggle SVG."""
 from threading import Thread
 from http.server import ThreadingHTTPServer
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright,expect
 from write_studio_blocks import StudioHandler,chromium_executable
 import re
 from pathlib import Path
@@ -32,6 +32,10 @@ def run(base):
    page.set_viewport_size({'width':1440,'height':1000})
    handle=f.locator('.portal-sidebar-resizer[aria-controls=portal-app-sidebar]');handle.wait_for(state='visible');side=f.locator('#portal-app-sidebar')
    assert side.bounding_box()['width']==227
+   # ResizeObserver positions the overlay on a later frame after viewport changes.
+   # Wait for the real handle geometry before sending pointer coordinates.
+   expect(handle).to_have_attribute('aria-valuenow','227')
+   frame.wait_for_function("()=>{const h=document.querySelector('.portal-sidebar-resizer[aria-controls=portal-app-sidebar]').getBoundingClientRect();const s=document.querySelector('#portal-app-sidebar').getBoundingClientRect();return Math.abs(h.left-(s.right-4))<0.5}")
    h=handle.bounding_box();page.mouse.move(h['x']+4,h['y']+100);page.mouse.down();page.mouse.move(h['x']+104,h['y']+100,steps=10);page.mouse.up()
    assert side.bounding_box()['width']==327,(app,side.bounding_box())
    assert f.locator('.portal-sidebar-resize-shield:visible').count()==0
