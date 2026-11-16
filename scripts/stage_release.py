@@ -3,7 +3,7 @@
 from pathlib import Path
 import argparse,hashlib,json,shutil,sys
 from regression import ROOT,source_sha,verify_reports
-PUBLIC_DOWNLOADS={'portal-workspaces.sql'} # Existing cloud-setup download; no credentials or private files.
+PUBLIC_DOWNLOADS={'portal-workspaces.sql','portal-workspaces-100mb.sql','portal-projects-relational.sql','portal-projects-consistency.sql','portal-content-relational.sql'} # Existing public cloud-setup downloads.
 SUFFIXES={'.html','.css','.js','.json','.svg','.png','.jpg','.jpeg','.webp','.woff','.woff2','.ttf','.ico'}
 def stage(source,destination,reports,sha):
  source=Path(source).resolve();destination=Path(destination).resolve()
