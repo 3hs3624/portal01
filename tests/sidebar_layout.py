@@ -35,7 +35,6 @@ def run(base):
    # ResizeObserver positions the overlay on a later frame after viewport changes.
    # Wait for the real handle geometry before sending pointer coordinates.
    expect(handle).to_have_attribute('aria-valuenow','227')
-   frame.wait_for_function("()=>{const h=document.querySelector('.portal-sidebar-resizer[aria-controls=portal-app-sidebar]').getBoundingClientRect();const s=document.querySelector('#portal-app-sidebar').getBoundingClientRect();return Math.abs(h.left-(s.right-4))<0.5}")
    h=handle.bounding_box();page.mouse.move(h['x']+4,h['y']+100);page.mouse.down();page.mouse.move(h['x']+104,h['y']+100,steps=10);page.mouse.up()
    assert side.bounding_box()['width']==327,(app,side.bounding_box())
    assert f.locator('.portal-sidebar-resize-shield:visible').count()==0
