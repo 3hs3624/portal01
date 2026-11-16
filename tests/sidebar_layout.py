@@ -2,7 +2,7 @@
 from threading import Thread
 from http.server import ThreadingHTTPServer
 from playwright.sync_api import sync_playwright
-from write_studio_blocks import StudioHandler
+from write_studio_blocks import StudioHandler,chromium_executable
 import re
 from pathlib import Path
 
@@ -11,7 +11,7 @@ def run(base):
  portal=(Path(__file__).resolve().parents[1]/'index.html').read_text()
  portal_svg=re.search(r'<button id="sidebar-toggle".*?(<svg.*?</svg>)',portal).group(1)
  with sync_playwright() as p:
-  browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--disable-dev-shm-usage'])
+  browser=p.chromium.launch(executable_path=chromium_executable(),headless=True,args=['--no-sandbox','--disable-dev-shm-usage'])
   for app in ['markdown','projects','insight']:
    context=browser.new_context(viewport={'width':1920,'height':1000});page=context.new_page();errors=[]
    page.on('pageerror',lambda e:errors.append(str(e)))

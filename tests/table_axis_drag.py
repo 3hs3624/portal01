@@ -5,11 +5,11 @@ from http.server import ThreadingHTTPServer
 from urllib.parse import quote
 import json
 from playwright.sync_api import sync_playwright,expect
-from write_studio_blocks import StudioHandler
+from write_studio_blocks import StudioHandler,chromium_executable
 
 def run(base):
  with sync_playwright() as p:
-  b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-dev-shm-usage']);c=b.new_context(viewport={'width':1600,'height':1100});page=c.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+  b=p.chromium.launch(executable_path=chromium_executable(),args=['--no-sandbox','--disable-dev-shm-usage']);c=b.new_context(viewport={'width':1600,'height':1100});page=c.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   c.route('**/axis-host',lambda r:r.fulfill(content_type='text/html',body='<script>window.__portalAuthenticated=true;window.PortalUserId="axis-test"</script><iframe src="/portal01/apps/markdown/" style="position:fixed;inset:0;width:100%;height:100%;border:0"></iframe>'));page.goto(base+'/axis-host');f=page.frame_locator('iframe');f.locator('.block-editor-content').wait_for();fr=page.frames[1];fr.wait_for_function('()=>!APP.loading')
   def load(text):fr.evaluate('text=>{currentDoc().content=text;$("#editor").value=text;RICH.markdown=null;renderEditor();setView("preview");resetEditHistory();historyRecord()}',text)
   def pointer_drag(source,target,dx=0,ghost=True,line=True):

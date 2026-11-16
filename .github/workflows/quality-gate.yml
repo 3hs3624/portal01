@@ -1,0 +1,101 @@
+name: Quality gate and web release
+on:
+  pull_request:
+  push:
+    branches: [item-sharing, desktop-item-sharing, gh-pages, desktop-preview, 'ci-probe/**']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  regression:
+    uses: ./.github/workflows/business-regression.yml
+  design:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Require implementation and design in the same change
+        env:
+          DESIGN_BASE: ${{ github.event.pull_request.base.sha || github.event.before || github.sha }}
+          DESIGN_HEAD: ${{ github.sha }}
+        run: python scripts/check_design_docs.py --base "$DESIGN_BASE" --head "$DESIGN_HEAD"
+  release-ready:
+    needs: [regression, design]
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: regression-*
+          path: work/reports
+      - name: Require all exact-commit reports before staging
+        run: |
+          python scripts/regression.py --verify work/reports
+          python scripts/stage_release.py --reports work/reports
+          cp -R work/reports work/release/reports
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-web-release
+          path: work/release/
+          retention-days: 30
+          if-no-files-found: error
+  deploy:
+    needs: release-ready
+    if: github.ref == 'refs/heads/gh-pages' && github.event_name != 'pull_request'
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages-production
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: verified-web-release
+          path: work/release
+      - name: Verify release artifact again
+        run: |
+          python scripts/regression.py --verify work/release/reports
+          python scripts/stage_release.py --verify work/release/site
+      - name: Use tested workflow deployment instead of an independent branch build
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {data} = await github.rest.repos.getPages(context.repo);
+            if (data.build_type !== 'workflow') {
+              await github.request('PUT /repos/{owner}/{repo}/pages', {...context.repo, build_type:'workflow'});
+            }
+            const verified = await github.rest.repos.getPages(context.repo);
+            if (verified.data.build_type !== 'workflow') throw Error('Pages must use workflow deployment');
+            await core.summary.addHeading('Deployment gate').addRaw('Pages source: workflow. All exact-commit business reports verified.').write();
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: work/release/site
+      - name: Deploy only the verified artifact
+        id: deployment
+        uses: actions/deploy-pages@v4

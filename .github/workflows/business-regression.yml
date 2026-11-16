@@ -1,0 +1,48 @@
+name: Business regression suites
+on:
+  workflow_call:
+permissions:
+  contents: read
+jobs:
+  suite:
+    name: regression (${{ matrix.suite }})
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [unit, sql, browser-storage, browser-sharing, browser-excel, browser-editor]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install unit test tools
+        if: matrix.suite == 'unit'
+        run: python -m pip install PyYAML==6.0.3
+      - name: Install isolated SQL engine
+        if: matrix.suite == 'sql'
+        run: npm ci --prefix ci --no-audit --no-fund
+      - name: Install browser tools
+        if: startsWith(matrix.suite, 'browser-')
+        run: |
+          python -m pip install -r ci/requirements.txt
+          python -m playwright install --with-deps chromium
+          python -c "from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print('CHROMIUM_BIN='+p.chromium.executable_path); p.stop()" >> "$GITHUB_ENV"
+      - name: Run fixture suite
+        env:
+          SUITE: ${{ matrix.suite }}
+        run: python scripts/regression.py --suite "$SUITE"
+      - name: Retain report and logs even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-${{ matrix.suite }}
+          path: work/regression/${{ matrix.suite }}/
+          retention-days: 30
+          if-no-files-found: error
