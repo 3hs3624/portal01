@@ -16,6 +16,12 @@ class InventoryExtraction(unittest.TestCase):
   self.assertEqual(len(rows),2);self.assertEqual(rows[0]['label'],'저장');self.assertEqual(rows[1]['text'],'');self.assertGreater(rows[1]['initialContentLength'],0)
 
 class DesignCoverage(unittest.TestCase):
+ def test_binary_history_is_decoded_without_crashing(self):
+  from unittest.mock import patch
+  from types import SimpleNamespace
+  with patch.object(guard.subprocess,'run',return_value=SimpleNamespace(returncode=0,stdout='binary replacement')) as run:
+   self.assertEqual(guard.content('HEAD','fixture.bin'),'binary replacement');self.assertEqual(run.call_args.kwargs['errors'],'replace')
+
  def test_apps_map_to_separate_designs(self):
   for app,doc in guard.APP_DOCS.items():self.assertEqual(guard.required_documents('apps/'+app+'/app.js','old','new'),{'docs/design/'+doc})
  def test_common_schema_and_desktop(self):

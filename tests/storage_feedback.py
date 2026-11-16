@@ -27,7 +27,7 @@ def run(base):
    if app!='projects':
     fr.evaluate("""async()=>{try{await PagesStorage.handle('save',{id:'browser',workspace:await (typeof captureWorkspace==='function'?captureWorkspace():PortalWorkspaceAdapter.capture()),revision:'stale-fixture-revision'})}catch{}}""")
     expect(badge).to_contain_text('저장 실패')
-   page.set_viewport_size({'width':390,'height':900});box=badge.bounding_box();assert box['x']>=0 and box['x']+box['width']<=391,box;page.screenshot(path='work/feedback-'+app+'-mobile.png');assert not errors,errors;print('PASS '+app+': destination status, backup review, app usability and failure feedback',flush=True);c.close()
+   page.set_viewport_size({'width':390,'height':900});expect(badge).to_have_css('max-width','124.8px');box=badge.bounding_box();assert box['x']>=0 and box['x']+box['width']<=391,box;page.screenshot(path='work/feedback-'+app+'-mobile.png');assert not errors,errors;print('PASS '+app+': destination status, backup review, app usability and failure feedback',flush=True);c.close()
   browser.close()
 if __name__=='__main__':
  server=ThreadingHTTPServer(('127.0.0.1',0),StudioHandler);Thread(target=server.serve_forever,daemon=True).start()
