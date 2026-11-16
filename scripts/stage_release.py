@@ -3,6 +3,7 @@
 from pathlib import Path
 import argparse,hashlib,json,shutil,sys
 from regression import ROOT,source_sha,verify_reports
+PUBLIC_DOWNLOADS={'portal-workspaces.sql'} # Existing cloud-setup download; no credentials or private files.
 SUFFIXES={'.html','.css','.js','.json','.svg','.png','.jpg','.jpeg','.webp','.woff','.woff2','.ttf','.ico'}
 def stage(source,destination,reports,sha):
  source=Path(source).resolve();destination=Path(destination).resolve()
@@ -13,7 +14,7 @@ def stage(source,destination,reports,sha):
  candidates=list(source.iterdir())+list((source/'apps').rglob('*'))
  for p in sorted(candidates):
   if p.is_symlink():raise ValueError('Symlink is not a public asset: '+str(p))
-  if not p.is_file() or p.suffix.lower() not in SUFFIXES:continue
+  if not p.is_file() or p.suffix.lower() not in SUFFIXES and p.name not in PUBLIC_DOWNLOADS:continue
   relative=p.relative_to(source)
   if any(x in relative.parts for x in ['node_modules','.git','work','__pycache__']):continue
   target=destination/relative;target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,target);files.append({'path':relative.as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})

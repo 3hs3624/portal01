@@ -51,8 +51,8 @@ class ReleaseGate(unittest.TestCase):
    self.assertFalse((root/'work/site').exists())
  def test_staging_excludes_private_and_work_files_and_detects_tamper(self):
   with tempfile.TemporaryDirectory() as tmp:
-   root=Path(tmp);(root/'apps/example').mkdir(parents=True);(root/'work').mkdir();(root/'index.html').write_text('fixture');(root/'app.js').write_text('safe');(root/'secret.sql').write_text('not public');(root/'work/private.json').write_text('not public');(root/'apps/example/index.html').write_text('app')
-   fixtures(root/'reports');m=stage(root,root/'work/site',root/'reports',SHA);self.assertEqual(m['source_sha'],SHA);self.assertFalse((root/'work/site/secret.sql').exists());self.assertFalse((root/'work/site/work/private.json').exists());verify_site(root/'work/site',SHA)
+   root=Path(tmp);(root/'apps/example').mkdir(parents=True);(root/'work').mkdir();(root/'index.html').write_text('fixture');(root/'app.js').write_text('safe');(root/'secret.sql').write_text('not public');(root/'portal-workspaces.sql').write_text('public setup download');(root/'work/private.json').write_text('not public');(root/'apps/example/index.html').write_text('app')
+   fixtures(root/'reports');m=stage(root,root/'work/site',root/'reports',SHA);self.assertEqual(m['source_sha'],SHA);self.assertTrue((root/'work/site/portal-workspaces.sql').exists());self.assertFalse((root/'work/site/secret.sql').exists());self.assertFalse((root/'work/site/work/private.json').exists());verify_site(root/'work/site',SHA)
    (root/'work/site/app.js').write_text('changed')
    with self.assertRaises(ValueError):verify_site(root/'work/site',SHA)
  def test_unlisted_file_blocks_restore(self):
