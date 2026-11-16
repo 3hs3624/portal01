@@ -23,7 +23,9 @@ def stage(source,destination,reports,sha):
  (destination/'release.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n');return manifest
 
 def verify_site(directory,expected_sha):
- directory=Path(directory).resolve();m=json.loads((directory/'release.json').read_text())
+ directory=Path(directory).resolve()
+ if any(p.is_symlink() for p in directory.rglob('*')):raise ValueError('Symlink in release artifact')
+ m=json.loads((directory/'release.json').read_text())
  if m.get('schema')!=1 or m.get('source_sha')!=expected_sha:raise ValueError('Release SHA mismatch')
  listed=set()
  for entry in m['files']:

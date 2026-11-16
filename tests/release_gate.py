@@ -59,6 +59,10 @@ class ReleaseGate(unittest.TestCase):
   with tempfile.TemporaryDirectory() as tmp:
    root=Path(tmp);(root/'apps').mkdir();(root/'index.html').write_text('fixture');fixtures(root/'reports');stage(root,root/'work/site',root/'reports',SHA);(root/'work/site/extra.js').write_text('injected')
    with self.assertRaises(ValueError):verify_site(root/'work/site',SHA)
+ def test_symlink_directory_blocks_restore(self):
+  with tempfile.TemporaryDirectory() as tmp:
+   root=Path(tmp);(root/'apps').mkdir();(root/'index.html').write_text('fixture');fixtures(root/'reports');stage(root,root/'work/site',root/'reports',SHA);(root/'outside').mkdir();(root/'work/site/link').symlink_to(root/'outside',target_is_directory=True)
+   with self.assertRaises(ValueError):verify_site(root/'work/site',SHA)
  def test_workflow_requires_business_and_design_success(self):
   quality=yaml.safe_load((ROOT/'.github/workflows/quality-gate.yml').read_text())['jobs'];reuse=yaml.safe_load((ROOT/'.github/workflows/business-regression.yml').read_text())['jobs']
   self.assertEqual(quality['release-ready']['needs'],['regression','design']);self.assertEqual(quality['deploy']['needs'],'release-ready');self.assertNotIn('always()',quality['deploy'].get('if',''));self.assertIn("refs/heads/gh-pages",quality['deploy']['if']);self.assertIn("pull_request",quality['deploy']['if']);self.assertEqual(set(reuse['suite']['strategy']['matrix']['suite']),set(SUITES))
