@@ -35,3 +35,7 @@
 ## 개선 실행 이력
 
 개선 작업은 `docs/design/execution-history.md`와 `executions/<날짜>-<계획ID>.md`에 계획 대비 구현·대상 커밋·실행 결과·배포/실패 검증·남은 범위를 남긴다. 검증 전 완료로 표시하지 않는다. Google Drive Portal의 기존 계획은 유지하고 상태/실행 기록 링크를 추가한다. 이후 실행은 기존 이력에 새 항목을 추가하며 이전 결과를 지우지 않는다.
+
+## REA 형식 산출물 관리 (2026-11-18)
+
+Drive `ChatGPT > Portal` 하위는 `01_계획`, `02_명세`, `03_설계(ADR)`, `04_작업기록`, `05_검토`로 관리한다. 기존 네 정의서는 `02_명세`, 기존 개발 계획은 `01_계획`, 실행 이력은 `04_작업기록`에 있으며 ID/링크를 유지한다. `docs/deliverables/README.md`, `manifest.json`, `drive-publication.json`으로 원문·역할·발행 ID를 대조한다. `scripts/build_deliverables.py`는 로컬 문서만 생성하며 Drive 갱신/배포를 하지 않는다. 이후 기능 변경 시 관련 PTL 명세와 네 정의서를 함께 갱신하고, 계획/이력은 과거 내용을 보존해 날짜별 변경을 추가한다. REA는 문서 구조 참고이며 REA 전용 기능·승인·일정을 Portal 요구로 옮기지 않는다.

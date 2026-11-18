@@ -1,0 +1,27 @@
+# Portal 개선 계획 대비 실행 이력
+
+작성 기준: 2026-11-18(KST). 웹 33fc8d7, 설치형 14fd9ac. 문서 발행은 제품 승인이나 실제 OS 업무 검증 완료를 뜻하지 않습니다.
+
+# Portal01 개선 실행 이력
+
+관리 위치: 내 드라이브 > ChatGPT > Portal. 기준일 2026-11-16(KST).
+
+계획은 improvement-roadmap.md, 실제 실행은 이 파일과 executions/<날짜>-<항목>.md로 관리합니다. 항목을 완료로 바꾸기 전에 변경 파일/커밋, 실제 실행 결과, CI/배포 근거, 계획 대비 차이, 남은 범위와 복구 경로를 기록합니다. 계획 문구를 덮어써 과거 계획을 없애지 않습니다. 같은 기능을 다시 수정하면 새 이력 행을 추가합니다.
+
+| 실행 ID | 계획 | 상태 | 실행 범위 | 근거 |
+|---|---|---|---|---|
+| EX-20261118-DOC | REA 산출물 구조 적용과 상세 문서 작성 | 문서 작성·발행 확인 완료 | 5폴더, 대응17문서(신규15+기존2), 기존 네 정의서/ZIP 포함22파일. 제품 배포/운영검수 아님 | [산출물 안내](../deliverables/README.md), [발행ID/검증](../deliverables/drive-publication.json) |
+| EX-20261116-E01 | E01 핵심 업무 회귀·릴리스 판정 | 구현·회귀 검증 완료 / 웹 활성화 대기 | 6개 suite·24개 명령 묶음, 동일 커밋 증거 검증, 웹 배포/설치형 패키징 의존성, 실패·복구 시험 | [상세 실행 기록](executions/2026-11-16-e01.md) |
+| 다음 | E02 외부 백업·새 환경 복원 | 대기 | E01 통과 후 착수; 현재 완료로 표시하지 않음 | [계획](improvement-roadmap.md) |
+
+E01-2 OS 실제 사용자 업무 smoke는 미완료입니다. E03~E12는 기존 계획의 미착수 항목입니다. 설치형 실제 WBS/인증/파일 전체 업무 검증(E04), SQLite(E08), 정식 서명·업데이트(E09)를 이번 CI 작업의 성과로 합치지 않습니다.
+
+Google Drive 관리본: https://docs.google.com/document/d/1MlDTmo4AN__Z8k1PZyX6ml3ETsbDXIhT8VjlUxfmCsA/edit (Portal 폴더, 기존 이력에 후속 실행을 추가).
+
+## 근거와 연관 문서
+
+REA는 문서 분류와 형식만 참고합니다. Portal 업무 규칙은 자체 소스와 기존 설계에서 가져옵니다.
+
+- [REA 참조 산출물](https://drive.google.com/drive/folders/1wSEfyVgxhPJDyyzRKUAKu0B5KLUdHJ_1)
+- [Portal 문서 관리 위치](https://drive.google.com/drive/folders/1tHzs_6RVrJYmKnLKyyLrMQ8nwE3xRMIe)
+- [docs/design/execution-history.md](https://github.com/3hs3624/portal01/blob/33fc8d703028d14819db78910b08d018bd04bca1/docs/design/execution-history.md)

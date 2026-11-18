@@ -1,0 +1,457 @@
+{
+  "schema": 1,
+  "date_kst": "2026-11-18",
+  "reference_folder": "https://drive.google.com/drive/folders/1wSEfyVgxhPJDyyzRKUAKu0B5KLUdHJ_1",
+  "destination_folder": "https://drive.google.com/drive/folders/1tHzs_6RVrJYmKnLKyyLrMQ8nwE3xRMIe",
+  "folders": {
+    "01_계획": {
+      "id": "1AoK-6qM1exIMFVU_UyVa84XSLW7zybLf",
+      "url": "https://drive.google.com/drive/folders/1AoK-6qM1exIMFVU_UyVa84XSLW7zybLf"
+    },
+    "02_명세": {
+      "success": true,
+      "id": "1Jz4SDgJa4ZZkfZHH1Ra4xV7C0C1o1-_W",
+      "url": "https://drive.google.com/drive/folders/1Jz4SDgJa4ZZkfZHH1Ra4xV7C0C1o1-_W",
+      "title": "02_명세",
+      "parent_id": "1tHzs_6RVrJYmKnLKyyLrMQ8nwE3xRMIe"
+    },
+    "03_설계(ADR)": {
+      "success": true,
+      "id": "1ORXuUHkc8gsLhf_M4IMo1XazrHRRpXpn",
+      "url": "https://drive.google.com/drive/folders/1ORXuUHkc8gsLhf_M4IMo1XazrHRRpXpn",
+      "title": "03_설계(ADR)",
+      "parent_id": "1tHzs_6RVrJYmKnLKyyLrMQ8nwE3xRMIe"
+    },
+    "04_작업기록": {
+      "success": true,
+      "id": "1vN2kFrc2KfydjrH8Vac4dzFqX21ObvqB",
+      "url": "https://drive.google.com/drive/folders/1vN2kFrc2KfydjrH8Vac4dzFqX21ObvqB",
+      "title": "04_작업기록",
+      "parent_id": "1tHzs_6RVrJYmKnLKyyLrMQ8nwE3xRMIe"
+    },
+    "05_검토": {
+      "success": true,
+      "id": "1YvcYS4JxW4akkHWpn7pAMhYqIGlS648V",
+      "url": "https://drive.google.com/drive/folders/1YvcYS4JxW4akkHWpn7pAMhYqIGlS648V",
+      "title": "05_검토",
+      "parent_id": "1tHzs_6RVrJYmKnLKyyLrMQ8nwE3xRMIe"
+    }
+  },
+  "new_documents": [
+    {
+      "fileId": "1cOqE29F66b7fl85Fw-x94p_2aMTzOrn89E5237qpSEc",
+      "mimeType": "application/vnd.google-apps.document",
+      "title": "Portal 수행계획서 v0.1 (팀 운영 비교안)",
+      "url": "https://docs.google.com/document/d/1cOqE29F66b7fl85Fw-x94p_2aMTzOrn89E5237qpSEc/edit?usp=drivesdk",
+      "index": 0,
+      "folder": "01_계획",
+      "path": "docs/deliverables/01_계획/Portal 수행계획서 v0.1 (팀 운영 비교안).md",
+      "source_sha256": "62457a7ae367bedbabe11c6a852153fa8266a4b2b02c3b51d9c14462eed2eeab",
+      "verified": true,
+      "tables": 1,
+      "cells": 15,
+      "expectedHeadings": 7,
+      "body_verified": true,
+      "table_cells_verified": true
+    },
+    {
+      "fileId": "1r7b6CU5fwnfYElc9w_wMTmtt2jOpON3IElXccE01f_U",
+      "mimeType": "application/vnd.google-apps.document",
+      "title": "G0 실행 체크리스트 v1.0",
+      "url": "https://docs.google.com/document/d/1r7b6CU5fwnfYElc9w_wMTmtt2jOpON3IElXccE01f_U/edit?usp=drivesdk",
+      "index": 1,
+      "folder": "01_계획",
+      "path": "docs/deliverables/01_계획/G0 실행 체크리스트 v1.0.md",
+      "source_sha256": "e2eac60d1b301f5da2e064bfbbe874d0b1e00846c51cf2e2be036657397d05c4",
+      "verified": true,
+      "tables": 1,
+      "cells": 48,
+      "expectedHeadings": 5,
+      "body_verified": true,
+      "table_cells_verified": true
+    },
+    {
+      "fileId": "1_vbScvQRCsV-l4aj7Vi5FLi46fz6VU3a6qm4QVLFOOo",
+      "mimeType": "application/vnd.google-apps.document",
+      "title": "Portal 수행계획서 v0.2 (1인 + AI 활용안)",
+      "url": "https://docs.google.com/document/d/1_vbScvQRCsV-l4aj7Vi5FLi46fz6VU3a6qm4QVLFOOo/edit?usp=drivesdk",
+      "index": 2,
+      "folder": "01_계획",
+      "path": "docs/deliverables/01_계획/Portal 수행계획서 v0.2 (1인 + AI 활용안).md",
+      "source_sha256": "11536e23f9eea07e188c30106d7d25d0661861594cb7e89ecf059b6e103912e0",
+      "verified": true,
+      "tables": 1,
+      "cells": 18,
+      "expectedHeadings": 8,
+      "body_verified": true,
+      "table_cells_verified": true
+    },
+    {
+      "fileId": "1FsK1DPn7CycYYqrv2lFCYScDtSZBVgQITRtSL9FVDJM",
+      "mimeType": "application/vnd.google-apps.document",
+      "title": "Portal 리스크 관리대장 v1.0",
+      "url": "https://docs.google.com/document/d/1FsK1DPn7CycYYqrv2lFCYScDtSZBVgQITRtSL9FVDJM/edit?usp=drivesdk",
+      "index": 3,
+      "folder": "01_계획",
+      "path": "docs/deliverables/01_계획/Portal 리스크 관리대장 v1.0.md",
+      "source_sha256": "c043a6721c83d53290946ff541bc5b207e03686e224bf2b75dbbbf946baf1dd1",
+      "verified": true,
+      "tables": 1,
+      "cells": 78,
+      "expectedHeadings": 4,
+      "body_verified": true,
+      "table_cells_verified": true
+    },
+    {
+      "fileId": "1Ew823Von5XWFRspuUWZdWLKxYMdE5ZvkrE5OcvEBYz4",
+      "mimeType": "application/vnd.google-apps.document",
+      "title": "Portal 기능 범위 정의서 v1.0",
+      "url": "https://docs.google.com/document/d/1Ew823Von5XWFRspuUWZdWLKxYMdE5ZvkrE5OcvEBYz4/edit?usp=drivesdk",
+      "index": 4,
+      "folder": "01_계획",
+      "path": "docs/deliverables/01_계획/Portal 기능 범위 정의서 v1.0.md",
+      "source_sha256": "11ef26ec543fbee1396249844fb4ff5bfb55ca64e49d9fcbc91d83e7089843bd",
+      "verified": true,
+      "tables": 1,
+      "cells": 45,
+      "expectedHeadings": 6,
+      "body_verified": true,
+      "table_cells_verified": true
+    },
+    {
+      "fileId": "1FOCSqKatiWKp13f9EPUTHBQhC8Hgi3ccU3yKHid2uTA",
+      "mimeType": "application/vnd.google-apps.document",
+      "title": "PTL-01 인증과 권한 관리 명세 v1.0",
+      "url": "https://docs.google.com/document/d/1FOCSqKatiWKp13f9EPUTHBQhC8Hgi3ccU3yKHid2uTA/edit?usp=drivesdk",
+      "index": 5,
+      "folder": "02_명세",
+      "path": "docs/deliverables/02_명세/PTL-01 인증과 권한 관리 명세 v1.0.md",
+      "source_sha256": "be93b4eeb7a259f53ae93129a466b7f0d4d00aed8621997cff51b14d8604e9cc",
+      "verified": true,
+      "tables": 1,
+      "cells": 20,
+      "expectedHeadings": 16,
+      "body_verified": true,
+      "table_cells_verified": true
+    },
+    {
+      "fileId": "13d-lcny4EKiTCZtjGQjUYh00W8GdoB9c343gtXNqp7M",
+      "mimeType": "application/vnd.google-apps.document",
+      "title": "PTL-02 자동저장과 저장소 연결 명세 v1.0",
+      "url": "https://docs.google.com/document/d/13d-lcny4EKiTCZtjGQjUYh00W8GdoB9c343gtXNqp7M/edit?usp=drivesdk",
+      "index": 6,
+      "folder": "02_명세",
+      "path": "docs/deliverables/02_명세/PTL-02 자동저장과 저장소 연결 명세 v1.0.md",
+      "source_sha256": "9da8450076215e8367607c3307763e4c33fe00a7381ba13736716e4b860dc216",
+      "verified": true,
+      "tables": 1,
+      "cells": 20,
+      "expectedHeadings": 13,
+      "body_verified": true,
+      "table_cells_verified": true
+    },
+    {
+      "fileId": "1lRJ8YtYS09x4zXkFSmMl-F5AYluKVweWN6nFcgczwpM",
+      "mimeType": "application/vnd.google-apps.document",
+      "title": "PTL-03 충돌 비교와 백업 복구 명세 v1.0",
+      "url": "https://docs.google.com/document/d/1lRJ8YtYS09x4zXkFSmMl-F5AYluKVweWN6nFcgczwpM/edit?usp=drivesdk",
+      "index": 7,
+      "folder": "02_명세",
+      "path": "docs/deliverables/02_명세/PTL-03 충돌 비교와 백업 복구 명세 v1.0.md",
+      "source_sha256": "4e7e3ec50f281da8f1128c7a203a7e913a652f379dcc4ead00bf85e552b32ebd",
+      "verified": true,
+      "tables": 1,
+      "cells": 20,
+      "expectedHeadings": 16,
+      "body_verified": true,
+      "table_cells_verified": true
+    },
+    {
+      "fileId": "1ljxswlSSsZEd6SC3fqLrSZRp6FfFPJdrN1vU9gyeWVc",
+      "mimeType": "application/vnd.google-apps.document",
+      "title": "PTL-04 항목 공유와 공동 작업 명세 v1.0",
+      "url": "https://docs.google.com/document/d/1ljxswlSSsZEd6SC3fqLrSZRp6FfFPJdrN1vU9gyeWVc/edit?usp=drivesdk",
+      "index": 8,
+      "folder": "02_명세",
+      "path": "docs/deliverables/02_명세/PTL-04 항목 공유와 공동 작업 명세 v1.0.md",
+      "source_sha256": "272976c58dc1a27701d4b324682d9dc1dd49e49b9dd25566bda10b86e888f594",
+      "verified": true,
+      "tables": 5,
+      "cells": 128,
+      "expectedHeadings": 21,
+      "body_verified": true,
+      "table_cells_verified": true
+    },
+    {
+      "fileId": "1uNaUJlX2b7YH7g-13mKqsv0WM-nb9C_n4cWfslRxbH8",
+      "mimeType": "application/vnd.google-apps.document",
+      "title": "PTL-05 Write Studio 문서와 표 편집 명세 v1.0",
+      "url": "https://docs.google.com/document/d/1uNaUJlX2b7YH7g-13mKqsv0WM-nb9C_n4cWfslRxbH8/edit?usp=drivesdk",
+      "index": 9,
+      "folder": "02_명세",
+      "path": "docs/deliverables/02_명세/PTL-05 Write Studio 문서와 표 편집 명세 v1.0.md",
+      "source_sha256": "a65ba7d934a258e1b81ecab03b527b02f9e2a807dcdc6ac3b3c2bca6ab914fa7",
+      "verified": true,
+      "tables": 7,
+      "cells": 182,
+      "expectedHeadings": 24,
+      "body_verified": true,
+      "table_cells_verified": true
+    },
+    {
+      "fileId": "1iZryNR4PHI0anDCBNcJCdQW7UzfvlkN8IS9EwDNqh70",
+      "mimeType": "application/vnd.google-apps.document",
+      "title": "PTL-06 Project Management WBS와 Excel 명세 v1.0",
+      "url": "https://docs.google.com/document/d/1iZryNR4PHI0anDCBNcJCdQW7UzfvlkN8IS9EwDNqh70/edit?usp=drivesdk",
+      "index": 10,
+      "folder": "02_명세",
+      "path": "docs/deliverables/02_명세/PTL-06 Project Management WBS와 Excel 명세 v1.0.md",
+      "source_sha256": "4403bd5ca4a8b7efbf8b88b08685d71ff942843fa1021a8a2531d445c5d89aec",
+      "verified": true,
+      "tables": 6,
+      "cells": 171,
+      "expectedHeadings": 25,
+      "body_verified": true,
+      "table_cells_verified": true
+    },
+    {
+      "fileId": "1kXgB6z0h2EiQDZnrH5TF6Z1y78sqkP22NvBh4kNjX8M",
+      "mimeType": "application/vnd.google-apps.document",
+      "title": "PTL-07 Insight BI 데이터와 대시보드 명세 v1.0",
+      "url": "https://docs.google.com/document/d/1kXgB6z0h2EiQDZnrH5TF6Z1y78sqkP22NvBh4kNjX8M/edit?usp=drivesdk",
+      "index": 11,
+      "folder": "02_명세",
+      "path": "docs/deliverables/02_명세/PTL-07 Insight BI 데이터와 대시보드 명세 v1.0.md",
+      "source_sha256": "7fad6e88f462464691652b90e498c18feadbf2f710c54b78c37538bf5ad908cb",
+      "verified": true,
+      "tables": 7,
+      "cells": 211,
+      "expectedHeadings": 23,
+      "body_verified": true,
+      "table_cells_verified": true
+    },
+    {
+      "fileId": "1p7yorQkoXSgP-6j8xk3-fbNAbdAM-QqS6U3rlD3bhSs",
+      "mimeType": "application/vnd.google-apps.document",
+      "title": "PTL-08 설치형과 릴리스 관문 명세 v1.0",
+      "url": "https://docs.google.com/document/d/1p7yorQkoXSgP-6j8xk3-fbNAbdAM-QqS6U3rlD3bhSs/edit?usp=drivesdk",
+      "index": 12,
+      "folder": "02_명세",
+      "path": "docs/deliverables/02_명세/PTL-08 설치형과 릴리스 관문 명세 v1.0.md",
+      "source_sha256": "586316f9a33679ce824a342477162b6858c92880c5fe28e1af85e9e3c9bc22ea",
+      "verified": true,
+      "tables": 5,
+      "cells": 117,
+      "expectedHeadings": 28,
+      "body_verified": true,
+      "table_cells_verified": true
+    },
+    {
+      "fileId": "1Ul3UsOeI71svWle8zKKBioiu5RUZFxw7rUswWtb4ew4",
+      "mimeType": "application/vnd.google-apps.document",
+      "title": "Portal ADR 모음 (PADR-001~011) v1.0",
+      "url": "https://docs.google.com/document/d/1Ul3UsOeI71svWle8zKKBioiu5RUZFxw7rUswWtb4ew4/edit?usp=drivesdk",
+      "index": 13,
+      "folder": "03_설계(ADR)",
+      "path": "docs/deliverables/03_설계(ADR)/Portal ADR 모음 (PADR-001~011) v1.0.md",
+      "source_sha256": "333215c27c55e7e98797d2b5e331326d400ead13ad80c3d0fd7accd1d767c6f5",
+      "verified": true,
+      "tables": 0,
+      "cells": 0,
+      "expectedHeadings": 69,
+      "body_verified": true,
+      "table_cells_verified": true
+    },
+    {
+      "fileId": "18PXQjVGVIkMzgDAhKuu9vwX8CBnCteK8NVrjIlCrfRg",
+      "mimeType": "application/vnd.google-apps.document",
+      "title": "Portal 산출물 구성과 명세 정합성 점검 결과 v1.0",
+      "url": "https://docs.google.com/document/d/18PXQjVGVIkMzgDAhKuu9vwX8CBnCteK8NVrjIlCrfRg/edit?usp=drivesdk",
+      "index": 14,
+      "folder": "05_검토",
+      "path": "docs/deliverables/05_검토/Portal 산출물 구성과 명세 정합성 점검 결과 v1.0.md",
+      "source_sha256": "e2ba78bd683e61bf8ad8e9362be6d4837083a7e38ec397ed20297438a159dede",
+      "verified": true,
+      "tables": 2,
+      "cells": 57,
+      "expectedHeadings": 8,
+      "body_verified": true,
+      "table_cells_verified": true
+    }
+  ],
+  "all_files": [
+    {
+      "id": "1Ew823Von5XWFRspuUWZdWLKxYMdE5ZvkrE5OcvEBYz4",
+      "title": "Portal 기능 범위 정의서 v1.0",
+      "url": "https://docs.google.com/document/d/1Ew823Von5XWFRspuUWZdWLKxYMdE5ZvkrE5OcvEBYz4/edit?usp=drivesdk",
+      "folder": "01_계획",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1FsK1DPn7CycYYqrv2lFCYScDtSZBVgQITRtSL9FVDJM",
+      "title": "Portal 리스크 관리대장 v1.0",
+      "url": "https://docs.google.com/document/d/1FsK1DPn7CycYYqrv2lFCYScDtSZBVgQITRtSL9FVDJM/edit?usp=drivesdk",
+      "folder": "01_계획",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1_vbScvQRCsV-l4aj7Vi5FLi46fz6VU3a6qm4QVLFOOo",
+      "title": "Portal 수행계획서 v0.2 (1인 + AI 활용안)",
+      "url": "https://docs.google.com/document/d/1_vbScvQRCsV-l4aj7Vi5FLi46fz6VU3a6qm4QVLFOOo/edit?usp=drivesdk",
+      "folder": "01_계획",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1r7b6CU5fwnfYElc9w_wMTmtt2jOpON3IElXccE01f_U",
+      "title": "G0 실행 체크리스트 v1.0",
+      "url": "https://docs.google.com/document/d/1r7b6CU5fwnfYElc9w_wMTmtt2jOpON3IElXccE01f_U/edit?usp=drivesdk",
+      "folder": "01_계획",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1cOqE29F66b7fl85Fw-x94p_2aMTzOrn89E5237qpSEc",
+      "title": "Portal 수행계획서 v0.1 (팀 운영 비교안)",
+      "url": "https://docs.google.com/document/d/1cOqE29F66b7fl85Fw-x94p_2aMTzOrn89E5237qpSEc/edit?usp=drivesdk",
+      "folder": "01_계획",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1_sPiioj3FFzgLGSmGHYYG2b34BKWqEdLIxbvrNVo7lA",
+      "title": "portal01 개선 검토 및 실행 계획 v1.0 (2026-11-14)",
+      "url": "https://docs.google.com/document/d/1_sPiioj3FFzgLGSmGHYYG2b34BKWqEdLIxbvrNVo7lA/edit?usp=drivesdk",
+      "folder": "01_계획",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1p7yorQkoXSgP-6j8xk3-fbNAbdAM-QqS6U3rlD3bhSs",
+      "title": "PTL-08 설치형과 릴리스 관문 명세 v1.0",
+      "url": "https://docs.google.com/document/d/1p7yorQkoXSgP-6j8xk3-fbNAbdAM-QqS6U3rlD3bhSs/edit?usp=drivesdk",
+      "folder": "02_명세",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1kXgB6z0h2EiQDZnrH5TF6Z1y78sqkP22NvBh4kNjX8M",
+      "title": "PTL-07 Insight BI 데이터와 대시보드 명세 v1.0",
+      "url": "https://docs.google.com/document/d/1kXgB6z0h2EiQDZnrH5TF6Z1y78sqkP22NvBh4kNjX8M/edit?usp=drivesdk",
+      "folder": "02_명세",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1iZryNR4PHI0anDCBNcJCdQW7UzfvlkN8IS9EwDNqh70",
+      "title": "PTL-06 Project Management WBS와 Excel 명세 v1.0",
+      "url": "https://docs.google.com/document/d/1iZryNR4PHI0anDCBNcJCdQW7UzfvlkN8IS9EwDNqh70/edit?usp=drivesdk",
+      "folder": "02_명세",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1uNaUJlX2b7YH7g-13mKqsv0WM-nb9C_n4cWfslRxbH8",
+      "title": "PTL-05 Write Studio 문서와 표 편집 명세 v1.0",
+      "url": "https://docs.google.com/document/d/1uNaUJlX2b7YH7g-13mKqsv0WM-nb9C_n4cWfslRxbH8/edit?usp=drivesdk",
+      "folder": "02_명세",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1ljxswlSSsZEd6SC3fqLrSZRp6FfFPJdrN1vU9gyeWVc",
+      "title": "PTL-04 항목 공유와 공동 작업 명세 v1.0",
+      "url": "https://docs.google.com/document/d/1ljxswlSSsZEd6SC3fqLrSZRp6FfFPJdrN1vU9gyeWVc/edit?usp=drivesdk",
+      "folder": "02_명세",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1lRJ8YtYS09x4zXkFSmMl-F5AYluKVweWN6nFcgczwpM",
+      "title": "PTL-03 충돌 비교와 백업 복구 명세 v1.0",
+      "url": "https://docs.google.com/document/d/1lRJ8YtYS09x4zXkFSmMl-F5AYluKVweWN6nFcgczwpM/edit?usp=drivesdk",
+      "folder": "02_명세",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "13d-lcny4EKiTCZtjGQjUYh00W8GdoB9c343gtXNqp7M",
+      "title": "PTL-02 자동저장과 저장소 연결 명세 v1.0",
+      "url": "https://docs.google.com/document/d/13d-lcny4EKiTCZtjGQjUYh00W8GdoB9c343gtXNqp7M/edit?usp=drivesdk",
+      "folder": "02_명세",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1FOCSqKatiWKp13f9EPUTHBQhC8Hgi3ccU3yKHid2uTA",
+      "title": "PTL-01 인증과 권한 관리 명세 v1.0",
+      "url": "https://docs.google.com/document/d/1FOCSqKatiWKp13f9EPUTHBQhC8Hgi3ccU3yKHid2uTA/edit?usp=drivesdk",
+      "folder": "02_명세",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1q9vzVzCDKoKOZ44oqEWLdTHO3D3QdcR_vDf6fkrBA0U",
+      "title": "portal01 코드 정의서 v1.0 (2026-11-13)",
+      "url": "https://docs.google.com/document/d/1q9vzVzCDKoKOZ44oqEWLdTHO3D3QdcR_vDf6fkrBA0U/edit?usp=drivesdk",
+      "folder": "02_명세",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1ZplJrzr-AvoEJDbSQf9MGugpwVNn4epR780QLDbmKrA",
+      "title": "portal01 기능설계서 v1.0 (2026-11-13)",
+      "url": "https://docs.google.com/document/d/1ZplJrzr-AvoEJDbSQf9MGugpwVNn4epR780QLDbmKrA/edit?usp=drivesdk",
+      "folder": "02_명세",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1Zk5kaXQOKNaDW5seo0JlP4R5WDtgZBXLgZUjQrAyhS0",
+      "title": "portal01 테이블정의서 v1.0 (2026-11-13)",
+      "url": "https://docs.google.com/document/d/1Zk5kaXQOKNaDW5seo0JlP4R5WDtgZBXLgZUjQrAyhS0/edit?usp=drivesdk",
+      "folder": "02_명세",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1IQSOQVwA1sUoBsSjpXtv8qE-Cne2Uu_70YxS6JzXrPE",
+      "title": "portal01 화면설계서 v1.0 (2026-11-13)",
+      "url": "https://docs.google.com/document/d/1IQSOQVwA1sUoBsSjpXtv8qE-Cne2Uu_70YxS6JzXrPE/edit?usp=drivesdk",
+      "folder": "02_명세",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1Ug3GWSuGMTdRcCC6BI2qzqVPF7O1DzcO",
+      "title": "portal01_설계서_4종_정의부록_2026-11-13.zip",
+      "url": "https://drive.google.com/file/d/1Ug3GWSuGMTdRcCC6BI2qzqVPF7O1DzcO/view?usp=drivesdk",
+      "folder": "02_명세",
+      "mime_type": "application/zip"
+    },
+    {
+      "id": "1Ul3UsOeI71svWle8zKKBioiu5RUZFxw7rUswWtb4ew4",
+      "title": "Portal ADR 모음 (PADR-001~011) v1.0",
+      "url": "https://docs.google.com/document/d/1Ul3UsOeI71svWle8zKKBioiu5RUZFxw7rUswWtb4ew4/edit?usp=drivesdk",
+      "folder": "03_설계(ADR)",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "1MlDTmo4AN__Z8k1PZyX6ml3ETsbDXIhT8VjlUxfmCsA",
+      "title": "portal01 개선 계획 대비 실행 이력",
+      "url": "https://docs.google.com/document/d/1MlDTmo4AN__Z8k1PZyX6ml3ETsbDXIhT8VjlUxfmCsA/edit?usp=drivesdk",
+      "folder": "04_작업기록",
+      "mime_type": "application/vnd.google-apps.document"
+    },
+    {
+      "id": "18PXQjVGVIkMzgDAhKuu9vwX8CBnCteK8NVrjIlCrfRg",
+      "title": "Portal 산출물 구성과 명세 정합성 점검 결과 v1.0",
+      "url": "https://docs.google.com/document/d/18PXQjVGVIkMzgDAhKuu9vwX8CBnCteK8NVrjIlCrfRg/edit?usp=drivesdk",
+      "folder": "05_검토",
+      "mime_type": "application/vnd.google-apps.document"
+    }
+  ],
+  "checks": {
+    "folders": 5,
+    "new_documents": 15,
+    "reused_existing_files": 7,
+    "core_roles": 17,
+    "native_docs": 21,
+    "zip": 1,
+    "created_document_body_tables_and_headings_verified": true,
+    "note": "Plan and history retain original content and receive dated appendices. Products not deployed or altered by this documentation task.",
+    "final_full_body_audit": "15/15 passed",
+    "plan_history_dated_appendices_verified": true,
+    "root_contains_only_five_reference_folders": true,
+    "reused_file_ids_verified": true
+  },
+  "publication_appendices": {
+    "review": "Native linked index of all22files; checked5folders/17core roles; no product validation claims",
+    "plan": "2026-11-18 section11 appended; previous plan retained",
+    "history": "2026-11-18 dated plan-versus-execution entry appended"
+  }
+}
