@@ -1,0 +1,313 @@
+{
+  "schema": 1,
+  "date_kst": "2026-11-18",
+  "web_sha": "33fc8d703028d14819db78910b08d018bd04bca1",
+  "desktop_sha": "14fd9acc4c7f2fba1e4523b2f209662318030143",
+  "reference_folder": "https://drive.google.com/drive/folders/1wSEfyVgxhPJDyyzRKUAKu0B5KLUdHJ_1",
+  "destination_folder": "https://drive.google.com/drive/folders/1tHzs_6RVrJYmKnLKyyLrMQ8nwE3xRMIe",
+  "documents": [
+    {
+      "folder": "01_계획",
+      "title": "Portal 수행계획서 v0.1 (팀 운영 비교안)",
+      "path": "docs/deliverables/01_계획/Portal 수행계획서 v0.1 (팀 운영 비교안).md",
+      "sources": [
+        "docs/design/improvement-roadmap.md",
+        "docs/design/handoff.md"
+      ],
+      "sha256": "62457a7ae367bedbabe11c6a852153fa8266a4b2b02c3b51d9c14462eed2eeab"
+    },
+    {
+      "folder": "01_계획",
+      "title": "G0 실행 체크리스트 v1.0",
+      "path": "docs/deliverables/01_계획/G0 실행 체크리스트 v1.0.md",
+      "sources": [
+        "docs/design/executions/2026-11-16-e01.md",
+        ".github/workflows/quality-gate.yml",
+        ".github/workflows/restore-web-release.yml"
+      ],
+      "sha256": "e2eac60d1b301f5da2e064bfbbe874d0b1e00846c51cf2e2be036657397d05c4"
+    },
+    {
+      "folder": "01_계획",
+      "title": "Portal 수행계획서 v0.2 (1인 + AI 활용안)",
+      "path": "docs/deliverables/01_계획/Portal 수행계획서 v0.2 (1인 + AI 활용안).md",
+      "sources": [
+        "AGENTS.md",
+        "docs/design/improvement-roadmap.md",
+        "docs/design/execution-history.md"
+      ],
+      "sha256": "11536e23f9eea07e188c30106d7d25d0661861594cb7e89ecf059b6e103912e0"
+    },
+    {
+      "folder": "01_계획",
+      "title": "Portal 리스크 관리대장 v1.0",
+      "path": "docs/deliverables/01_계획/Portal 리스크 관리대장 v1.0.md",
+      "sources": [
+        "docs/design/executions/2026-11-16-e01.md",
+        "docs/design/improvement-roadmap.md",
+        "docs/design/desktop.md"
+      ],
+      "sha256": "c043a6721c83d53290946ff541bc5b207e03686e224bf2b75dbbbf946baf1dd1"
+    },
+    {
+      "folder": "01_계획",
+      "title": "Portal 기능 범위 정의서 v1.0",
+      "path": "docs/deliverables/01_계획/Portal 기능 범위 정의서 v1.0.md",
+      "sources": [
+        "docs/design/functional-design.md",
+        "docs/design/screen-design.md",
+        "docs/design/code-definition.md",
+        "docs/design/table-definition.md",
+        "docs/design/improvement-roadmap.md"
+      ],
+      "sha256": "11ef26ec543fbee1396249844fb4ff5bfb55ca64e49d9fcbc91d83e7089843bd"
+    },
+    {
+      "folder": "02_명세",
+      "title": "PTL-01 인증과 권한 관리 명세 v1.0",
+      "path": "docs/deliverables/02_명세/PTL-01 인증과 권한 관리 명세 v1.0.md",
+      "sources": [
+        "docs/design/functional-design.md",
+        "login.js",
+        "app.js",
+        "portal-admin.sql",
+        "tests/portal_sso.py",
+        "tests/user_invite_handler.mjs"
+      ],
+      "sha256": "be93b4eeb7a259f53ae93129a466b7f0d4d00aed8621997cff51b14d8604e9cc"
+    },
+    {
+      "folder": "02_명세",
+      "title": "PTL-02 자동저장과 저장소 연결 명세 v1.0",
+      "path": "docs/deliverables/02_명세/PTL-02 자동저장과 저장소 연결 명세 v1.0.md",
+      "sources": [
+        "docs/design/functional-design.md",
+        "storage-status.js",
+        "storage-flow.js",
+        "tests/storage_feedback.py",
+        "tests/write_studio_storage_flow.py"
+      ],
+      "sha256": "9da8450076215e8367607c3307763e4c33fe00a7381ba13736716e4b860dc216"
+    },
+    {
+      "folder": "02_명세",
+      "title": "PTL-03 충돌 비교와 백업 복구 명세 v1.0",
+      "path": "docs/deliverables/02_명세/PTL-03 충돌 비교와 백업 복구 명세 v1.0.md",
+      "sources": [
+        "docs/design/functional-design.md",
+        "apps/markdown/storage-compare.js",
+        "storage-flow.js",
+        "tests/storage_compare.cjs",
+        "tests/folder_storage_conflicts.cjs",
+        "tests/shared_storage_flow.py"
+      ],
+      "sha256": "4e7e3ec50f281da8f1128c7a203a7e913a652f379dcc4ead00bf85e552b32ebd"
+    },
+    {
+      "folder": "02_명세",
+      "title": "PTL-04 항목 공유와 공동 작업 명세 v1.0",
+      "path": "docs/deliverables/02_명세/PTL-04 항목 공유와 공동 작업 명세 v1.0.md",
+      "sources": [
+        "docs/design/common.md",
+        "item-sharing.js",
+        "portal-item-sharing.sql",
+        "ITEM-SHARING.md",
+        "tests/item_sharing_ui.py",
+        "tests/item_sharing_sql.mjs"
+      ],
+      "sha256": "272976c58dc1a27701d4b324682d9dc1dd49e49b9dd25566bda10b86e888f594"
+    },
+    {
+      "folder": "02_명세",
+      "title": "PTL-05 Write Studio 문서와 표 편집 명세 v1.0",
+      "path": "docs/deliverables/02_명세/PTL-05 Write Studio 문서와 표 편집 명세 v1.0.md",
+      "sources": [
+        "docs/design/write-studio.md",
+        "apps/markdown/BLOCKS.md",
+        "tests/table_axis_drag.py",
+        "tests/editor_view_transition.py",
+        "tests/database_usability.py",
+        "tests/document_view_options.py"
+      ],
+      "sha256": "a65ba7d934a258e1b81ecab03b527b02f9e2a807dcdc6ac3b3c2bca6ab914fa7"
+    },
+    {
+      "folder": "02_명세",
+      "title": "PTL-06 Project Management WBS와 Excel 명세 v1.0",
+      "path": "docs/deliverables/02_명세/PTL-06 Project Management WBS와 Excel 명세 v1.0.md",
+      "sources": [
+        "docs/design/project-management.md",
+        "apps/projects/index.html",
+        "apps/projects/workbook-preserve.js",
+        "tests/projects_excel.py",
+        "tests/projects_sample_choices.py",
+        "tests/project_relational_sql.mjs"
+      ],
+      "sha256": "4403bd5ca4a8b7efbf8b88b08685d71ff942843fa1021a8a2531d445c5d89aec"
+    },
+    {
+      "folder": "02_명세",
+      "title": "PTL-07 Insight BI 데이터와 대시보드 명세 v1.0",
+      "path": "docs/deliverables/02_명세/PTL-07 Insight BI 데이터와 대시보드 명세 v1.0.md",
+      "sources": [
+        "docs/design/insight-bi.md",
+        "apps/insight/index.html",
+        "tests/shared_storage_flow.py",
+        "tests/item_sharing_ui.py",
+        "tests/content_relational_sql.mjs"
+      ],
+      "sha256": "7fad6e88f462464691652b90e498c18feadbf2f710c54b78c37538bf5ad908cb"
+    },
+    {
+      "folder": "02_명세",
+      "title": "PTL-08 설치형과 릴리스 관문 명세 v1.0",
+      "path": "docs/deliverables/02_명세/PTL-08 설치형과 릴리스 관문 명세 v1.0.md",
+      "sources": [
+        "docs/design/desktop.md",
+        "docs/design/executions/2026-11-16-e01.md",
+        ".github/workflows/quality-gate.yml",
+        ".github/workflows/business-regression.yml",
+        ".github/workflows/restore-web-release.yml",
+        "scripts/regression.py",
+        "scripts/stage_release.py",
+        "tests/release_gate.py"
+      ],
+      "sha256": "586316f9a33679ce824a342477162b6858c92880c5fe28e1af85e9e3c9bc22ea"
+    },
+    {
+      "folder": "03_설계(ADR)",
+      "title": "Portal ADR 모음 (PADR-001~011) v1.0",
+      "path": "docs/deliverables/03_설계(ADR)/Portal ADR 모음 (PADR-001~011) v1.0.md",
+      "sources": [
+        "docs/design/common.md",
+        "docs/design/desktop.md",
+        "docs/design/improvement-roadmap.md",
+        "docs/design/executions/2026-11-16-e01.md"
+      ],
+      "sha256": "333215c27c55e7e98797d2b5e331326d400ead13ad80c3d0fd7accd1d767c6f5"
+    },
+    {
+      "folder": "05_검토",
+      "title": "Portal 산출물 구성과 명세 정합성 점검 결과 v1.0",
+      "path": "docs/deliverables/05_검토/Portal 산출물 구성과 명세 정합성 점검 결과 v1.0.md",
+      "sources": [
+        "AGENTS.md",
+        "docs/design/README.md",
+        "docs/design/execution-history.md",
+        "docs/design/executions/2026-11-16-e01.md"
+      ],
+      "sha256": "e2ba78bd683e61bf8ad8e9362be6d4837083a7e38ec397ed20297438a159dede"
+    },
+    {
+      "folder": "01_계획",
+      "title": "Portal 개발 계획서 (기존 개선 검토 및 실행 계획)",
+      "path": "docs/deliverables/01_계획/Portal 개발 계획서 (기존 개선 검토 및 실행 계획).md",
+      "sources": [
+        "docs/design/improvement-roadmap.md"
+      ],
+      "sha256": "103a1e32be9084e841fb2edc246e0d5efce75a0803a6fbf777b79c518c9a471c"
+    },
+    {
+      "folder": "04_작업기록",
+      "title": "Portal 개선 계획 대비 실행 이력",
+      "path": "docs/deliverables/04_작업기록/Portal 개선 계획 대비 실행 이력.md",
+      "sources": [
+        "docs/design/execution-history.md"
+      ],
+      "sha256": "601fdeb9bf2ec429d592b6fc3aaf1eced9c24b51615653b42f5a76b5f8aadbba"
+    },
+    {
+      "folder": "02_명세",
+      "title": "기존 screen-design.md",
+      "path": "docs/design/screen-design.md",
+      "sources": [
+        "docs/design/screen-design.md"
+      ],
+      "sha256": "e94026e6b04738e259ef1cd329abcb2fb1b3902ac83c9c24783dcc36fbff3efe",
+      "reuse": true
+    },
+    {
+      "folder": "02_명세",
+      "title": "기존 functional-design.md",
+      "path": "docs/design/functional-design.md",
+      "sources": [
+        "docs/design/functional-design.md"
+      ],
+      "sha256": "455f49e499339e8b418153d537bdb016acf76a51d2e808c144a0d87a1f11a02b",
+      "reuse": true
+    },
+    {
+      "folder": "02_명세",
+      "title": "기존 code-definition.md",
+      "path": "docs/design/code-definition.md",
+      "sources": [
+        "docs/design/code-definition.md"
+      ],
+      "sha256": "9e6126b200908645741837c9654b896e4405c71828d54b1552019123c2776a57",
+      "reuse": true
+    },
+    {
+      "folder": "02_명세",
+      "title": "기존 table-definition.md",
+      "path": "docs/design/table-definition.md",
+      "sources": [
+        "docs/design/table-definition.md"
+      ],
+      "sha256": "fd918123da38bb052c4fe18ce185e4bc846086c8541ddfdcba07c07c442d19ad",
+      "reuse": true
+    }
+  ],
+  "source_hashes": {
+    ".github/workflows/business-regression.yml": "452984a2041c184b52147d8a0a0d59e504b939c382462eeb6be773f04a3e715f",
+    ".github/workflows/quality-gate.yml": "64c979e70eb9c46bd42845d23847e8ecd00f7f262ec4f9461b078944ba512924",
+    ".github/workflows/restore-web-release.yml": "5c297a817d13eceb01c9df42e65a15d06c8b485fbf5941b5b6a8df84d35c6244",
+    "AGENTS.md": "175fa6c559ee71da661e891e17b300ea6411f36a04eede4e438d809e63e61f4a",
+    "ITEM-SHARING.md": "9c90f391d676f5db8eae182a5cd68ef9e968baf11357566df63c69e36197e1f1",
+    "app.js": "7a943f3d4ea03f26514c2c3c1f7d197686d232e2b48eb930a460e2e6e29b671c",
+    "apps/insight/index.html": "27fb92806020bef8785d278efae07a7215f6dfaa71bf41586d56ee411182bb1b",
+    "apps/markdown/BLOCKS.md": "45e2fe3c756a324fee89422971f42d35a8dcc832b322a1d9c6826175997e53bb",
+    "apps/markdown/storage-compare.js": "4cc3627c6fd5ca268f944f846e4e0503e98852ed033a4857f097a468f2dcafb9",
+    "apps/projects/index.html": "c8d5c128b6e82d957c3d1c2c6c786ea9a83f6ee4dd016858503c2352ee3a2dfa",
+    "apps/projects/workbook-preserve.js": "785d73e92b965fd01e44de6a67a22ba2fed5f6c193d564dc10bd82702972bf5a",
+    "docs/design/README.md": "ae67d084da1e01413a8aaa786911fd77697fc2aa9d710a7fffd21bf90743da4a",
+    "docs/design/code-definition.md": "9e6126b200908645741837c9654b896e4405c71828d54b1552019123c2776a57",
+    "docs/design/common.md": "3d9e788d19fb324980169fe6edefbc6ace5b9c2c4a26f638b3fca7955b572811",
+    "docs/design/desktop.md": "8aa4fd1ff40127883cd6ab7bb6e5cc652a1cde2251df522d3aa82a7413764f04",
+    "docs/design/execution-history.md": "3bb2c8907b7c3cc997c945d7f4fa5f3fecd370233ad250b8e2964f96b01b5719",
+    "docs/design/executions/2026-11-16-e01.md": "939b706810d9976111812391aa532aae4f2d0299b9268a07fe02084f176b61f2",
+    "docs/design/functional-design.md": "455f49e499339e8b418153d537bdb016acf76a51d2e808c144a0d87a1f11a02b",
+    "docs/design/handoff.md": "157cc47352c938526f259f3785ed8a57947d44986008d65940e441a00f28f02e",
+    "docs/design/improvement-roadmap.md": "3931196f78ec9f73bcd33abf6392bedc575a7b261b0e7b4819f472f9985a5d3f",
+    "docs/design/insight-bi.md": "fb9a4bea2730bddad12f435b3b3b5af59cccf1db61a22531eff76b92189a004e",
+    "docs/design/project-management.md": "23e549bc22432284af75ac070f23cd2e0e7c28cca35d6748f0597b5bac68e8f1",
+    "docs/design/screen-design.md": "e94026e6b04738e259ef1cd329abcb2fb1b3902ac83c9c24783dcc36fbff3efe",
+    "docs/design/table-definition.md": "fd918123da38bb052c4fe18ce185e4bc846086c8541ddfdcba07c07c442d19ad",
+    "docs/design/write-studio.md": "317819e60e94068585acab103e7a14b8e32adb44e3abf9b9ea396e9dd46fc970",
+    "item-sharing.js": "f80b98298a4a4f7f3178f9bd3a96557cfd0b8296de566bfd3089ff58004b1f9d",
+    "login.js": "00eeff8dfd68ea8e65dbb17d950274d76bf1f44d7c391623a11956dc6bb230b5",
+    "portal-admin.sql": "f73d91450976352c9e1f8c84b0459f97368bd663e6c7ddf35a7d1acf88bde34f",
+    "portal-item-sharing.sql": "5f0743e0957b956a49be220f7cbf157e8d1cd08310f4e17d519ab58d280660f6",
+    "scripts/regression.py": "0d27358b5762c5634021a2d6efe55571965fc245246a780e101756406745834b",
+    "scripts/stage_release.py": "9d1956c238ea95b97c7aaade3002f25f2e76a39afa943e3377406ed1d8022d30",
+    "storage-flow.js": "bda65d807d93af3767a570db351df2ca66c5a254442b88a4365ff4b56159ceab",
+    "storage-status.js": "01eb7b901eb208882302879855ddf7eeb2a038882d18a6339837f342f399237f",
+    "tests/content_relational_sql.mjs": "1da02d4991b689ea8a101d1036bc9ed103f1ec41fe09fc8a43357487dd85c66d",
+    "tests/database_usability.py": "5eafd9fcd837548221c4ddd4ebcd31bf864872557f9c1d59ce8753c2c0d79b7b",
+    "tests/document_view_options.py": "a1ac26ca0e040fa6793574832fde11b796dc8d49c13a4533f0522b57cde64690",
+    "tests/editor_view_transition.py": "640aae6a460077d20ea7f983489b27dad1e4b29e1a08b6c246a29fffe98935a5",
+    "tests/folder_storage_conflicts.cjs": "82f31a522d671a80c74b315c8a008fc2127374642c33528cd7c6b7d85c28ccbb",
+    "tests/item_sharing_sql.mjs": "d8af67ba945da1935e18bb63dace1c202d5b5f26580a8451d7f22893a90c6a1a",
+    "tests/item_sharing_ui.py": "ac8dccae2b2ddb898f90e54f6e371b09849fd7c2a1876e7ec37f64dce36638dd",
+    "tests/portal_sso.py": "69da6160ba752f3d077485265c4751dd3dde7d4bac6cbd8e9eaeccdabdeab88f",
+    "tests/project_relational_sql.mjs": "5608b7472be8602046cffa14be076ac7e4a399900b202f490a277489464596f9",
+    "tests/projects_excel.py": "6a13ca1f1df14014be89e4e77d4c8e5f28f9ec97f3075a69e01da00f319fe848",
+    "tests/projects_sample_choices.py": "8ff749096bbe4ebd1f2a63b85e6084cb1f2a1fdea9907352de3ca6dbe34eded7",
+    "tests/release_gate.py": "571ecb13aa50fe3ac7940b817a7eed8ee5f6600f5cfacce44dedccc403cadeab",
+    "tests/shared_storage_flow.py": "1ca577a1b8306d4abfb9ca6a2d4e3b6c87232efab81475a39239dae548822952",
+    "tests/storage_compare.cjs": "32513e45d6c787c4451c90e76004f4925c9c69774cbe292444d1a594067670a7",
+    "tests/storage_feedback.py": "b6701da7d2bec8e2331993b11a2e7d43bcc937f18690569890a3c13bf74c08b2",
+    "tests/table_axis_drag.py": "d3c58a9b7b035dcf361788c2e1ab725cb35b10a444e799e198a26873d5232bfe",
+    "tests/user_invite_handler.mjs": "e8ff99eb08c23b99f56aa1ae4f79030656340bde204a901399206e2073a24adf",
+    "tests/write_studio_storage_flow.py": "1b286de1e5dff7c6e6ee1059cd6402c5ed8346b7a40372011f970d8858a16630"
+  }
+}
