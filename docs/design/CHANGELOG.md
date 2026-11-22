@@ -2,6 +2,7 @@
 
 | 일자(KST) | 변경·상태 | 영향 설계서 | 근거/검증 |
 |---|---|---|---|
+| 2026-11-22 | 작업 규칙에 모델 공통 원칙(0절) 추가, Claude Code용 CLAUDE.md가 AGENTS.md를 불러오도록 추가. 기능·UI·데이터 변경 없음 | AGENTS.md, CLAUDE.md | 문서 변경만. main push CI로 확인 |
 | 2026-11-22 | 기본 브랜치를 main으로 전환(gh-pages 기준 생성, item-sharing·desktop-preview·desktop-item-sharing 병합)하고 Design documentation·Quality gate 워크플로 push 대상에 main 추가. 배포 job은 gh-pages 조건을 유지하여 main push는 회귀/설계 검증만 수행 | CI(.github/workflows) | 워크플로 문법 정적 확인. main push 후 원격 CI 결과로 확인; Pages source(gh-pages)·배포 동작 변경 없음 |
 | 2026-11-18 | REA 실제5폴더17문서 역할에 맞춰 Portal 산출물15개 신규 작성, 기존 계획/이력 재사용, 네 정의서/ZIP 재분류; ID/링크 유지 및 로컬 재생성/발행 manifest 추가 | deliverables, README, AGENTS, execution-history | Drive 본문/제목/표셀/폴더 readback 대조. 문서 작업이며 앱/DB/배포 변경 없음; 기존 Pages403·OS업무 미완료 유지 |
 | 2026-11-16 | E01-1: 업무 회귀·배포/복원 관문 구현·24명령 회귀·설치형4대상 패키징 완료; 웹 관문 활성화는 Pages source 설정403으로 대기 | common, functional/code, desktop, execution-history | 정상 후보43788850797·의도 실패43787977198·설치형43788857190; 웹43788853182는 회귀/자산 검증 성공 후 설정403으로 배포 차단; 상세 이력 참조 |
