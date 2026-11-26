@@ -14,7 +14,7 @@ app.whenReady().then(async()=>{
   const result=await wc.executeJavaScript(`(async()=>{
     const delay=()=>new Promise(r=>setTimeout(r,100));
     for(let i=0;i<150 && document.querySelector('#login-panel').hidden;i++)await delay();
-    const paths=['/portal01/modules.json','/portal01/apps/markdown/','/portal01/apps/projects/','/portal01/apps/insight/'];
+    const paths=['/portal01/modules.json','/portal01/apps/markdown/','/portal01/apps/projects/','/portal01/apps/insight/','/portal01/manual.js','/portal01/manual.css','/portal01/manual-content.json'];
     const responses=await Promise.all(paths.map(async p=>{const r=await fetch(p);return {path:p,status:r.status,size:(await r.text()).length}}));
     const missing=await fetch('/portal01/does-not-exist');
     const prefs=await (async()=>{localStorage.setItem('desktop-smoke','ok');const stored=localStorage.getItem('desktop-smoke');localStorage.removeItem('desktop-smoke');return stored})();
@@ -23,6 +23,18 @@ app.whenReady().then(async()=>{
   const preferences=wc.getLastWebPreferences();
   if(!result.login||result.authenticated||result.node!=='undefined'||result.storage!=='ok'||result.missing!==404||result.responses.some(r=>r.status!==200||r.size<20))throw Error(JSON.stringify(result));
   if(!preferences.sandbox||!preferences.contextIsolation||preferences.nodeIntegration||!preferences.webSecurity)throw Error('Unsafe renderer configuration');
+  // Read-only manual fixture: render and search without authenticating a real user.
+  const manual=await wc.executeJavaScript(`(async()=>{
+    const root=document.querySelector('#manual-view');root.hidden=false;
+    location.hash='#manual/pm-excel';await window.PortalManual.open();
+    const title=root.querySelector('#manual-article h1')?.textContent;
+    const input=root.querySelector('#manual-search');input.value='조건부 서식';input.dispatchEvent(new Event('input'));
+    const found=!!root.querySelector('#manual-list a[href="#manual/pm-excel"]');
+    const above=!!(document.querySelector('.sidebar-manual').compareDocumentPosition(document.querySelector('#sidebar-system')) & Node.DOCUMENT_POSITION_FOLLOWING);
+    root.hidden=true;return {title,found,above};
+  })()`);
+  if(manual.title!=='WBS Excel 업로드·다운로드'||!manual.found||!manual.above)throw Error('Manual fixture failed: '+JSON.stringify(manual));
+  console.log('PASS Electron manual assets, article rendering, search and menu order fixture');
   // Exercise the shared outline resizer using native Electron mouse input.
   // This isolated UI fixture does not authenticate or open real documents.
   const handle=await wc.executeJavaScript(`(()=>{
@@ -41,7 +53,7 @@ app.whenReady().then(async()=>{
   const outline=await wc.executeJavaScript(`(()=>{const width=document.querySelector('#outlinePane').getBoundingClientRect().width,saved=localStorage.getItem('3hs-sidebar-width:desktop-test-outline');localStorage.removeItem('3hs-sidebar-width:desktop-test-outline');return {width,saved}})()`);
   if(outline.width!==226||outline.saved!=='226')throw Error('Native outline drag failed: '+JSON.stringify(outline));
   console.log('PASS native Electron outline drag and width persistence');
-  const report={...result,outline,platform:process.platform,arch:process.arch,electron:process.versions.electron,sandbox:preferences.sandbox,scope:'Login shell, local assets and storage only; authenticated editing and native file workflows require further validation.'};
+  const report={...result,outline,manual,platform:process.platform,arch:process.arch,electron:process.versions.electron,sandbox:preferences.sandbox,scope:'Login shell, local assets, storage and read-only manual fixture; authenticated editing and native file workflows require further validation.'};
   const output=path.resolve(__dirname,'../smoke-report.json');await fs.writeFile(output,JSON.stringify(report,null,2));
   console.log('PASS desktop protocol, login guard, app assets, storage and renderer isolation');clearTimeout(timeout);app.exit(0);
  }catch(error){console.error(error);clearTimeout(timeout);app.exit(1);}
