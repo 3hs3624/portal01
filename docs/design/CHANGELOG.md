@@ -2,6 +2,7 @@
 
 | 일자(KST) | 변경·상태 | 영향 설계서 | 근거/검증 |
 |---|---|---|---|
+| 2026-11-26 | 설치형 smoke에 매뉴얼 자산 protocol 응답과 읽기 전용 본문/검색/메뉴 순서 fixture 추가, Drive 매뉴얼 발행ID 보관 | desktop,manual,실행 이력 | 실제 인증 없이 검증. 최초14fa313의 설계 변경 이력 누락을 이 행으로 보완 |
 | 2026-11-26 | 시스템관리 위 매뉴얼 메뉴 및 읽기 전용 위키,35문서112절,검색/분류/목차/직접링크/재시도·모바일; 회귀25명령 | common,screen,functional,code,앱/desktop,manual | manual_wiki.py 브라우저 흐름, 기존 회귀·배포 근거는 실행 기록에 추가 |
 | 2026-11-22 | 작업 규칙에 모델 공통 원칙(0절) 추가, Claude Code용 CLAUDE.md가 AGENTS.md를 불러오도록 추가. 기능·UI·데이터 변경 없음 | AGENTS.md, CLAUDE.md | 문서 변경만. main push CI로 확인 |
 | 2026-11-22 | 기본 브랜치를 main으로 전환(gh-pages 기준 생성, item-sharing·desktop-preview·desktop-item-sharing 병합)하고 Design documentation·Quality gate 워크플로 push 대상에 main 추가. 배포 job은 gh-pages 조건을 유지하여 main push는 회귀/설계 검증만 수행 | CI(.github/workflows) | 워크플로 문법 정적 확인. main push 후 원격 CI 결과로 확인; Pages source(gh-pages)·배포 동작 변경 없음 |
