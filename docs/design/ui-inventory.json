@@ -5415,6 +5415,17 @@
       "dynamicLabels": []
     },
     {
+      "source": "manual.js",
+      "functions": [
+        "go",
+        "open",
+        "results",
+        "shell",
+        "showArticle"
+      ],
+      "dynamicLabels": []
+    },
+    {
       "source": "pages-guard.js",
       "functions": [
         "detailHost"

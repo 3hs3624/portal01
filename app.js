@@ -157,8 +157,13 @@ function appFrameSource(id){
 }
 function route(){
  document.body.classList.remove('app-window');
+ const manualRoute=location.hash==='#manual'||location.hash.startsWith('#manual/');
+ document.title=manualRoute?'매뉴얼 · 3HS Workspace':'3HS · Workspace';
+ $('#manual-view').hidden=!manualRoute;$('#manual-link').classList.toggle('active',manualRoute);
+ if(manualRoute)$('#manual-link').setAttribute('aria-current','page');else $('#manual-link').removeAttribute('aria-current');
  const adminRoute=location.hash==='#system-management';
  $('#system-admin-view').hidden=true;$('#system-admin-link').classList.toggle('active',adminRoute&&!!window.PortalAccess?.isAdmin);
+ if(manualRoute){$('#home').hidden=true;$('#app-view').hidden=true;$('#breadcrumb').textContent='워크스페이스 / 매뉴얼';document.querySelectorAll('#nav a').forEach(a=>{a.classList.remove('active');a.removeAttribute('aria-current')});window.PortalManual.open();return}
  if(adminRoute&&window.PortalAccess?.isAdmin){$('#home').hidden=true;$('#app-view').hidden=true;$('#system-admin-view').hidden=false;$('#breadcrumb').textContent='워크스페이스 / 시스템관리';document.querySelectorAll('#nav a').forEach(a=>{a.classList.remove('active');a.removeAttribute('aria-current')});window.PortalAdminView?.open();return}
  if(adminRoute){history.replaceState(null,'',location.pathname+location.search+'#home');$('#settings-status').textContent='관리자 권한이 필요합니다.'}
 const id=location.hash.slice(1)||'home',m=visibleModules().find(m=>m.id===id);const home=!m;if(home&&id!=='home')history.replaceState(null,'',location.pathname+location.search+'#home');$('#home').hidden=!home;$('#app-view').hidden=home;

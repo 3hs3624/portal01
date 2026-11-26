@@ -142,3 +142,7 @@ ExcelJS와 `workbook-preserve.js`/fflate를 사용합니다. 테스트는 파일
 - 목록의 일정 상태가 지연이면 계획 대비 실적 부족 %p 또는 사업 종료일 경과를 함께 표시합니다. 이는 현재 요약으로 판정한 근거이며 담당자·태스크의 원인을 추정하지 않습니다. 완료·예정·진행의 판정 기준은 유지합니다.
 
 검증: projects_excel.py --format-fixture(실제 XLSX·수식·사용자 서식·조건부 서식 왕복·CSP), shared_storage_flow.py, storage_feedback.py, item_sharing_ui.py.
+
+## 앱 내 사용자 안내 (2026-11-26)
+
+포털의 매뉴얼 메뉴에서 이 앱의 사용법을 검색/분류하고 단계별 절차·예외를 확인합니다. 사용자 안내 원문은 manual-content.json, 사본은 docs/manual/README.md입니다. 매뉴얼 조회는 앱/공유/관리 권한을 바꾸지 않습니다. 설치형도 같은 정적 자산을 포함하며 실제 OS 업무 검증 완료와 패키징 검증을 구분합니다.

@@ -107,6 +107,7 @@
 | item-sharing-adapters.js | capture, init, protect, wait |
 | item-sharing.js | decorate, members, message, openItem, refresh, share, stamp, users |
 | login.js | 객체/IIFE/콜백; 원문 참조 |
+| manual.js | go, open, results, shell, showArticle |
 | pages-guard.js | detailHost |
 | pages-runtime.js | csv, table, transact |
 | project-cloud.js | asset, base64, bytes, check, create, error, hash, load, pack, path, rpc, templates, unpack, user, validate |
