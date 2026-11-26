@@ -2,7 +2,7 @@
   "runtimeSources": {
     "admin.js": "8f4f2f2eb2ee93d241b4b34c977e813765cf193d29f041f073b6f3812031f0c8",
     "app-shell.js": "4770bc07c1fbf261ae1077fc9221851abb738df8e05891c6ac67971aebc11b64",
-    "app.js": "7a943f3d4ea03f26514c2c3c1f7d197686d232e2b48eb930a460e2e6e29b671c",
+    "app.js": "af9ac347a44684e3afa40b3cbc8656ad4873b2db9b0469d89d1fa19844f486ba",
     "apps/insight/analysis-controls.js": "c3491f7d41b2d571c57a6a99132fd205ca08d402c30c738c24f921544e179749",
     "apps/insight/app.js": "dc1f8c508ab5faada507ed0a29b49211f0a9cf194862122bc5544f917c77b2f6",
     "apps/insight/board-studio.js": "73f2de595d7c7f20a329f76207f5acd143e5c7dd440e6d9ac9ef21f7547e1803",
@@ -56,7 +56,8 @@
     "folder-storage.js": "cf2b0103219b94f7475847d7fd62af984019beb2c6ca42af459fe36d9297b69e",
     "item-sharing-adapters.js": "3174db6bdeb5015c09fadceb6fa7295d436a7cbf8aef9a48b455c2b828c9ae15",
     "item-sharing.js": "f80b98298a4a4f7f3178f9bd3a96557cfd0b8296de566bfd3089ff58004b1f9d",
-    "login.js": "00eeff8dfd68ea8e65dbb17d950274d76bf1f44d7c391623a11956dc6bb230b5",
+    "login.js": "f0a02f8604da682d16bdbebe23776eedc0d93e645492f69640c8eb9058b30b8c",
+    "manual.js": "c1d75444a7f9b6d034eef260dca4ef5ba1fe858fdeda0316807e1d5eaaabffd9",
     "pages-guard.js": "08c48ea5080c1aa38b9fc2fbf4093b09bc4d309c4c0a99605e26a45fe10b8f25",
     "pages-runtime.js": "c70267d745463addf5b6e448def8a1d87a3083e582acc1ed9e9d257d905351cf",
     "project-cloud.js": "87169a403b2e8012eb4a46c699ce88b10156250b446e763a41d26c35bed19646",

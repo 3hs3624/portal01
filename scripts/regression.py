@@ -9,7 +9,7 @@ SUITES={
  'browser-storage':[(n,[sys.executable,f'tests/{n}.py']) for n in ['storage_feedback','write_studio_storage_flow','shared_storage_flow']],
  'browser-sharing':[('item_sharing_ui',[sys.executable,'tests/item_sharing_ui.py'])],
  'browser-excel':[('projects_excel',[sys.executable,'tests/projects_excel.py','--format-fixture'])],
- 'browser-editor':[(n,[sys.executable,f'tests/{n}.py']) for n in ['editor_view_transition','table_axis_drag','sidebar_layout']],
+ 'browser-editor':[(n,[sys.executable,f'tests/{n}.py']) for n in ['editor_view_transition','table_axis_drag','sidebar_layout','manual_wiki']],
 }
 def source_sha():return subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
 def now():return datetime.datetime.now(datetime.timezone.utc).isoformat()

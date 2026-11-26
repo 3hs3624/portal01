@@ -547,6 +547,7 @@
 | item-sharing-adapters.js | capture, init, protect, wait | 해당 소스의 생성 로직 참조 |
 | item-sharing.js | decorate, members, message, openItem, refresh, share, stamp, users | 해당 소스의 생성 로직 참조 |
 | login.js | IIFE/객체/콜백 참조 | 해당 소스의 생성 로직 참조 |
+| manual.js | go, open, results, shell, showArticle | 해당 소스의 생성 로직 참조 |
 | pages-guard.js | detailHost | 해당 소스의 생성 로직 참조 |
 | pages-runtime.js | csv, table, transact | 해당 소스의 생성 로직 참조 |
 | project-cloud.js | asset, base64, bytes, check, create, error, hash, load, pack, path, rpc, templates, unpack, user, validate | 해당 소스의 생성 로직 참조 |
@@ -561,4 +562,4 @@
 | apps/projects/index.html (inline) | applyTheme, checkStore, closeForm, countStores, deleteProject, deleteStore, download, fileExists, fillWindow, filtered, getTemplate, init, legacyBackup, listMetas, load, loadExcel, metaFor, newId, noticeHTML, openConnect, openDashboard, openForm, openImport, openWindow, portalActivateCloudStore, readForm, readJSON, readProject, reconnect, relinkStore, render, renderAll, renderImport, renderStoreBox, renderStoreTab, rootOf, runImport, selectStore, setTab, showBlocked, snapDir, snapFile, status, storeErr, submitForm, unlinkStore, winFeatures, writeFile, writeMeta, writeProject | 해당 소스의 생성 로직 참조 |
 | apps/projects/index.html#dash-tpl (inline) | addLoaded, agg, applyCellEdit, applySaved, applyStaged, applyTheme, bindCal, bindCompare, bindGantt, bindGuide, bindProj, bindStatic, bindVersions, bindWBS, boot, buildDocument, buildImport, buildWorkbook, changed, closeConflict, closeLoad, closeSamplePop, closeSave, commitExt, compareSources, compute, confirmHTML, conflictForce, conflictReload, cv, diffStates, diffTable, doDelete, doSave, downloadHTML, downloadJSON, exitExt, exitPreview, exportXlsx, findNode, findTask, flatTasks, gapState, gotoTask, hostInfo, hostNotify, keepFocus, leafCalc, leavesOf, listSnapFolder, loadExcel, loadFolderList, loadPicked, lockBasic, makeCal, move, normalize, offerFile, openConflict, openLoad, openSamplePop, openSave, parentArr, parseWorkbook, preservedBytes, readFile, readSnapFile, recompute, regroup, renderAll, renderBanner, renderCal, renderCompare, renderDashboard, renderDiff, renderGantt, renderImport, renderLoad, renderLoc, renderPreview, renderProj, renderSample, renderSaveTargets, renderSavebox, renderStoreChip, renderVersions, renderWBS, restoreVersion, rollup, rowHTML, safeJSON, savedTask, scrollToBase, setDepth, setSub, setView, snapFileName, storeInfo, storeSave, storeSnapList, summarize, syncBasicFromHost, taskPanelHTML, tipHTML, toDateStr, toPct, toPkg, toast, visibleRows | 해당 소스의 생성 로직 참조 |
 
-정적 컨트롤 합계: 316 / 블록 명령: 101 / 모듈: 70
+정적 컨트롤 합계: 316 / 블록 명령: 101 / 모듈: 71
