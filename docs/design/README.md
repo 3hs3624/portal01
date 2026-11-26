@@ -61,3 +61,7 @@
 ## REA 형식의 산출물 분류
 
 2026-11-18부터 Google Drive Portal은 계획/명세/ADR/작업기록/검토의 5폴더로 분류합니다. [산출물 관리 안내](../deliverables/README.md)에서17개 문서 역할, 신규 PTL-01~08, 기존 네 정의서의 위치와 Doc ID 유지 정책, 로컬 재생성 방법을 확인합니다. 네 정의서는 계속 재구현 계약이며 새 분류가 제품 동작이나 계획 완료 상태를 바꾸지 않습니다.
+
+## 사용자 매뉴얼 위키
+
+포털 사이드바의 매뉴얼에서 사용자 안내를 검색합니다. [사용자 매뉴얼 사본](../manual/README.md)은35문서112절의 원문입니다. 기능·문구·권한·절차 변경 시 manual-content.json도 함께 고치고 `python scripts/sync_manual.py`로 사본을 갱신합니다. `python scripts/sync_manual.py --check`와 `python tests/manual_wiki.py`로 확인합니다.

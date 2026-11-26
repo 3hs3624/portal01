@@ -52,3 +52,7 @@
 ## REA 형식 산출물 관리 (2026-11-18)
 
 Drive `ChatGPT > Portal` 하위는 `01_계획`, `02_명세`, `03_설계(ADR)`, `04_작업기록`, `05_검토`로 관리한다. 기존 네 정의서는 `02_명세`, 기존 개발 계획은 `01_계획`, 실행 이력은 `04_작업기록`에 있으며 ID/링크를 유지한다. `docs/deliverables/README.md`, `manifest.json`, `drive-publication.json`으로 원문·역할·발행 ID를 대조한다. `scripts/build_deliverables.py`는 로컬 문서만 생성하며 Drive 갱신/배포를 하지 않는다. 이후 기능 변경 시 관련 PTL 명세와 네 정의서를 함께 갱신하고, 계획/이력은 과거 내용을 보존해 날짜별 변경을 추가한다. REA는 문서 구조 참고이며 REA 전용 기능·승인·일정을 Portal 요구로 옮기지 않는다.
+
+## 사용자 매뉴얼 동기화
+
+포털의 매뉴얼 위키 원문은 `manual-content.json`, 읽기용 사본은 `docs/manual/README.md`다. 사용자 동작·문구·절차·권한·제약을 바꾸면 관련 안내도 같은 작업에서 갱신한다. `python scripts/sync_manual.py`와 `--check`로 사본/ID/관련 문서 링크를 확인한다. `tests/manual_wiki.py`는 browser-editor 회귀 묶음에 포함된다. Google Drive 사용자 매뉴얼의 기존 발행ID/위치는 `docs/manual/drive-publication.json`에서 확인해 갱신하고 중복 생성하지 않는다. 설계서·인수 기준을 사용자 매뉴얼이나 실제 실행 결과와 혼동하지 않는다.
