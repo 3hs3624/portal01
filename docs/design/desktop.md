@@ -50,7 +50,7 @@ HostBridge 분리, 네이티브 파일/SQLite 작업공간, 계정별 보안 키
 
 ## 업무 회귀를 통과한 개발 패키징 (2026-11-16)
 
-설치형 preview packaging은 reusable business-regression 성공에 의존하도록 전환합니다. fixture 웹 회귀와 네 OS의 기존 Electron 셸/정책/스모크·개발 아카이브를 각각 실행하며 전체 실제 사용자 인증/WBS·파일·IME 업무(E04)를 완료로 간주하지 않습니다. 배포 대상 SHA와 결과는 [E01 실행 기록](executions/2026-11-16-e01.md)에 기록합니다.
+설치형 preview packaging의 `preview` job은 reusable business-regression의 `regression` job 성공에 의존합니다. 테스트/ci/재사용 workflow 변경도 개발판 검증을 실행합니다. fixture 웹 회귀와 네 OS의 기존 Electron 셸/정책/스모크·개발 아카이브를 각각 실행하며 전체 실제 사용자 인증/WBS·파일·IME 업무(E04)를 완료로 간주하지 않습니다. 배포 대상 SHA와 결과는 [E01 실행 기록](executions/2026-11-16-e01.md)에 기록합니다.
 
 ## 앱 내 사용자 안내 (2026-11-26)
 
