@@ -2,7 +2,7 @@ name: Design documentation
 on:
   pull_request:
   push:
-    branches: [gh-pages, desktop-preview, item-sharing, desktop-item-sharing]
+    branches: [main, gh-pages, desktop-preview, item-sharing, desktop-item-sharing]
 permissions:
   contents: read
 jobs:
